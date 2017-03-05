@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
     login(): void {
 
         var authenticationResult: OperationResult = new OperationResult(false, '');
-        console.log('login');
 
         this.membershipService.login(this.account)
             .subscribe(res => {

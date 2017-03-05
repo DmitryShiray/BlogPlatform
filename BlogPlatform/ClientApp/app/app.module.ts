@@ -6,13 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 
-//import { AccountModule } from './components/account/account.module';
 import { AppComponent } from './components/app/app.component';
-//import { AlbumPhotosComponent } from './components/album-photos.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
-//import { CommentsComponent } from './components/comments.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { ArticlesComponent } from './components/articles/articles.component';
+//import { CommentsComponent } from './components/comments.component';
 import { routing } from './routes';
 
 import { DataService } from './core/services/dataService';
@@ -40,6 +40,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         AppComponent,
         NavMenuComponent,
         HomeComponent,
+        LoginComponent,
+        RegisterComponent,
         ArticlesComponent,
     ],
     providers: [DataService, MembershipService, UtilityService, NotificationService,

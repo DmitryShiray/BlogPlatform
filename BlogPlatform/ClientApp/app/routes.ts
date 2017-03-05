@@ -2,6 +2,8 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 //import { ProfileComponent } from './components/photos.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 //import { ArticleCommentsPhotosComponent } from './components/album-photos.component';
@@ -18,10 +20,14 @@ const appRoutes: Routes = [
         path: 'home',
         component: HomeComponent
     },
-    //{
-    //    path: 'profile',
-    //    component: ProfileComponent
-    //},
+    {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
+        path: 'register',
+        component: RegisterComponent
+    },
     {
         path: 'articles',
         component: ArticlesComponent
