@@ -6,12 +6,12 @@ import { Registration } from '../../core/domain/registration';
 import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
-//import { NotificationService } from '../../core/services/notificationService';
+import { NotificationService } from '../../core/services/notificationService';
 
 @Component({
     selector: 'register',
     template: require('./register.component.html'),
-    providers: [MembershipService, DataService]
+    providers: [MembershipService, DataService, NotificationService]
 })
 
 export class RegisterComponent implements OnInit  {
@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit  {
     private newUser: Registration;
 
     constructor(public membershipService: MembershipService,
+                public notificationService: NotificationService,
                 router: Router) {
         this.newUser = new Registration('', '', '', '', '', '');
         this.router = router;
@@ -41,12 +42,11 @@ export class RegisterComponent implements OnInit  {
             error => console.error('Error: ' + error),
             () => {
                 if (registrationResult.Succeeded) {
-                    console.log('Dear ' + this.newUser.LastName + ', please login with your credentials');
+                    this.notificationService.printSuccessMessage('Dear ' + this.newUser.LastName + ', please login with your credentials');
                     this.router.navigate([this.accountRoutes.login.path]);
                 }
                 else {
-                    //this.notificationService.printErrorMessage(_registrationResult.Message);
-                    console.log(registrationResult.Message);
+                    this.notificationService.printErrorMessage(registrationResult.Message);
                 }
             });
     };

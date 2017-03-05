@@ -6,12 +6,13 @@ import { Account } from '../../core/domain/account';
 import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
+import { NotificationService } from '../../core/services/notificationService';
 
 
 @Component({
     selector: 'login',
     template: require('./login.component.html'),
-    providers: [MembershipService, DataService]
+    providers: [MembershipService, DataService, NotificationService]
 })
 
 export class LoginComponent implements OnInit {
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
     private accountRoutes = AccountRoutes;
 
     constructor(public membershipService: MembershipService,
+                public notificationService: NotificationService,
                 router: Router) {
         this.account = new Account('', '');
         this.router = router;
@@ -43,13 +45,12 @@ export class LoginComponent implements OnInit {
             error => console.error('Error: ' + error),
             () => {
                 if (authenticationResult.Succeeded) {
-                    console.log('Welcome back ' + this.account.EmailAddress + '!');
-                    
+                    this.notificationService.printErrorMessage('Welcome back ' + this.account.EmailAddress + '!');
                     this.router.navigate([this.accountRoutes.register.path]);
                 }
                 else {
                     console.log(authenticationResult.Message);
-                    //this.notificationService.printErrorMessage(_authenticationResult.Message);
+                    this.notificationService.printErrorMessage(authenticationResult.Message);
                 }
             });
     };
