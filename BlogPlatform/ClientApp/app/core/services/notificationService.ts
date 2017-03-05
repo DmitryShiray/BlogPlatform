@@ -1,11 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
 
-declare var alertify: any;
-
 @Injectable()
 export class NotificationService {
-    private notifier: any = alertify;
+    private notifier: any;
+
     constructor() {
+        this.notifier = require('alertify.js');
     }
 
     printSuccessMessage(message: string) {

@@ -26,9 +26,11 @@ export class RegisterComponent implements OnInit  {
         this.router = router;
         this.accountRoutes = AccountRoutes;
     }
+
     ngOnInit() {
 
     }
+
     register(): void {
         var registrationResult: OperationResult = new OperationResult(false, '');
         this.membershipService.register(this.newUser)
