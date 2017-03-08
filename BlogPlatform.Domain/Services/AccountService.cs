@@ -110,7 +110,7 @@ namespace BlogPlatform.Domain.Services
 
         public bool CheckIfUserExists(string emailAddress)
         {
-            return context.Accounts.Any(x => x.EmailAddress == emailAddress);
+            return context.Accounts.Any(x => string.Equals(x.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

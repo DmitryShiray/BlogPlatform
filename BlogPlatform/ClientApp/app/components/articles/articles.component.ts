@@ -27,7 +27,6 @@ export class ArticlesComponent implements OnInit {
     getArticles(): void {
         this.articlesService.get(1)
             .subscribe(res => {
-                this.notificationService.printSuccessMessage('Success');
                 var data: any = res.json();
                 this.articles = data.Items;
             },

@@ -1,6 +1,6 @@
 ﻿export class Account {
-    Password: string;
     EmailAddress: string;
+    Password: string;
     RememberMe: boolean;
 
     constructor(emailAddress: string, password: string) {

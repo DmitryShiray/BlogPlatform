@@ -19,6 +19,8 @@ using BlogPlatform.Domain.Services.Abstract;
 using AutoMapper;
 using System.Reflection;
 using BlogPlatform.Mappings;
+using AspNetCoreAngular2Seed.Infrastructure.Middleware;
+using BlogPlatform.Infrastructure.Cryptography;
 
 namespace BlogPlatform
 {
@@ -61,7 +63,8 @@ namespace BlogPlatform
             services.AddScoped<IArticleManagingService, ArticleManagingService>();
             services.AddScoped<ICommentsService, CommentsService>();
             services.AddScoped<IArticleRatingService, ArticleRatingService>();
-            
+            services.AddScoped<PasswordHasher, PasswordHasher>();
+
             services.AddAuthentication();
 
             // Polices
@@ -76,15 +79,7 @@ namespace BlogPlatform
             });
 
             // Add framework services.
-            services.AddMvc().AddJsonOptions(opt =>
-            {
-                var resolver = opt.SerializerSettings.ContractResolver;
-                if (resolver != null)
-                {
-                    var res = resolver as DefaultContractResolver;
-                    res.NamingStrategy = null;
-                }
-            });
+            services.AddMvc();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
@@ -125,8 +120,10 @@ namespace BlogPlatform
                 }
             });
 
+            app.UseMiddleware<Angular2Middleware>();
+
             app.UseStaticFiles();
-            
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,

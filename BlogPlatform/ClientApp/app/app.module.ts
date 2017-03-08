@@ -12,7 +12,6 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ArticlesComponent } from './components/articles/articles.component';
-//import { CommentsComponent } from './components/comments.component';
 import { routing } from './routes';
 
 import { DataService } from './core/services/dataService';

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     }
 
     login(): void {
-
+        this.notificationService.printSuccessMessage('Login started');
         var authenticationResult: OperationResult = new OperationResult(false, '');
 
         this.membershipService.login(this.account)
@@ -41,14 +41,13 @@ export class LoginComponent implements OnInit {
                 authenticationResult.Succeeded = res["succeeded"];
                 authenticationResult.Message = res["message"];
             },
-            error => console.error('Error: ' + error),
+            error => this.notificationService.printErrorMessage('Error: ' + error),
             () => {
                 if (authenticationResult.Succeeded) {
-                    this.notificationService.printErrorMessage('Welcome back ' + this.account.EmailAddress + '!');
-                    this.router.navigate([this.accountRoutes.register.path]);
+                    this.notificationService.printSuccessMessage('Welcome back ' + this.account.EmailAddress + '!');
+                    this.router.navigateByUrl('/');
                 }
                 else {
-                    console.log(authenticationResult.Message);
                     this.notificationService.printErrorMessage(authenticationResult.Message);
                 }
             });
