@@ -6,6 +6,9 @@ export class NotificationService {
 
     constructor() {
         this.notifier = require('alertify.js');
+
+        this.notifier.delay(3000);
+        this.notifier.logPosition("bottom right");
     }
 
     printSuccessMessage(message: string) {
