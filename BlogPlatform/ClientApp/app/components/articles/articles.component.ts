@@ -9,14 +9,14 @@ import { NotificationService } from '../../core/services/notificationService';
     template: require('./articles.component.html'),
     providers: [UtilityService, DataService, NotificationService]
 })
+
 export class ArticlesComponent implements OnInit {
     private articlesReadUrl: string = 'api/articles/';
     private articles: Array<Article>;
 
     constructor(public articlesService: DataService,
-        public utilityService: UtilityService,
-        public notificationService: NotificationService) {
-        
+        public notificationService: NotificationService,
+        public utilityService: UtilityService) {
     }
 
     ngOnInit() {
@@ -25,17 +25,15 @@ export class ArticlesComponent implements OnInit {
     }
 
     getArticles(): void {
-        this.articlesService.get(1)
-            .subscribe(res => {
-                var data: any = res.json();
-                this.articles = data.Items;
-            },
-            error => {
-                if (error.status == 401 || error.status == 404) {
-                    this.notificationService.printErrorMessage('Authentication required');
-                    this.utilityService.navigateToSignIn();
-                }
-            });
+        //this.articlesService.get(1)
+        //    .subscribe(res => {
+        //        var data: any = res.json();
+        //        this.articles = data.Items;
+        //    },
+        //    error => {
+        //        this.notificationService.printErrorMessage('Error ' + error);
+        //        this.utilityService.navigateToSignIn();
+        //    });
     }
 
     search(articleId): void {

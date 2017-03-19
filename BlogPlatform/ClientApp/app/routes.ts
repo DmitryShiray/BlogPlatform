@@ -4,10 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-//import { ProfileComponent } from './components/photos.component';
 import { ArticlesComponent } from './components/articles/articles.component';
-//import { ArticleCommentsPhotosComponent } from './components/album-photos.component';
-import { AccountRoutes, ACCOUNT_ROUTES } from './components/routes';
+import { ApplicationRoutes, APPLICATION_ROUTES } from './components/routes';
 
 
 const appRoutes: Routes = [

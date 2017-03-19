@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AccountRoutes } from '../routes';
+import { ApplicationRoutes } from '../routes';
 import { Registration } from '../../core/domain/registration';
 import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
@@ -15,8 +15,7 @@ import { NotificationService } from '../../core/services/notificationService';
 })
 
 export class RegisterComponent implements OnInit  {
-
-    private accountRoutes = AccountRoutes;
+    private applicationRoutes = ApplicationRoutes;
     private router: Router;
     private newUser: Registration;
 
@@ -25,7 +24,6 @@ export class RegisterComponent implements OnInit  {
                 router: Router) {
         this.newUser = new Registration('', '', '', '', '', '');
         this.router = router;
-        this.accountRoutes = AccountRoutes;
     }
 
     ngOnInit() {
@@ -45,7 +43,7 @@ export class RegisterComponent implements OnInit  {
             () => {
                 if (registrationResult.Succeeded) {
                     this.notificationService.printSuccessMessage('Dear ' + this.newUser.LastName + ', please login with your credentials');
-                    this.router.navigate([this.accountRoutes.login.path]);
+                    this.router.navigate([this.applicationRoutes.login.path]);
                 }
                 else {
                     this.notificationService.printErrorMessage(registrationResult.Message);

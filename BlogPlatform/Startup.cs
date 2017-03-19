@@ -12,15 +12,12 @@ using NLog.Web;
 using System.IO;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using BlogPlatform.Infrastructure.Attributes;
-using Newtonsoft.Json.Serialization;
 using BlogPlatform.Domain.Services;
 using BlogPlatform.Domain.Services.Abstract;
-using AutoMapper;
-using System.Reflection;
 using BlogPlatform.Mappings;
 using AspNetCoreAngular2Seed.Infrastructure.Middleware;
 using BlogPlatform.Infrastructure.Cryptography;
+using BlogPlatform.Infrastructure.Constants;
 
 namespace BlogPlatform
 {
@@ -71,9 +68,9 @@ namespace BlogPlatform
             services.AddAuthorization(options =>
             {
                 // inline policies
-                options.AddPolicy("OwnerOnly", policy =>
+                options.AddPolicy(Claims.ClaimsPolicyName, policy =>
                 {
-                    policy.RequireClaim(ClaimTypes.Role, "Owner");
+                    policy.RequireClaim(ClaimTypes.Role, Claims.ClaimsPolicyValue);
                 });
 
             });

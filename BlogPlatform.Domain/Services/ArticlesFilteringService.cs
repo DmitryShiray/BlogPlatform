@@ -2,6 +2,8 @@
 using System.Linq;
 using BlogPlatform.Domain.Entities;
 using BlogPlatform.Domain.Services.Abstract;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogPlatform.Domain.Services
 {
@@ -14,14 +16,19 @@ namespace BlogPlatform.Domain.Services
             this.context = context;
         }
 
-        public List<Article> GetAllArticles()
+        public async Task<List<Article>> GetAllArticles()
         {
-            return context.Articles.ToList();
+            return await context.Articles.OrderBy(a => a.Id).ToListAsync();
         }
 
-        public List<Article> GetArticles(string searchText)
+        public async Task<List<Article>> GetArticles(string searchText)
         {
-            return context.Articles.Where(article => article.Title.Contains(searchText)).ToList();
+            return await context.Articles.Where(article => article.Title.Contains(searchText)).OrderBy(a => a.Id).ToListAsync();
+        }
+
+        public async Task<Article> GetArticle(int articleId)
+        {
+            return await context.Articles.Where(article => article.Id == articleId).FirstOrDefaultAsync();
         }
     }
 }

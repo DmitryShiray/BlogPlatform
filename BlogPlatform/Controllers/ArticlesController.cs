@@ -10,40 +10,58 @@ using BlogPlatform.Domain.Entities;
 using BlogPlatform.ViewModels;
 using BlogPlatform.Infrastructure.Result;
 using AutoMapper;
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using BlogPlatform.Infrastructure.Constants;
 
 namespace PhotoGallery.Controllers
 {
     [Route("api/[controller]")]
-    public class AlbumsController : Controller
+    public class ArticlesController : Controller
     {
         private readonly IAuthorizationService authorizationService;
         private IArticlesFilteringService articlesFilteringService;
 
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AlbumsController(IAuthorizationService authorizationService,
-                                IArticlesFilteringService articlesFilteringService)
+        public ArticlesController(IAuthorizationService authorizationService,
+                                  IArticlesFilteringService articlesFilteringService)
         {
             this.authorizationService = authorizationService;
             this.articlesFilteringService = articlesFilteringService;
         }
-
-        [HttpGet("getArticles")]
-        public async Task<IActionResult> GetArticles()
+        
+        //[Authorize(Policy = Constants.ClaimsPolicyValue)]
+        //[HttpGet("{page:int=0}/{pageSize=12}")]
+        public async Task<IActionResult> GetArticles(int page, int pageSize)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
 
             try
             {
-                if (await authorizationService.AuthorizeAsync(User, "AdminOnly"))
+                List<Article> articles = await articlesFilteringService.GetAllArticles();
+
+                IEnumerable<ArticleViewModel> articlesVM = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
+
+                return new ObjectResult(articlesVM);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+
+            return new ObjectResult(pagedSet);
+        }
+        
+        //[HttpGet("{articleId:int}/{page:int=0}/{pageSize=12}")]
+        public async Task<IActionResult> GetArticle(int articleId, int? page, int? pageSize)
+        {
+            List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
+
+            try
+            {
+                if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsPolicyValue))
                 {
-                    List<Article> articles = articlesFilteringService.GetAllArticles().OrderBy(a => a.Id).ToList();
-
-                    IEnumerable<ArticleViewModel> articlesVM = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
-
-                    return new ObjectResult(articlesVM);
+                    Article article = await articlesFilteringService.GetArticle(articleId);
+                    return new ObjectResult(article);
                 }
                 else
                 {

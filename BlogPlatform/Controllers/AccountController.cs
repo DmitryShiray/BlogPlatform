@@ -11,6 +11,7 @@ using BlogPlatform.Infrastructure.Attributes;
 using NLog;
 using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Infrastructure;
+using BlogPlatform.Infrastructure.Constants;
 
 namespace BlogPlatform.Controllers
 {
@@ -18,19 +19,21 @@ namespace BlogPlatform.Controllers
     public class AccountController : Controller
     {
         private IAccountService accountService;
+        private IAuthorizationService authorizationService;
 
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAuthorizationService authorizationService, IAccountService accountService)
         {
             this.accountService = accountService;
+            this.authorizationService = authorizationService;
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginViewModel user)
         {
-            GenericResult authenticationResult = null;
+            BaseResult authenticationResult = null;
             try
             {
                 var loginResult = accountService.LogIn(user.EmailAddress, user.Password);
@@ -39,33 +42,27 @@ namespace BlogPlatform.Controllers
                     var claims = new List<Claim>()
                     {
                         {
-                            new Claim(ClaimTypes.Role, "EmailAddress", ClaimValueTypes.String, user.EmailAddress)
+                            new Claim(ClaimTypes.Role, Claims.ClaimsPolicyValue, ClaimValueTypes.String, user.EmailAddress)
                         }
                     };
 
                     await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)));
+                       new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
+                       new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties { IsPersistent = user.RememberMe });
 
-
-                    authenticationResult = new GenericResult()
+                    authenticationResult = new BaseResult()
                     {
                         Succeeded = true,
                         Message = "Authenticated"
                     };
-                }
-
-                if (loginResult == AuthenticationStatus.Success)
-                {
-
                 }
             }
             catch (Exception exception)
             {
                 Logger.Error(exception, "Failed to authenticate");
 
-                authenticationResult = new GenericResult()
+                authenticationResult = new BaseResult()
                 {
-
                     Succeeded = false,
                     Message = "Failed to authenticate " + exception.Message
                 };
@@ -74,7 +71,15 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(authenticationResult);
         }
-        
+
+        [HttpPost("isUserAuthenticated")]
+        [AllowAnonymous]
+        public IActionResult IsUserAuthenticated()
+        {
+            var authenticationResult = HttpContext.User.HasClaim(c => c.Value == Claims.ClaimsPolicyValue);
+            return new ObjectResult(new { IsAuthenticated = authenticationResult });
+        }
+
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -101,7 +106,7 @@ namespace BlogPlatform.Controllers
         public IActionResult Register([FromBody] RegistrationViewModel user)
         {
             var result = new ObjectResult(false);
-            GenericResult registrationResult = null;
+            BaseResult registrationResult = null;
 
             try
             {
@@ -111,7 +116,7 @@ namespace BlogPlatform.Controllers
 
                     if (account != null)
                     {
-                        registrationResult = new GenericResult()
+                        registrationResult = new BaseResult()
                         {
                             Succeeded = true,
                             Message = "Registration succeeded"
@@ -120,7 +125,7 @@ namespace BlogPlatform.Controllers
                 }
                 else
                 {
-                    registrationResult = new GenericResult()
+                    registrationResult = new BaseResult()
                     {
                         Succeeded = false,
                         Message = "Invalid fields"
@@ -131,7 +136,7 @@ namespace BlogPlatform.Controllers
             {
                 Logger.Error(exception, "Failed to authenticate");
 
-                registrationResult = new GenericResult()
+                registrationResult = new BaseResult()
                 {
                     Succeeded = false,
                     Message = "Failed to register " + exception.Message

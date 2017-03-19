@@ -29,6 +29,13 @@ export class DataService {
             .map(response => (<Response>response));
     }
 
+    getItem(identifier: number) {
+        var uri = this.baseUri + identifier.toString();
+
+        return this.http.get(uri)
+            .map(response => (<Response>response));
+    }
+
     post(data?: any, mapJson: boolean = true) {
         if (mapJson)
             return this.http.post(this.baseUri, data, options)

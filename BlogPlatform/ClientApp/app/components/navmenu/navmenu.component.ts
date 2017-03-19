@@ -1,26 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import 'rxjs/add/operator/map';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { enableProdMode } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/map';
 
 enableProdMode();
-import { MembershipService } from '../../core/services/membershipService';
 import { Account } from '../../core/domain/account';
+import { OperationResult } from '../../core/domain/operationResult';
+import { DataService } from '../../core/services/dataService';
+import { MembershipService } from '../../core/services/membershipService';
+import { NotificationService } from '../../core/services/notificationService';
 
 @Component({
     selector: 'nav-menu',
     template: require('./navmenu.component.html'),
-    styles: [require('./navmenu.component.css')]
+    styles: [require('./navmenu.component.css')],
+    providers: [DataService, NotificationService]
 })
 
-export class NavMenuComponent implements OnInit {
-    constructor(public membershipService: MembershipService,
-        public location: Location) { }
+export class NavMenuComponent implements OnInit, OnDestroy {
+    private isUserAuthenticated: boolean;
+    private subscription: Subscription;
 
-    ngOnInit() { }
+    constructor(public membershipService: MembershipService,
+        public notificationService: NotificationService) {
+        this.subscription = this.membershipService.isAuthenticated$
+            .subscribe(value => {
+                this.isUserAuthenticated = value;
+            });
+    }
+
+    ngOnInit() {
+        this.checkAuthentication();
+    }
+
+    checkAuthentication(): void {
+        let userAuthenticationResult: boolean;
+
+        this.membershipService.isUserAuthenticated()
+            .subscribe(res => {
+                userAuthenticationResult = res['isAuthenticated'];
+            },
+            error => {
+                this.notificationService.printErrorMessage('Error: ' + error);
+            },
+            () => {
+                this.isUserAuthenticated = userAuthenticationResult;
+            });
+    }
 
     isUserLoggedIn(): boolean {
-        return this.membershipService.isUserAuthenticated();
+        return this.isUserAuthenticated;
     }
 
     getEmailAddress(): string {
@@ -36,9 +65,18 @@ export class NavMenuComponent implements OnInit {
     logout(): void {
         this.membershipService.logout()
             .subscribe(res => {
-                console.log('logout');
+                this.notificationService.printSuccessMessage('Logout');
             },
-            error => console.error('Error: ' + error),
-            () => { });
+            error => {
+                this.notificationService.printErrorMessage('Error: ' + error)
+            },
+            () => {
+                this.isUserAuthenticated = false;
+            });
+    }
+
+    ngOnDestroy() {
+        // prevent memory leak when component is destroyed
+        this.subscription.unsubscribe();
     }
 }

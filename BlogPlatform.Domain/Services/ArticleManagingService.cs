@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using BlogPlatform.Domain.Services.Abstract;
+using BlogPlatform.Domain.Entities;
 
 namespace BlogPlatform.Domain.Services
 {
@@ -12,9 +13,9 @@ namespace BlogPlatform.Domain.Services
             this.context = context;
         }
 
-        public void CreateArticle(string title, string content)
+        public void CreateArticle(int accountId, string title, string content)
         {
-            var article = new Entities.Article() { Title = title, Content = content };
+            var article = new Entities.Article() { Title = title, Content = content, AccountId = accountId };
 
             context.Articles.Add(article);
             context.SaveChanges();

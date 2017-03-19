@@ -1,14 +1,17 @@
 ﻿import { Injectable } from '@angular/core';
+import { isBrowser } from 'angular2-universal';
 
 @Injectable()
 export class NotificationService {
     private notifier: any;
 
     constructor() {
-        this.notifier = require('alertify.js');
+        if (isBrowser) {
+            this.notifier = require('alertify.js');
 
-        this.notifier.delay(3000);
-        this.notifier.logPosition("bottom right");
+            this.notifier.delay(3000);
+            this.notifier.logPosition("bottom right");
+        }
     }
 
     printSuccessMessage(message: string) {
@@ -24,6 +27,7 @@ export class NotificationService {
             if (e) {
                 okCallback();
             } else {
+
             }
         });
     }

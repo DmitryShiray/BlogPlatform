@@ -1,8 +1,7 @@
 ﻿namespace BlogPlatform.Infrastructure.Result
 {
-    public class GenericResult
+    public class GenericResult<T> : BaseResult
     {
-        public bool Succeeded { get; set; }
-        public string Message { get; set; }
+        public T Value { get; set; }
     }
 }
