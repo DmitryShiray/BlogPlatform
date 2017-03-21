@@ -1,17 +1,20 @@
 ﻿import { Http, Response, Request } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { isBrowser } from 'angular2-universal';
 import { DataService } from './dataService';
 import { Registration } from '../domain/registration';
 import { Account } from '../domain/account';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
+import { Constants } from '../../core/constants';
 
 @Injectable()
 export class MembershipService {
     private accountRegisterAPI: string = '/api/account/register/';
     private accountLoginAPI: string = '/api/account/login/';
     private accountAuthenticationAPI: string = '/api/account/isUserAuthenticated/';
+    private accountGetLoggedInUserAPI: string = '/api/account/getLoggedInAccount/';
     private accountLogoutAPI: string = '/api/account/logout/';
 
     private isAuthenticated = new BehaviorSubject<boolean>(false);
@@ -43,9 +46,11 @@ export class MembershipService {
         return this.accountService.post(null);
     }
 
-    getLoggedInUser(): Account {
-        var account = new Account('dima@dima.com', '123456');
+    getLoggedInAccount() {
+        if (isBrowser) {
+            return localStorage.getItem(Constants.EmailAddress);
+        }
 
-        return account;
+        return null;
     }
 }

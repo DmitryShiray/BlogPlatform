@@ -1,11 +1,13 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { isBrowser } from 'angular2-universal';
 import { ApplicationRoutes } from '../routes';
 import { Account } from '../../core/domain/account';
 import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'login',
@@ -43,6 +45,10 @@ export class LoginComponent implements OnInit {
                 this.membershipService.setIsAuthenticated(authenticationResult.Succeeded);
 
                 if (authenticationResult.Succeeded) {
+                    if (isBrowser) {
+                        localStorage.setItem(Constants.EmailAddress, this.account.EmailAddress);
+                    }
+
                     this.notificationService.printSuccessMessage('Welcome back ' + this.account.EmailAddress + '!');
                     this.router.navigate([this.applicationRoutes.articles.path]);
                 }

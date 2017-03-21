@@ -20,6 +20,7 @@ import { NotificationService } from '../../core/services/notificationService';
 export class NavMenuComponent implements OnInit, OnDestroy {
     private isUserAuthenticated: boolean;
     private subscription: Subscription;
+    private emaiAddress: string;
 
     constructor(public membershipService: MembershipService,
         public notificationService: NotificationService) {
@@ -54,11 +55,10 @@ export class NavMenuComponent implements OnInit, OnDestroy {
 
     getEmailAddress(): string {
         if (this.isUserLoggedIn()) {
-            var account = this.membershipService.getLoggedInUser();
-            return account.EmailAddress;
+            return this.membershipService.getLoggedInAccount();
         }
         else {
-            return '';
+            return null;
         }
     }
 
