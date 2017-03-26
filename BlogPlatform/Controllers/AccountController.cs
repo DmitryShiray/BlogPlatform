@@ -42,7 +42,10 @@ namespace BlogPlatform.Controllers
                     var claims = new List<Claim>()
                     {
                         {
-                            new Claim(ClaimTypes.Role, Claims.ClaimsPolicyValue, ClaimValueTypes.String, user.EmailAddress)
+                            new Claim(ClaimTypes.NameIdentifier, user.EmailAddress, ClaimValueTypes.String, user.EmailAddress)
+                        },
+                        {
+                            new Claim(ClaimTypes.Role, Claims.ClaimsAutorizedRole, ClaimValueTypes.String, user.EmailAddress)
                         }
                     };
 
@@ -81,6 +84,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("logout")]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             try
@@ -95,7 +99,6 @@ namespace BlogPlatform.Controllers
 
                 return BadRequest();
             }
-
         }
 
         [Route("register")]
@@ -112,7 +115,7 @@ namespace BlogPlatform.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var account = accountService.CreateAccount(user.FirstName, user.LastName, user.EmailAddress, user.NickName, user.Password);
+                    var account = accountService.CreateAccount(user.FirstName, user.LastName, user.EmailAddress, user.Nickname, user.Password);
 
                     if (account != null)
                     {

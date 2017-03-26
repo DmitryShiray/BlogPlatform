@@ -9,9 +9,15 @@ namespace BlogPlatform.Mappings
         public ViewModelMappingsProfile()
         {
             CreateMap<Article, ArticleViewModel>()
-               .ForMember(vm => vm.TotalComments, map => map.MapFrom(p => "/images/" + p.Comments.Count));
-
+               .ForMember(vm => vm.TotalComments, map => map.MapFrom(p => p.Comments.Count));
             CreateMap<ArticleViewModel, Article>();
+
+
+            CreateMap<Account, ProfileViewModel>()
+               .ForMember(vm => vm.RegistrationDate, map => map.MapFrom(p => p.DateCreated));
+
+            CreateMap<ProfileViewModel, Account>()
+               .ForMember(vm => vm.DateCreated, map => map.MapFrom(p => p.RegistrationDate));
         }
     }
 }

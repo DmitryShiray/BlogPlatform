@@ -29,8 +29,8 @@ export class DataService {
             .map(response => (<Response>response));
     }
 
-    getItem(identifier: number) {
-        var uri = this.baseUri + identifier.toString();
+    getItem(identifier?: any) {
+        var uri = this.baseUri + (identifier != null ? identifier.toString() : '/');
 
         return this.http.get(uri)
             .map(response => (<Response>response));

@@ -71,6 +71,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
                 this.notificationService.printErrorMessage('Error: ' + error)
             },
             () => {
+                this.membershipService.setIsAuthenticated(false);
                 this.isUserAuthenticated = false;
             });
     }

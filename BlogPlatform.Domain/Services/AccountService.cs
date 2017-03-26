@@ -7,6 +7,7 @@ using BlogPlatform.Infrastructure.Cryptography;
 using BlogPlatform.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using System.Threading.Tasks;
 
 namespace BlogPlatform.Domain.Services
 {
@@ -22,21 +23,21 @@ namespace BlogPlatform.Domain.Services
             this.passwordHasher = passwordHasher;
         }
 
-        public void DeleteAccount(int accountId)
+        public void DeleteAccount(string emailAddress)
         {
-            var account = context.Accounts.FirstOrDefault(a => a.Id == accountId);
+            var account = context.Accounts.FirstOrDefault(a => string.Equals(a.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
             context.Accounts.Remove(account);
             context.SaveChanges();
         }
 
-        public Account GetAccountProfile(int accountId)
+        public async Task<Account> GetAccountProfileAsync(string emailAddress)
         {
-            return context.Accounts.FirstOrDefault(a => a.Id == accountId);
+            return await context.Accounts.FirstOrDefaultAsync(a => string.Equals(a.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
         }
 
         public AuthenticationStatus LogIn(string emailAddress, string password)
         {
-            var account = context.Accounts.FirstOrDefault(a => a.EmailAddress == emailAddress);
+            var account = context.Accounts.FirstOrDefault(a => string.Equals(a.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
             if (account == null)
             {
                 return AuthenticationStatus.NotFound;
@@ -63,9 +64,9 @@ namespace BlogPlatform.Domain.Services
             return AuthenticationStatus.Success;
         }
 
-        public Account CreateAccount(string firstName, string lastName, string emailAddress, string NickName, string password)
+        public Account CreateAccount(string firstName, string lastName, string emailAddress, string nickname, string password)
         {
-            if (CheckIfUserExists(emailAddress))
+            if (CheckIfAccountExists(emailAddress))
             {
                 Logger.Error("User already exists");
                 throw new ServiceException("User already exists");
@@ -73,13 +74,16 @@ namespace BlogPlatform.Domain.Services
 
             try
             {
+                var salt = passwordHasher.GetRandomSalt();
+
                 var account = new Account()
                 {
                     FirstName = firstName,
                     LastName = lastName,
                     EmailAddress = emailAddress,
-                    NickName = NickName,
-                    Password = passwordHasher.GetPassword(password),
+                    Nickname = nickname,
+                    Salt = salt,
+                    Password = passwordHasher.GetPassword(password, salt),
                     DateCreated = DateTime.Now
                 };
 
@@ -95,22 +99,44 @@ namespace BlogPlatform.Domain.Services
             }
         }
 
-        public void UpdateAccount(string firstName, string lastName, string emailAddress, string NickName, string password)
+        public void UpdateAccount(Account account)
         {
-            var account = context.Accounts.FirstOrDefault(a => a.EmailAddress == emailAddress);
+            var accountFromDb = context.Accounts.FirstOrDefault(a => string.Equals(a.EmailAddress, account.EmailAddress, StringComparison.OrdinalIgnoreCase));
 
-            account.FirstName = firstName;
-            account.LastName = lastName;
-            account.EmailAddress = emailAddress;
-            account.NickName = NickName;
-            account.Password = passwordHasher.GetPassword(password);
+            accountFromDb.FirstName = account.FirstName;
+            accountFromDb.LastName = account.LastName;
+            accountFromDb.EmailAddress = account.EmailAddress;
+            accountFromDb.Nickname = account.Nickname;
 
             context.SaveChanges();
         }
 
-        public bool CheckIfUserExists(string emailAddress)
+        public void ChangePassword(string emailAddress, string oldPassword, string newPassword, string confirmation)
         {
-            return context.Accounts.Any(x => string.Equals(x.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
+            var account = context.Accounts.FirstOrDefault(a => string.Equals(a.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
+
+            var oldPasswordMatch = account.Password.SequenceEqual(passwordHasher.GetPassword(oldPassword, account.Salt));
+            if (!oldPasswordMatch)
+            {
+                Logger.Error("Old password doesn't match the new one.");
+                throw new ServiceException("Old password doesn't match the new one.");
+            }
+
+            var newPasswordMatch = string.Equals(newPassword, confirmation, StringComparison.OrdinalIgnoreCase);
+            if (!newPasswordMatch)
+            {
+                Logger.Error("New password mismatches the confirmation.");
+                throw new ServiceException("New password mismatches the confirmation.");
+            }
+
+            account.Password = passwordHasher.GetPassword(newPassword, account.Salt);
+
+            context.SaveChanges();
+        }
+
+        public bool CheckIfAccountExists(string emailAddress)
+        {
+            return context.Accounts.Any(a => string.Equals(a.EmailAddress, emailAddress, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

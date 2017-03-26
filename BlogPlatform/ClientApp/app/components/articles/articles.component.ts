@@ -41,6 +41,6 @@ export class ArticlesComponent implements OnInit {
     };
 
     convertDateTime(date: Date) {
-        return this.utilityService.convertDateTime(date);
+        return this.utilityService.convertDateTimeToString(date);
     }
 }

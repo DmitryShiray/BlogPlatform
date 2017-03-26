@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
     }
     
     login(): void {
-        this.notificationService.printSuccessMessage('Login started');
         var authenticationResult: OperationResult = new OperationResult(false, '');
 
         this.membershipService.login(this.account)
@@ -41,7 +40,6 @@ export class LoginComponent implements OnInit {
             },
             error => this.notificationService.printErrorMessage('Error: ' + error),
             () => {
-                this.notificationService.printSuccessMessage('Setting is authenticated to ' + authenticationResult.Succeeded);
                 this.membershipService.setIsAuthenticated(authenticationResult.Succeeded);
 
                 if (authenticationResult.Succeeded) {

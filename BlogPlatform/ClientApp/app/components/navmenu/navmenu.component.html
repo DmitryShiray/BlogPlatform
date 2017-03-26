@@ -23,14 +23,14 @@
                         <span class="glyphicon glyphicon-duplicate"></span>&nbsp;Articles
                     </a>
                 </li>
+                <li *ngIf="isUserLoggedIn()" [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/viewProfile']">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;{{getEmailAddress()}}
+                    </a>
+                </li>
                 <li *ngIf="!isUserLoggedIn()">
                     <a [routerLink]="['/login']">
                         <span class="glyphicon glyphicon-log-in"></span>&nbsp;Login
-                    </a>
-                </li>
-                <li *ngIf="isUserLoggedIn()">
-                    <a [routerLink]="['/articles']">
-                        <span class="glyphicon glyphicon-user"></span>&nbsp;{{getEmailAddress()}}
                     </a>
                 </li>
                 <li *ngIf="isUserLoggedIn()">

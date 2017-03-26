@@ -10,9 +10,12 @@ export class UtilityService {
         this._router = router;
     }
 
-    convertDateTime(date: Date) {
-        var _formattedDate = new Date(date.toString());
-        return _formattedDate.toDateString();
+    convertFromDateTimeString(date: string) {
+        return this.convertDateTimeToString(new Date(date));
+    }
+
+    convertDateTimeToString(date: Date) {
+        return date.toDateString();
     }
 
     navigate(path: string) {

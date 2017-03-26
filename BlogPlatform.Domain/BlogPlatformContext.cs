@@ -23,7 +23,7 @@ namespace BlogPlatform.Domain
             }
 
             // Account
-            modelBuilder.Entity<Account>().Property(p => p.NickName).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<Account>().Property(p => p.Nickname).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<Account>().Property(p => p.FirstName).IsRequired().HasMaxLength(150);
             modelBuilder.Entity<Account>().Property(p => p.LastName).IsRequired().HasMaxLength(150);
             modelBuilder.Entity<Account>().Property(p => p.EmailAddress).IsRequired().HasMaxLength(150);

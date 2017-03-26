@@ -31,7 +31,7 @@ namespace BlogPlatform.Domain
                     EmailAddress = "dshiray@gmail.com",
                     FirstName = "Dmitry",
                     LastName = "Shiray",
-                    NickName = "dimitry",
+                    Nickname = "dimitry",
                     Salt = salt,
                     Password = passwordHasher.GetPassword("123456", salt),
                     DateCreated = DateTime.Now

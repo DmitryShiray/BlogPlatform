@@ -1,4 +1,4 @@
-﻿export class Comment {
+﻿export class Rating {
     Id: number;
     Value: number;
     DateAdded: Date;

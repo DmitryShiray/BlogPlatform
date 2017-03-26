@@ -12,6 +12,8 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ArticlesComponent } from './components/articles/articles.component';
+import { EditProfileComponent } from './components/profile/editProfile.component';
+import { ViewProfileComponent } from './components/profile/viewProfile.component';
 import { routing } from './routes';
 
 import { DataService } from './core/services/dataService';
@@ -42,6 +44,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         LoginComponent,
         RegisterComponent,
         ArticlesComponent,
+        EditProfileComponent,
+        ViewProfileComponent
     ],
     providers: [DataService, MembershipService, UtilityService, NotificationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },

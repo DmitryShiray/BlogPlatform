@@ -1,0 +1,64 @@
+﻿<div class="container-fluid">
+    <div class="row col-md-offset-3">
+        <div class="col-xs-6 col-md-5">
+            <form class="form center-block" #f="ngForm" (ngSubmit)="f.form.valid && updateProfile()" novalidate>
+                <legend>Profile Info</legend>
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" [(ngModel)]="profile.firstName" #firstName="ngModel" required />
+                    <div *ngIf="f.submitted && !firstName.valid" class="help-block">First Name is required</div>
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" [(ngModel)]="profile.lastName" #lastName="ngModel" required />
+                    <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !nickName.valid }">
+                    <label for="username">Nickname</label>
+                    <input type="text" class="form-control" name="nickName" [(ngModel)]="profile.nickname" #username="ngModel" required />
+                    <div *ngIf="f.submitted && !nickName.valid" class="help-block">Nickname is required</div>
+                </div>
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !emailAddress.valid }">
+                    <label for="username">Email Address</label>
+                    <input type="text" class="form-control" name="emailAddress" [(ngModel)]="profile.emailAddress" #username="ngModel" readonly />
+                    <div *ngIf="f.submitted && !emailAddress.valid" class="help-block">EmailAddress is required</div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" (click)="navigateBack()">Back</button>
+
+                    <button class="btn btn-success" (click)="updateProfile()">Update Profile</button>
+                    <button class="btn btn-success" (click)="deleteProfile()">Delete Profile</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-xs-6 col-md-4">
+            <form class="form center-block" #f="ngForm" (ngSubmit)="f.form.valid && changePassword()" novalidate>
+                <legend>Change password</legend>
+
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !oldPassword.valid }">
+                    <label for="password">Old password</label>
+                    <input type="password" class="form-control" name="oldPassword" [(ngModel)]="passwordChange.oldPassword" #oldPassword="ngModel" required />
+                    <div *ngIf="f.submitted && !oldPassword.valid" class="help-block">Old password is required</div>
+                </div>
+
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !newPassword.valid }">
+                    <label for="password">New password</label>
+                    <input type="password" class="form-control" name="newPassword" [(ngModel)]="passwordChange.newPassword" #newPassword="ngModel" required />
+                    <div *ngIf="f.submitted && !newPassword.valid" class="help-block">New password is required</div>
+                </div>
+
+                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !confirmPassword.valid }">
+                    <label for="password">Confirm new password</label>
+                    <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="passwordChange.confirmPassword" #confirmPassword="ngModel" required />
+                    <div *ngIf="f.submitted && !confirmPassword.valid" class="help-block">Confirm new password is required</div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-success" (click)="changePassword()">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit  {
             error => console.error('Error: ' + error),
             () => {
                 if (registrationResult.Succeeded) {
-                    this.notificationService.printSuccessMessage('Dear ' + this.newUser.LastName + ', please login with your credentials');
+                    this.notificationService.printSuccessMessage('Dear ' + this.newUser.lastName + ', please login with your credentials');
                     this.router.navigate([this.applicationRoutes.login.path]);
                 }
                 else {

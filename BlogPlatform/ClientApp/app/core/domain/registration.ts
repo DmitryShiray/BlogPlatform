@@ -1,17 +1,12 @@
-﻿export class Registration {
-    FirstName: string;
-    LastName: string;
-    NickName: string;
+﻿import { BaseProfile } from './baseProfile';
+
+export class Registration extends BaseProfile {
     Password: string;
     ConfirmPassword: string;
-    EmailAddress: string;
 
-    constructor(firstName: string, lastName: string, nickName: string, password: string, confirmPassword: string, emailAddress: string) {
-        this.FirstName = firstName;
-        this.LastName = lastName;
-        this.NickName = nickName;
+    constructor(firstName: string, lastName: string, nickname: string, emailAddress: string, password: string, confirmPassword: string) {
+        super(firstName, lastName, nickname, emailAddress);
         this.Password = password;
         this.ConfirmPassword = confirmPassword;
-        this.EmailAddress = emailAddress;
     }
 }

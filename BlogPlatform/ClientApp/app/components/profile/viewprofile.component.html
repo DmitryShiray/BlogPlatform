@@ -1,0 +1,60 @@
+﻿<div class="container-fluid">
+    <div class="row col-md-offset-4">
+
+        <p class="profile-info-header">Profile Info</p>
+
+        <div class="col-xs-3 col-md-3">
+            <div class="form-group">
+                <span>First Name</span>
+            </div>
+
+            <div class="form-group">
+                <span>Last Name</span>
+            </div>
+
+            <div class="form-group">
+                <span>Nickname</span>
+            </div>
+
+            <div class="form-group">
+                <span>Email Address</span>
+            </div>
+
+            <div class="form-group">
+                <span>Date Created</span>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-md-3">
+            <div class="form-group">
+                <span>{{profile.firstName}}</span>
+            </div>
+
+            <div class="form-group">
+                <span>{{profile.lastName}}</span>
+            </div>
+
+            <div class="form-group">
+                <span>{{profile.nickname}}</span>
+            </div>
+
+            <div class="form-group">
+                <span>{{profile.emailAddress}}</span>
+            </div>
+
+            <div class="form-group">
+                <span>{{profile.registrationDate | date: 'MM/dd/yyyy'}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-offset-5">
+        <div class="col-xs-3 col-md-3">
+            <div class="form-group">
+                <button class="btn btn-primary" (click)="navigateBack()">Back</button>
+                <button class="btn btn-success" *ngIf="profile.isCurrentUserProfile" (click)="navigateToEditProfile()">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+
+</div>
