@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using Microsoft.AspNetCore.Authorization;
-using BlogPlatform.Infrastructure.Attributes;
 using NLog;
 using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Infrastructure;
@@ -55,8 +54,15 @@ namespace BlogPlatform.Controllers
 
                     authenticationResult = new BaseResult()
                     {
-                        Succeeded = true,
-                        Message = "Authenticated"
+                        Succeeded = true
+                    };
+                }
+                else
+                {
+                    authenticationResult = new BaseResult()
+                    {
+                        Succeeded = false,
+                        Message = "Wrong email address or password."
                     };
                 }
             }
@@ -144,7 +150,6 @@ namespace BlogPlatform.Controllers
                     Succeeded = false,
                     Message = "Failed to register " + exception.Message
                 };
-
             }
 
             result = new ObjectResult(registrationResult);
