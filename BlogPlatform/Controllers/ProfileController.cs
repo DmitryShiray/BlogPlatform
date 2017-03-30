@@ -115,7 +115,7 @@ namespace BlogPlatform.Controllers
                 if (accountService.CheckIfAccountExists(changePasswordViewModel.EmailAddress))
                 {
                     accountService.ChangePassword(changePasswordViewModel.EmailAddress, changePasswordViewModel.OldPassword,
-                                                  changePasswordViewModel.NewPassword, changePasswordViewModel.ConfirmPassword);
+                                                  changePasswordViewModel.NewPassword, changePasswordViewModel.ConfirmNewPassword);
 
                     updateOperationResult = new BaseResult()
                     {
@@ -138,7 +138,7 @@ namespace BlogPlatform.Controllers
             return new ObjectResult(updateOperationResult);
         }
 
-        [HttpDelete("deleteUserProfile/{emailAddress}")]
+        [HttpDelete("deleteProfile/{emailAddress}")]
         [Authorize]
         public IActionResult DeleteUserProfile(string emailAddress)
         {

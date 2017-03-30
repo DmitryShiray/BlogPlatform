@@ -11,7 +11,7 @@ import { NotificationService } from '../../core/services/notificationService';
 @Component({
     selector: 'register',
     template: require('./register.component.html'),
-    providers: [MembershipService, DataService, NotificationService]
+    providers: [DataService, NotificationService]
 })
 
 export class RegisterComponent implements OnInit  {

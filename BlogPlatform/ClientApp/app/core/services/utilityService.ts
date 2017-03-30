@@ -23,6 +23,6 @@ export class UtilityService {
     }
 
     navigateToSignIn() {
-        this.navigate('/account/login');
+        this.navigate('/login');
     }
 }

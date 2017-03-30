@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li *ngIf="isUserLoggedIn()" [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/viewProfile']">
+                    <a [routerLink]="['/viewProfile/', getEmailAddress()]">
                         <span class="glyphicon glyphicon-user"></span>&nbsp;{{getEmailAddress()}}
                     </a>
                 </li>

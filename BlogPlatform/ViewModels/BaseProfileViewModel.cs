@@ -11,11 +11,12 @@ namespace BlogPlatform.ViewModels
         [RegularExpression(@"^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", ErrorMessage = "E-mail address is not valid")]
         public string EmailAddress { get; set; }
 
+        [Required]
         public string FirstName { get; set; }
 
+        [Required]
         public string LastName { get; set; }
 
-        [Required]
         public string Nickname { get; set; }
     }
 }

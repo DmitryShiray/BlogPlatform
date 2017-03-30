@@ -17,7 +17,7 @@ import { Constants } from '../../core/constants';
 @Component({
     selector: 'editProfile',
     template: require('./editProfile.component.html'),
-    providers: [MembershipService, DataService, UtilityService, NotificationService]
+    providers: [DataService, UtilityService, NotificationService]
 })
 
 export class EditProfileComponent extends ViewProfileComponent implements OnInit {
@@ -88,7 +88,7 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
         this.profileService.set(this.profileDeleteUrl);
         var deletionResult: OperationResult = new OperationResult(false, '');
 
-        this.profileService.post(this.profile.emailAddress)
+        this.profileService.delete(this.profile.emailAddress)
             .subscribe(res => {
                 deletionResult.Succeeded = res["succeeded"];
                 deletionResult.Message = res["message"];
@@ -103,14 +103,13 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
                     if (isBrowser) {
                         localStorage.removeItem(Constants.EmailAddress);
                     }
-                    
+
+                    this.notificationService.printSuccessMessage('Your account has been deleted');
                     this.router.navigate([this.applicationRoutes.home.path]);
                 }
                 else {
                     this.notificationService.printErrorMessage(deletionResult.Message);
                 }
             });
-
-        this.notificationService.printSuccessMessage('Updated profile');
     }
 }

@@ -20,6 +20,7 @@ import { DataService } from './core/services/dataService';
 import { MembershipService } from './core/services/membershipService';
 import { UtilityService } from './core/services/utilityService';
 import { NotificationService } from './core/services/notificationService';
+import { EqualValidator } from './directives/equalValidator.directive';
 
 class AppBaseRequestOptions extends BaseRequestOptions {
     headers: Headers = new Headers();
@@ -45,7 +46,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         RegisterComponent,
         ArticlesComponent,
         EditProfileComponent,
-        ViewProfileComponent
+        ViewProfileComponent,
+        EqualValidator 
     ],
     providers: [DataService, MembershipService, UtilityService, NotificationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },

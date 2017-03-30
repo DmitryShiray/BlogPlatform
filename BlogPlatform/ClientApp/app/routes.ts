@@ -39,7 +39,7 @@ const appRoutes: Routes = [
         component: EditProfileComponent
     },
     {
-        path: 'viewProfile',
+        path: 'viewProfile/:emailAddress',
         component: ViewProfileComponent
     },
     //{

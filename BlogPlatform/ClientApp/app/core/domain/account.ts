@@ -1,11 +1,11 @@
 ﻿export class Account {
-    EmailAddress: string;
-    Password: string;
-    RememberMe: boolean;
+    emailAddress: string;
+    password: string;
+    rememberMe: boolean;
 
     constructor(emailAddress: string, password: string) {
-        this.EmailAddress = emailAddress;
-        this.Password = password;
-        this.RememberMe = false;
+        this.emailAddress = emailAddress;
+        this.password = password;
+        this.rememberMe = false;
     }
 }

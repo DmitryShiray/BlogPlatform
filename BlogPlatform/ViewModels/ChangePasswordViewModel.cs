@@ -22,6 +22,6 @@ namespace BlogPlatform.ViewModels
         [Required]
         [DataType(DataType.Password)]
         [Compare("NewPassword")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmNewPassword { get; set; }
     }
 }

@@ -4,7 +4,7 @@ export class PasswordChange {
     emailAddress: string;
     oldPassword: string;
     newPassword: string;
-    confirmPassword: string;
+    confirmNewPassword: string;
 
     constructor() {
 

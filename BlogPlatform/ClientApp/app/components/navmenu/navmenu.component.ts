@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { enableProdMode } from '@angular/core';
+import { isBrowser } from 'angular2-universal';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
 
@@ -24,6 +25,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
 
     constructor(public membershipService: MembershipService,
         public notificationService: NotificationService) {
+        this.isUserAuthenticated = false;
+
         this.subscription = this.membershipService.isAuthenticated$
             .subscribe(value => {
                 this.isUserAuthenticated = value;

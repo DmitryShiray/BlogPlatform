@@ -44,10 +44,10 @@ export class LoginComponent implements OnInit {
 
                 if (authenticationResult.Succeeded) {
                     if (isBrowser) {
-                        localStorage.setItem(Constants.EmailAddress, this.account.EmailAddress);
+                        localStorage.setItem(Constants.EmailAddress, this.account.emailAddress);
                     }
 
-                    this.notificationService.printSuccessMessage('Welcome back ' + this.account.EmailAddress + '!');
+                    this.notificationService.printSuccessMessage('Welcome back ' + this.account.emailAddress + '!');
                     this.router.navigate([this.applicationRoutes.articles.path]);
                 }
                 else {

@@ -10,7 +10,7 @@ export var ApplicationRoutes = {
     register: { path: '/register', component: RegisterComponent },
     articles: { path: '/articles', component: ArticlesComponent },
     home: { path: '/home', component: HomeComponent },
-    viewProfile: { path: '/viewProfile', component: ViewProfileComponent },
+    viewProfile: { path: '/viewProfile/:emailAddress', component: ViewProfileComponent },
     editProfile: { path: '/editProfile', component: EditProfileComponent }
 }
 
