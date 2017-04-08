@@ -18,17 +18,27 @@ namespace BlogPlatform.Domain.Services
 
         public async Task<List<Article>> GetAllArticles()
         {
-            return await context.Articles.OrderBy(a => a.Id).ToListAsync();
+            return await context.Articles
+                .Include(a => a.Account)
+                .OrderBy(a => a.Id)
+                .ToListAsync();
         }
 
         public async Task<List<Article>> GetArticles(string searchText)
         {
-            return await context.Articles.Where(article => article.Title.Contains(searchText)).OrderBy(a => a.Id).ToListAsync();
+            return await context.Articles
+                .Include(a => a.Account)
+                .Where(article => article.Title.Contains(searchText))
+                .OrderBy(a => a.Id)
+                .ToListAsync();
         }
 
         public async Task<Article> GetArticle(int articleId)
         {
-            return await context.Articles.Where(article => article.Id == articleId).FirstOrDefaultAsync();
+            return await context.Articles
+                .Include(a => a.Account)
+                .Where(article => article.Id == articleId)
+                .FirstOrDefaultAsync();
         }
     }
 }

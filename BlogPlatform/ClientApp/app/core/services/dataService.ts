@@ -17,7 +17,7 @@ export class DataService {
 
     }
 
-    set(baseUri: string, pageSize?: number): void {
+    set(baseUri: string, pageSize: number = 10): void {
         this.baseUri = baseUri;
         this.pageSize = pageSize;
     }

@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { isBrowser } from 'angular2-universal';
 
 import { ViewProfileComponent } from './viewProfile.component';
@@ -31,8 +31,9 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
         public notificationService: NotificationService,
         public membershipService: MembershipService,
         public utilityService: UtilityService,
-        protected router: Router) {
-        super(profileService, notificationService, membershipService, utilityService, router);
+        protected router: Router,
+        activatedRoute: ActivatedRoute) {
+        super(profileService, notificationService, membershipService, utilityService, router, activatedRoute);
         this.passwordChange = new PasswordChange();
     }
 

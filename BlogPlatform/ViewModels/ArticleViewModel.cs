@@ -10,5 +10,6 @@ namespace BlogPlatform.ViewModels
         public DateTime DateCreated { get; set; }
         public int TotalComments { get; set; }
         public double Rating { get; set; }
+        public AccountViewModel Account { get; set; }
     }
 }

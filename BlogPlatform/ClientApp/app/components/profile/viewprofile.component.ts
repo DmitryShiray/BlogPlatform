@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { isBrowser } from 'angular2-universal';
 
 import { ApplicationRoutes } from '../routes';
@@ -10,6 +10,8 @@ import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
 import { UtilityService } from '../../core/services/utilityService';
 import { Constants } from '../../core/constants';
+
+import 'rxjs/add/operator/switchMap';
 
 @Component({
     selector: 'viewProfile',
@@ -28,7 +30,8 @@ export class ViewProfileComponent implements OnInit {
         public notificationService: NotificationService,
         public membershipService: MembershipService,
         public utilityService: UtilityService,
-        protected router: Router) {
+        protected router: Router,
+        private activatedRoute: ActivatedRoute) {
         this.profile = new Profile('','','','', null, false);
     }
 
@@ -50,11 +53,12 @@ export class ViewProfileComponent implements OnInit {
     getProfile(): void {
         this.notificationService.printSuccessMessage('Getting profile');
 
-        if (isBrowser) {
-            var currentUserEmailAddress = localStorage.getItem(Constants.EmailAddress);
-        }
+        let emailAddress = this.activatedRoute.snapshot.params['emailAddress'];
+        //if (isBrowser) {
+        //    var currentUserEmailAddress = localStorage.getItem(Constants.EmailAddress);
+        //}
 
-        this.profileService.getItem(currentUserEmailAddress)
+        this.profileService.getItem(emailAddress)
             .subscribe(res => {
                 var data = res.json();
                 this.profile = new Profile(data.firstName, data.lastName, data.nickname, data.emailAddress, data.registrationDate, data.isCurrentUserProfile);

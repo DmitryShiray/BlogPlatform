@@ -12,7 +12,7 @@ using BlogPlatform.Infrastructure.Result;
 using AutoMapper;
 using BlogPlatform.Infrastructure.Constants;
 
-namespace PhotoGallery.Controllers
+namespace BlogPlatform.Controllers
 {
     [Route("api/[controller]")]
     public class ArticlesController : Controller
@@ -30,7 +30,7 @@ namespace PhotoGallery.Controllers
         }
         
         //[Authorize(Policy = Constants.ClaimsPolicyValue)]
-        //[HttpGet("{page:int=0}/{pageSize=12}")]
+        [HttpGet("{page:int=0}/{pageSize=12}")]
         public async Task<IActionResult> GetArticles(int page, int pageSize)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
@@ -39,9 +39,9 @@ namespace PhotoGallery.Controllers
             {
                 List<Article> articles = await articlesFilteringService.GetAllArticles();
 
-                IEnumerable<ArticleViewModel> articlesVM = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
+                IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
 
-                return new ObjectResult(articlesVM);
+                return new ObjectResult(articlesViewModel);
             }
             catch (Exception exception)
             {

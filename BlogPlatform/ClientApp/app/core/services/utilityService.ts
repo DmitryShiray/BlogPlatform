@@ -15,7 +15,7 @@ export class UtilityService {
     }
 
     convertDateTimeToString(date: Date) {
-        return date.toDateString();
+        return new Date(date).toDateString();
     }
 
     navigate(path: string) {

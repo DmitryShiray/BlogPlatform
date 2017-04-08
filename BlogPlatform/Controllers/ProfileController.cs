@@ -37,7 +37,13 @@ namespace BlogPlatform.Controllers
             {
                 if (string.IsNullOrWhiteSpace(emailAddress))
                 {
-                    return BadRequest();
+                    var getUserProfileResult = new BaseResult()
+                    {
+                        Succeeded = false,
+                        Message = "Cannot get profile. Please, contact customer support."
+                    };
+
+                    return new ObjectResult(getUserProfileResult);
                 }
 
                 var account = await accountService.GetAccountProfileAsync(emailAddress);
@@ -182,8 +188,8 @@ namespace BlogPlatform.Controllers
 
         private bool IsCurrentUserProfile(string emailAddress)
         {
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return userId == emailAddress;
+            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            return claim != null && claim.Value == emailAddress;
         }
     }
 }
