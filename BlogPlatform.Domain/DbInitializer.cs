@@ -10,6 +10,8 @@ namespace BlogPlatform.Domain
     public static class DbInitializer
     {
         private static BlogPlatformContext context;
+        private const int ArticlesCount = 100;
+
         public static void Initialize(IServiceProvider serviceProvider)
         {
             context = (BlogPlatformContext)serviceProvider.GetService(typeof(BlogPlatformContext));
@@ -28,10 +30,21 @@ namespace BlogPlatform.Domain
 
                 context.Accounts.Add(new Account()
                 {
-                    EmailAddress = "dshiray@gmail.com",
+                    EmailAddress = "dima@dima.com",
                     FirstName = "Dmitry",
                     LastName = "Shiray",
                     Nickname = "dimitry",
+                    Salt = salt,
+                    Password = passwordHasher.GetPassword("123456", salt),
+                    DateCreated = DateTime.Now
+                });
+
+                context.Accounts.Add(new Account()
+                {
+                    EmailAddress = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "Test",
+                    Nickname = "test",
                     Salt = salt,
                     Password = passwordHasher.GetPassword("123456", salt),
                     DateCreated = DateTime.Now
@@ -45,46 +58,32 @@ namespace BlogPlatform.Domain
         {
             if (!context.Articles.Any())
             {
-                context.Articles.Add(
-                    new Article
-                    {
-                        DateCreated = DateTime.Now,
-                        Title = "Article 1",
-                        Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        AccountId = 1,
-                        LastDateModified = DateTime.Now
-                    });
+                var dimaAccount = context.Accounts.Where(a => string.Equals(a.EmailAddress, "dima@dima.com", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                var testAccount = context.Accounts.Where(a => string.Equals(a.EmailAddress, "test@test.com", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-                context.Articles.Add(
-                    new Article
-                    {
-                        DateCreated = DateTime.Now,
-                        Title = "Article 2",
-                        Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        AccountId = 1,
-                        LastDateModified = DateTime.Now
-                    });
+                for (int i = 0; i < ArticlesCount; i += 2)
+                {
+                    context.Articles.Add(
+                        new Article
+                        {
+                            DateCreated = DateTime.Now,
+                            Title = "Article " + i,
+                            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            AccountId = dimaAccount.Id,
+                            LastDateModified = DateTime.Now
+                        });
 
-                context.Articles.Add(
-                    new Article
-                    {
-                        DateCreated = DateTime.Now,
-                        Title = "Article 3",
-                        Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        AccountId = 1,
-                        LastDateModified = DateTime.Now
-                    });
-
-                context.Articles.Add(
-                    new Article
-                    {
-                        DateCreated = DateTime.Now,
-                        Title = "Article 4",
-                        Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        AccountId = 1,
-                        LastDateModified = DateTime.Now
-                    });
-
+                    context.Articles.Add(
+                         new Article
+                         {
+                             DateCreated = DateTime.Now,
+                             Title = "Article " + (i + 1),
+                             Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                             AccountId = testAccount.Id,
+                             LastDateModified = DateTime.Now
+                         });
+                }
+                
                 context.SaveChanges();
             }
         }
