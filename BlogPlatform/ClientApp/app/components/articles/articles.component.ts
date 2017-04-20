@@ -47,7 +47,6 @@ export class ArticlesComponent implements OnInit {
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
-                this.utilityService.navigateToSignIn();
             });
     }
 

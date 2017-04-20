@@ -6,14 +6,17 @@
             </h1>
             <ol class="breadcrumb">
                 <li>
-                    <a [routerLink]="['/Home']">Home</a>
+                    <a [routerLink]="['/home']">Home</a>
                 </li>
-                <li class="active">Articles</li>
+                <li>
+                    <a [routerLink]="['/articles']">Articles</a>
+                </li>
+                <li class="active">Article</li>
             </ol>
         </div>
     </div>
 
-    <div class="row article-container" *ngFor="let article of articles">
+    <div class="row">
         <div class="col-md-10">
             <div>
                 <a [routerLink]="['/viewProfile/', article.author.emailAddress]" *ngIf="showNickname(article)">
@@ -26,22 +29,20 @@
                 <span class="glyphicon glyphicon-signal"></span> {{article.rating}}
             </div>
 
-            <h3>
+            <h3 class="text-center">
                 <a [routerLink]="['/article/', article.id]">{{article.title}}</a>
             </h3>
 
             <p>
-                {{article.getPreviewText()}}...
+                {{article.content}}
             </p>
 
             <p>
-                <a [routerLink]="['/article/', article.id]">Read more...</a>
-
-                <a [routerLink]="['/article/', article.id]" fragment="comments">
-                    <span class="glyphicon glyphicon-comment"></span> {{article.totalComments}}
-                </a>
+                <span class="glyphicon glyphicon-comment"></span> {{article.totalComments}}
             </p>
-
         </div>
+
+        <comments></comments>
+
     </div>
 </div>

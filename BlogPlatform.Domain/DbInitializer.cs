@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using BlogPlatform.Domain.Entities;
 using BlogPlatform.Infrastructure.Cryptography;
@@ -10,11 +8,22 @@ namespace BlogPlatform.Domain
     public static class DbInitializer
     {
         private static BlogPlatformContext context;
-        private const int ArticlesCount = 100;
+        private static RandomDateTimeGenerator randomDateTimeGenerator;
+        private const int ArticlesCount = 50;
+        private const int CommentsCount = 15;
+        private const int MinRating = 1;
+        private const int MaxRating = 5;
+        private const int HoursInDay = 24;
+        private const int MinutesInHour = 24;
+        private const int SecondsInMinute = 24;
+        private const int StartDateYear = 2016;
+        private const int StartDateMonth = 1;
+        private const int StartDateDay = 1;
 
         public static void Initialize(IServiceProvider serviceProvider)
         {
             context = (BlogPlatformContext)serviceProvider.GetService(typeof(BlogPlatformContext));
+            randomDateTimeGenerator = new RandomDateTimeGenerator();
 
             InitializeUsers();
             InitializeArticles();
@@ -25,7 +34,6 @@ namespace BlogPlatform.Domain
             if (!context.Accounts.Any())
             {
                 var passwordHasher = new PasswordHasher();
-
                 var salt = passwordHasher.GetRandomSalt();
 
                 context.Accounts.Add(new Account()
@@ -58,33 +66,75 @@ namespace BlogPlatform.Domain
         {
             if (!context.Articles.Any())
             {
-                var dimaAccount = context.Accounts.Where(a => string.Equals(a.EmailAddress, "dima@dima.com", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                var testAccount = context.Accounts.Where(a => string.Equals(a.EmailAddress, "test@test.com", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-
-                for (int i = 0; i < ArticlesCount; i += 2)
+                var accounts = context.Accounts.ToList();
+                foreach (var account in accounts)
                 {
-                    context.Articles.Add(
-                        new Article
-                        {
-                            DateCreated = DateTime.Now,
-                            Title = "Article " + i,
-                            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                            AccountId = dimaAccount.Id,
-                            LastDateModified = DateTime.Now
-                        });
+                    for (int i = 0; i < ArticlesCount; i++)
+                    {
+                        var article = context.Articles.Add(
+                            new Article
+                            {
+                                DateCreated = randomDateTimeGenerator.Next(),
+                                Title = "Article " + i,
+                                Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                AccountId = account.Id,
+                                LastDateModified = randomDateTimeGenerator.Next()
+                            });
 
-                    context.Articles.Add(
-                         new Article
-                         {
-                             DateCreated = DateTime.Now,
-                             Title = "Article " + (i + 1),
-                             Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                             AccountId = testAccount.Id,
-                             LastDateModified = DateTime.Now
-                         });
+                        AddComments(article.Entity, account);
+                        AddRatings(article.Entity, account);
+                    }
                 }
-                
+
                 context.SaveChanges();
+            }
+        }
+
+        private static void AddComments(Article article, Account account)
+        {
+            for (int i = 0; i < CommentsCount; i += 1)
+            {
+                context.Comments.Add(new Comment
+                {
+                    AccountId = account.Id,
+                    ArticleId = article.Id,
+                    DateAdded = randomDateTimeGenerator.Next(),
+                    Value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                });
+            }
+        }
+
+        private static void AddRatings(Article article, Account account)
+        {
+            Random randomGenerator = new Random();
+            context.Ratings.Add(new Rating
+            {
+                AccountId = account.Id,
+                ArticleId = article.Id,
+                DateAdded = randomDateTimeGenerator.Next(),
+                Value = (byte)randomGenerator.Next(MinRating, MaxRating)
+            });
+        }
+
+        private class RandomDateTimeGenerator
+        {
+            private Random randomGenerator;
+            private DateTime startDate;
+            private int range;
+
+            public RandomDateTimeGenerator()
+            {
+                randomGenerator = new Random();
+                startDate = new DateTime(StartDateYear, StartDateMonth, StartDateDay);
+                range = (DateTime.Today - startDate).Days;
+            }
+
+            public DateTime Next()
+            {
+                return startDate.AddDays(randomGenerator.Next(range))
+                    .AddHours(randomGenerator.Next(0, HoursInDay))
+                    .AddMinutes(randomGenerator.Next(0, MinutesInHour))
+                    .AddSeconds(randomGenerator.Next(0, SecondsInMinute));
             }
         }
     }

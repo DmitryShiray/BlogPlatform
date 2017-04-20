@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using BlogPlatform.Domain.Entities;
 using BlogPlatform.Domain.Services.Abstract;
+using System.Collections.Generic;
 
 namespace BlogPlatform.Domain.Services
 {
@@ -13,10 +14,20 @@ namespace BlogPlatform.Domain.Services
             this.context = context;
         }
 
-        public double GetRating(int articleId)
+        public double GetRatingFromDatabase(int articleId)
         {
-            var articles = context.Ratings.Where(r => r.Article.Id == articleId);
-            return articles.Sum(r => r.Value) / articles.Count();
+            var ratings = context.Ratings.Where(r => r.Article.Id == articleId);
+            return ComputeRating(ratings);
+        }
+
+        public double ComputeRating(IEnumerable<Rating> ratings)
+        {
+            if (ratings.Count() == 0)
+            {
+                return 0;
+            }
+
+            return ratings.Sum(r => r.Value) / ratings.Count();
         }
 
         public void SetRating(int articleId, int accountId, byte value)

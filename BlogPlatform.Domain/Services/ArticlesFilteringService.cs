@@ -20,6 +20,7 @@ namespace BlogPlatform.Domain.Services
         {
             return await context.Articles
                 .Include(a => a.Account)
+                .Include(a => a.Ratings)
                 .OrderBy(a => a.Id)
                 .ToListAsync();
         }

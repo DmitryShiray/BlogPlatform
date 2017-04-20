@@ -2,11 +2,8 @@
     margin-top: 4%;
 }
 
-.article-container{
+.article-container {
+    background-color: #f5f5f5;
     margin: 10px 0px 25px 0px;
     padding: 10px;
-}
-
-.author-container{
-
 }

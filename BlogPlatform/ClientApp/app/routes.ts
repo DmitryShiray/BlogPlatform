@@ -5,7 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ArticlesComponent } from './components/articles/articles.component';
-//import { ArticleComponent } from './components/articles/article.component';
+import { ArticleComponent } from './components/articles/article.component';
 import { EditProfileComponent } from './components/profile/editProfile.component';
 import { ViewProfileComponent } from './components/profile/viewProfile.component';
 
@@ -42,10 +42,10 @@ const appRoutes: Routes = [
         path: 'viewProfile/:emailAddress',
         component: ViewProfileComponent
     },
-    //{
-    //    path: 'articles/article',
-    //    component: ArticleComponent
-    //}
+    {
+        path: 'articles/article/:articleId',
+        component: ArticleComponent
+    }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

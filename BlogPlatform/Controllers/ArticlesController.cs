@@ -19,17 +19,19 @@ namespace BlogPlatform.Controllers
     {
         private readonly IAuthorizationService authorizationService;
         private IArticlesFilteringService articlesFilteringService;
+        private IArticleRatingService articleRatingService;
 
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ArticlesController(IAuthorizationService authorizationService,
-                                  IArticlesFilteringService articlesFilteringService)
+                                  IArticlesFilteringService articlesFilteringService,
+                                  IArticleRatingService articleRatingService)
         {
             this.authorizationService = authorizationService;
             this.articlesFilteringService = articlesFilteringService;
+            this.articleRatingService = articleRatingService;
         }
         
-        //[Authorize(Policy = Constants.ClaimsPolicyValue)]
         [HttpGet("{page:int=0}/{pageSize=12}")]
         public async Task<IActionResult> GetArticles(int page, int pageSize)
         {
@@ -37,8 +39,8 @@ namespace BlogPlatform.Controllers
 
             try
             {
-                List<Article> articles = await articlesFilteringService.GetAllArticles();
-
+                IEnumerable<Article> articles = await articlesFilteringService.GetAllArticles();
+                
                 IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
 
                 return new ObjectResult(articlesViewModel);
@@ -50,24 +52,26 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(pagedSet);
         }
-        
-        //[HttpGet("{articleId:int}/{page:int=0}/{pageSize=12}")]
+
+        [HttpGet("{articleId:int}/{page:int=0}/{pageSize=12}")]
         public async Task<IActionResult> GetArticle(int articleId, int? page, int? pageSize)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
 
             try
             {
-                if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsPolicyValue))
-                {
-                    Article article = await articlesFilteringService.GetArticle(articleId);
-                    return new ObjectResult(article);
-                }
-                else
-                {
-                    CodeResultStatus _codeResult = new CodeResultStatus(401);
-                    return new ObjectResult(_codeResult);
-                }
+                //    if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsPolicyValue))
+                //    {
+                Article article = await articlesFilteringService.GetArticle(articleId);
+                ArticleViewModel articlesViewModel = Mapper.Map<Article, ArticleViewModel>(article);
+
+                return new ObjectResult(articlesViewModel);
+                //}
+                //else
+                //{
+                //    CodeResultStatus _codeResult = new CodeResultStatus(401);
+                //    return new ObjectResult(_codeResult);
+                //}
             }
             catch (Exception exception)
             {
