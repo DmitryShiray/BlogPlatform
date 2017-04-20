@@ -76,7 +76,7 @@ namespace BlogPlatform.Domain.Migrations
                         column: x => x.ArticleId,
                         principalTable: "Article",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +104,7 @@ namespace BlogPlatform.Domain.Migrations
                         column: x => x.ArticleId,
                         principalTable: "Article",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
