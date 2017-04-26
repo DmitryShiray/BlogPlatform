@@ -46,7 +46,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         LoginComponent,
         RegisterComponent,
         ArticlesComponent,
-        ArticleComponent
+        ArticleComponent,
         EditProfileComponent,
         ViewProfileComponent,
         EqualValidator 

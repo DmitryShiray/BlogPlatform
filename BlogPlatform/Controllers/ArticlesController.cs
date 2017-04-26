@@ -53,7 +53,7 @@ namespace BlogPlatform.Controllers
             return new ObjectResult(pagedSet);
         }
 
-        [HttpGet("{articleId:int}/{page:int=0}/{pageSize=12}")]
+        [HttpGet("{articleId:int}")]
         public async Task<IActionResult> GetArticle(int articleId, int? page, int? pageSize)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
