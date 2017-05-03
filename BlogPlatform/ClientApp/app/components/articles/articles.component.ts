@@ -53,13 +53,4 @@ export class ArticlesComponent implements OnInit {
     search(articleId): void {
         this.getArticles();
     };
-
-    public convertDateTime(date: Date) {
-        return this.utilityService.convertDateTimeToString(date);
-    }
-
-    public showNickname(article: Article): boolean {
-        var author = article.author;
-        return author.nickname && author.nickname.length !== 0;
-    }
 }

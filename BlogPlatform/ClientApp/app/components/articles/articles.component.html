@@ -15,19 +15,10 @@
 
     <div class="row article-container" *ngFor="let article of articles">
         <div class="col-md-10">
-            <div>
-                <a [routerLink]="['/viewProfile/', article.author.emailAddress]" *ngIf="showNickname(article)">
-                    {{article.author.nickname}}
-                </a>
-                <a [routerLink]="['/viewProfile/', article.author.emailAddress]" *ngIf="!showNickname(article)">
-                    {{article.author.firstName}} {{article.author.lastName}}
-                </a>
-                <span class="">{{convertDateTime(article.dateCreated)}}</span>
-                <span class="glyphicon glyphicon-signal"></span> {{article.rating}}
-            </div>
+            <author [author]="article.author" [dateCreated]="article.dateCreated" [rating]="article.rating"></author>
 
             <h3>
-                <a [routerLink]="['/article/', article.id]">{{article.title}}</a>
+                <a [routerLink]="['/articles/article/', article.id]">{{article.title}}</a>
             </h3>
 
             <p>
@@ -35,9 +26,9 @@
             </p>
 
             <p>
-                <a [routerLink]="['/article/', article.id]">Read more...</a>
+                <a [routerLink]="['/articles/article/', article.id]">Read more...</a>
 
-                <a [routerLink]="['/article/', article.id]" fragment="comments">
+                <a [routerLink]="['/articles/article/', article.id]" fragment="comments">
                     <span class="glyphicon glyphicon-comment"></span> {{article.totalComments}}
                 </a>
             </p>

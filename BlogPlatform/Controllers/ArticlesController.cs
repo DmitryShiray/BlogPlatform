@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -8,9 +7,7 @@ using NLog;
 using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Domain.Entities;
 using BlogPlatform.ViewModels;
-using BlogPlatform.Infrastructure.Result;
 using AutoMapper;
-using BlogPlatform.Infrastructure.Constants;
 
 namespace BlogPlatform.Controllers
 {
@@ -52,9 +49,9 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(pagedSet);
         }
-
-        [HttpGet("{articleId:int}")]
-        public async Task<IActionResult> GetArticle(int articleId, int? page, int? pageSize)
+        
+        [HttpGet("article/{articleId:int}")]
+        public async Task<IActionResult> GetArticle(int articleId)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
 

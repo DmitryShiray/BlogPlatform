@@ -1,0 +1,10 @@
+<div>
+    <a [routerLink]="['/viewProfile/', author.emailAddress]" *ngIf="showNickname()">
+        {{author.nickname}}
+    </a>
+    <a [routerLink]="['/viewProfile/', author.emailAddress]" *ngIf="!showNickname()">
+        {{author.firstName}} {{author.lastName}}
+    </a>
+    <span class="">{{convertDateTime()}}</span>
+    <span class="glyphicon glyphicon-signal"></span> {{rating}}
+</div>

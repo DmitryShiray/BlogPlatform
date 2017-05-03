@@ -11,6 +11,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AuthorComponent } from './components/author/author.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ArticleComponent } from './components/articles/article.component';
 import { EditProfileComponent } from './components/profile/editProfile.component';
@@ -45,6 +46,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         HomeComponent,
         LoginComponent,
         RegisterComponent,
+        AuthorComponent,
         ArticlesComponent,
         ArticleComponent,
         EditProfileComponent,

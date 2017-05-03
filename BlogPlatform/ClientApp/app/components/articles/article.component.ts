@@ -17,11 +17,14 @@ import { NotificationService } from '../../core/services/notificationService';
 export class ArticleComponent implements OnInit {
     private articlesReadUrl: string = 'api/articles/article/';
     private article: Article;
+    private author: BaseProfile;
 
     constructor(public articlesService: DataService,
         public notificationService: NotificationService,
         public utilityService: UtilityService,
         private activatedRoute: ActivatedRoute) {
+        this.article = new Article(0, '', '', null,0, 0, 0, null);
+        this.author = new BaseProfile('', '', '', '');
     }
 
     ngOnInit() {
@@ -34,9 +37,11 @@ export class ArticleComponent implements OnInit {
 
         this.articlesService.getItem(articleId)
             .subscribe(res => {
+                this.notificationService.printSuccessMessage('Test');
+
                 let data: any = res.json();
                 let account = data["account"];
-                let author = new BaseProfile(account["firstName"], account["lastName"], account["nickname"], account["emailAddress"]);
+                this.author = new BaseProfile(account["firstName"], account["lastName"], account["nickname"], account["emailAddress"]);
                 this.article = new Article(
                     data["id"],
                     data["title"],
@@ -45,19 +50,10 @@ export class ArticleComponent implements OnInit {
                     data["accountId"],
                     data["totalComments"],
                     data["rating"],
-                    author);
+                    this.author);
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
             });
-    }
-
-    public convertDateTime(date: Date) {
-        return this.utilityService.convertDateTimeToString(date);
-    }
-
-    public showNickname(article: Article): boolean {
-        var author = article.author;
-        return author.nickname && author.nickname.length !== 0;
     }
 }

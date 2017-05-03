@@ -35,16 +35,16 @@ const appRoutes: Routes = [
         component: ArticlesComponent
     },
     {
+        path: 'articles/article/:articleId',
+        component: ArticleComponent
+    },
+    {
         path: 'editProfile',
         component: EditProfileComponent
     },
     {
         path: 'viewProfile/:emailAddress',
         component: ViewProfileComponent
-    },
-    {
-        path: 'articles/article/:articleId',
-        component: ArticleComponent
     }
 ];
 
