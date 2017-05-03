@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { BaseProfile } from '../../core/domain/baseProfile';
@@ -6,11 +6,11 @@ import { Article } from '../../core/domain/article';
 import { DataService } from '../../core/services/dataService';
 import { UtilityService } from '../../core/services/utilityService';
 import { NotificationService } from '../../core/services/notificationService';
+import { CommentsComponent } from '../comments/comments.component';
 
 @Component({
     selector: 'article',
     template: require('./article.component.html'),
-    styles: [require('./article.component.css')],
     providers: [UtilityService, DataService, NotificationService]
 })
 
@@ -18,6 +18,9 @@ export class ArticleComponent implements OnInit {
     private articlesReadUrl: string = 'api/articles/article/';
     private article: Article;
     private author: BaseProfile;
+
+    @ViewChild(CommentsComponent)
+    private commentsComponent: CommentsComponent;
 
     constructor(public articlesService: DataService,
         public notificationService: NotificationService,
@@ -37,8 +40,6 @@ export class ArticleComponent implements OnInit {
 
         this.articlesService.getItem(articleId)
             .subscribe(res => {
-                this.notificationService.printSuccessMessage('Test');
-
                 let data: any = res.json();
                 let account = data["account"];
                 this.author = new BaseProfile(account["firstName"], account["lastName"], account["nickname"], account["emailAddress"]);
@@ -55,5 +56,9 @@ export class ArticleComponent implements OnInit {
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
             });
+    }
+
+    refreshComments(): void {
+        this.commentsComponent.refreshComments();
     }
 }

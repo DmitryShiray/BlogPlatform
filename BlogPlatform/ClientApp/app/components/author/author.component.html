@@ -5,6 +5,6 @@
     <a [routerLink]="['/viewProfile/', author.emailAddress]" *ngIf="!showNickname()">
         {{author.firstName}} {{author.lastName}}
     </a>
-    <span class="">{{convertDateTime()}}</span>
-    <span class="glyphicon glyphicon-signal"></span> {{rating}}
+    <span>{{convertDateTime()}}</span>
+    <span class="glyphicon glyphicon-signal" *ngIf="showRating()"></span> {{rating}}
 </div>

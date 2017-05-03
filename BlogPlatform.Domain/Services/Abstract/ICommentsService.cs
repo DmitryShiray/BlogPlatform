@@ -8,6 +8,6 @@ namespace BlogPlatform.Domain.Services.Abstract
     {
         Task<List<Comment>> GetComments(int articleId);
         Task<int> GetCommentsNumber(int articleId);
-        void AddComment(int articleId, int accountId, string comment);
+        Task AddComment(Comment comment);
     }
 }

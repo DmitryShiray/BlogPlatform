@@ -18,18 +18,8 @@ namespace BlogPlatform.Mappings
         {
             CreateMap<Article, ArticleViewModel>()
                .ForMember(vm => vm.TotalComments, map => map.MapFrom(p => p.Comments.Count))
-               .ForMember(vm => vm.Rating, map => map.MapFrom(p => articleRatingService.ComputeRating(p.Ratings)))
-               .AfterMap((s, d) => { s.Account.Id = d.Account.Id; })
-               .AfterMap((s, d) => { s.Account.FirstName = d.Account.FirstName; })
-               .AfterMap((s, d) => { s.Account.LastName = d.Account.LastName; })
-               .AfterMap((s, d) => { s.Account.Nickname = d.Account.Nickname; })
-               .AfterMap((s, d) => { s.Account.EmailAddress = d.Account.EmailAddress; });
-            CreateMap<ArticleViewModel, Article>()
-               .AfterMap((s, d) => { s.Account.Id = d.Account.Id; })
-               .AfterMap((s, d) => { s.Account.FirstName = d.Account.FirstName; })
-               .AfterMap((s, d) => { s.Account.LastName = d.Account.LastName; })
-               .AfterMap((s, d) => { s.Account.Nickname = d.Account.Nickname; })
-               .AfterMap((s, d) => { s.Account.EmailAddress = d.Account.EmailAddress; });
+               .ForMember(vm => vm.Rating, map => map.MapFrom(p => articleRatingService.ComputeRating(p.Ratings)));
+            CreateMap<ArticleViewModel, Article>();
 
             CreateMap<Account, AccountViewModel>();
             CreateMap<AccountViewModel, Account>();
@@ -42,17 +32,21 @@ namespace BlogPlatform.Mappings
 
             CreateMap<Comment, CommentViewModel>()
               .ForMember(vm => vm.Text, map => map.MapFrom(p => p.Value))
-              .AfterMap((s, d) => { s.Account.Id = d.Account.Id; })
-              .AfterMap((s, d) => { s.Account.FirstName = d.Account.FirstName; })
-              .AfterMap((s, d) => { s.Account.LastName = d.Account.LastName; })
-              .AfterMap((s, d) => { s.Account.Nickname = d.Account.Nickname; })
-              .AfterMap((s, d) => { s.Account.EmailAddress = d.Account.EmailAddress; });
+              .AfterMap((s, d) => { d.Author = new AccountViewModel(); })
+              .AfterMap((s, d) => { d.Author.Id = s.Account.Id; })
+              .AfterMap((s, d) => { d.Author.FirstName = s.Account.FirstName; })
+              .AfterMap((s, d) => { d.Author.LastName = s.Account.LastName; })
+              .AfterMap((s, d) => { d.Author.Nickname = s.Account.Nickname; })
+              .AfterMap((s, d) => { d.Author.EmailAddress = s.Account.EmailAddress; });
+
             CreateMap<CommentViewModel, Comment>()
-               .AfterMap((s, d) => { s.Account.Id = d.Account.Id; })
-               .AfterMap((s, d) => { s.Account.FirstName = d.Account.FirstName; })
-               .AfterMap((s, d) => { s.Account.LastName = d.Account.LastName; })
-               .AfterMap((s, d) => { s.Account.Nickname = d.Account.Nickname; })
-               .AfterMap((s, d) => { s.Account.EmailAddress = d.Account.EmailAddress; });
+              .ForMember(vm => vm.Value, map => map.MapFrom(p => p.Text))
+              .AfterMap((s, d) => { d.Account = new Account(); })
+              .AfterMap((s, d) => { d.Account.Id = s.Author.Id; })
+              .AfterMap((s, d) => { d.Account.FirstName = s.Author.FirstName; })
+              .AfterMap((s, d) => { d.Account.LastName = s.Author.LastName; })
+              .AfterMap((s, d) => { d.Account.Nickname = s.Author.Nickname; })
+              .AfterMap((s, d) => { d.Account.EmailAddress = s.Author.EmailAddress; });
         }
     }
 }

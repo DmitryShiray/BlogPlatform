@@ -1,0 +1,13 @@
+<div id="comments" class="col-md-10">
+
+    <addComments (onCommentAdded)="onCommentAdded($event)"></addComments>
+
+    <div class="row comments-container" *ngFor="let comment of comments">
+        <div class="col-md-10">
+            <author [author]="comment.author" [dateCreated]="comment.dateAdded"></author>
+            
+            <p>{{comment.text}}</p>
+        </div>
+    </div>
+
+</div>

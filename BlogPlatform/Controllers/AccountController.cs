@@ -11,21 +11,18 @@ using NLog;
 using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Infrastructure;
 using BlogPlatform.Infrastructure.Constants;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BlogPlatform.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private IAccountService accountService;
-        private IAuthorizationService authorizationService;
-
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AccountController(IAuthorizationService authorizationService, IAccountService accountService)
+        public AccountController(IAuthorizationService authorizationService, IAccountService accountService, IMemoryCache memoryCache)
+            : base(accountService, authorizationService, memoryCache)
         {
-            this.accountService = accountService;
-            this.authorizationService = authorizationService;
         }
 
         [HttpPost("login")]

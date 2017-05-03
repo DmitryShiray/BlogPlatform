@@ -28,12 +28,12 @@
                 {{article.content}}
             </p>
 
-            <p>
+            <p (click)="refreshComments()">
                 <span class="glyphicon glyphicon-comment"></span> {{article.totalComments}}
             </p>
         </div>
-
-        <!--<comments></comments>-->
-
     </div>
+
+    <comments></comments>
+
 </div>

@@ -8,14 +8,13 @@ import { UtilityService } from '../../core/services/utilityService';
 @Component({
     selector: 'author',
     template: require('./author.component.html'),
-    styles: [require('./author.component.css')],
     providers: [UtilityService]
 })
 
 export class AuthorComponent {
     @Input() author: BaseProfile;
     @Input() dateCreated: Date;
-    @Input() rating: number;
+    @Input() rating?: number;
 
     constructor(public utilityService: UtilityService) {
     }
@@ -26,5 +25,9 @@ export class AuthorComponent {
 
     public showNickname(): boolean {
         return this.author.nickname && this.author.nickname.length !== 0;
+    }
+
+    public showRating(): boolean {
+        return this.rating != null;
     }
 }

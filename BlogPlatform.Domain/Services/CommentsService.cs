@@ -18,17 +18,21 @@ namespace BlogPlatform.Domain.Services
 
         public async Task<List<Comment>> GetComments(int articleId)
         {
-            return await context.Comments.Where(c => c.ArticleId == articleId).ToListAsync();
+            return await context.Comments
+                .Include(c => c.Account)
+                .Where(c => c.ArticleId == articleId)
+                .ToListAsync();
         }
 
         public async Task<int> GetCommentsNumber(int articleId)
         {
-            return await context.Comments.CountAsync(c => c.ArticleId == articleId);
+            return await context.Comments
+                .CountAsync(c => c.ArticleId == articleId);
         }
 
-        public void AddComment(int articleId, int accountId, string comment)
+        public async Task AddComment(Comment comment)
         {
-            context.Comments.Add(new Comment() { AccountId = accountId, ArticleId = articleId, Value = comment });
+            await context.Comments.AddAsync(comment);
             context.SaveChanges();
         }
     }

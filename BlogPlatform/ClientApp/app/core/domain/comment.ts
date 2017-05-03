@@ -1,15 +1,17 @@
-﻿export class Comment {
-    Id: number;
-    Value: string;
-    DateAdded: Date;
-    ArticleId: number;
-    AccountId: number;
+﻿import { BaseProfile } from './baseProfile';
 
-    constructor(id: number, value: string, dateAdded: Date, articleId: number, accountId: number) {
-        this.Id = id;
-        this.Value = value;
-        this.DateAdded = dateAdded;
-        this.ArticleId = articleId;
-        this.AccountId = accountId;
+export class Comment {
+    id: number;
+    text: string;
+    dateAdded: Date;
+    articleId: number;
+    author: BaseProfile;
+
+    constructor(id: number, text: string, dateAdded: Date, articleId: number, author: BaseProfile) {
+        this.id = id;
+        this.text = text;
+        this.dateAdded = dateAdded;
+        this.articleId = articleId;
+        this.author = author;
     }
 }

@@ -1,5 +1,4 @@
 ﻿import { BaseProfile } from './baseProfile';
-import { UtilityService } from '../services/utilityService';
 
 const PREVIEWTEXTLENGTH: number = 1000;
 

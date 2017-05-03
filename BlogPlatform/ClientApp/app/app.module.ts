@@ -7,6 +7,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
 import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 
 import { AppComponent } from './components/app/app.component';
+import { BaseComponent } from './components/base/baseComponent.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
@@ -14,6 +15,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthorComponent } from './components/author/author.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ArticleComponent } from './components/articles/article.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { AddCommentsComponent } from './components/comments/addComments.component';
 import { EditProfileComponent } from './components/profile/editProfile.component';
 import { ViewProfileComponent } from './components/profile/viewProfile.component';
 import { routing } from './routes';
@@ -42,6 +45,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
     ],
     declarations: [
         AppComponent,
+        BaseComponent,
         NavMenuComponent,
         HomeComponent,
         LoginComponent,
@@ -49,6 +53,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         AuthorComponent,
         ArticlesComponent,
         ArticleComponent,
+        CommentsComponent,
+        AddCommentsComponent,
         EditProfileComponent,
         ViewProfileComponent,
         EqualValidator 

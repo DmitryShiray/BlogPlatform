@@ -10,23 +10,18 @@ using BlogPlatform.Domain.Entities;
 using BlogPlatform.Infrastructure.Exceptions;
 using AutoMapper;
 using System.Security.Claims;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BlogPlatform.Controllers
 {
     [Route("api/[controller]")]
-    public class ProfileController : Controller
+    public class ProfileController : BaseController
     {
-        private IAccountService accountService;
-        private IAuthorizationService authorizationService;
-
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ProfileController(IAuthorizationService authorizationService, IAccountService accountService)
+        public ProfileController(IAuthorizationService authorizationService, IAccountService accountService, IMemoryCache memoryCache)
+            : base(accountService, authorizationService, memoryCache)
         {
-            this.accountService = accountService;
-            this.authorizationService = authorizationService;
         }
 
         [HttpGet("getUserProfile/{emailAddress?}")]

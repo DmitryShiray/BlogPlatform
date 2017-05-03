@@ -8,27 +8,29 @@ using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Domain.Entities;
 using BlogPlatform.ViewModels;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BlogPlatform.Controllers
 {
     [Route("api/[controller]")]
-    public class ArticlesController : Controller
+    public class ArticlesController : BaseController
     {
-        private readonly IAuthorizationService authorizationService;
         private IArticlesFilteringService articlesFilteringService;
         private IArticleRatingService articleRatingService;
 
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public ArticlesController(IAuthorizationService authorizationService,
+                                  IAccountService accountService,
+                                  IMemoryCache memoryCache,
                                   IArticlesFilteringService articlesFilteringService,
                                   IArticleRatingService articleRatingService)
+            : base(accountService, authorizationService, memoryCache)
         {
-            this.authorizationService = authorizationService;
             this.articlesFilteringService = articlesFilteringService;
             this.articleRatingService = articleRatingService;
         }
-        
+
         [HttpGet("{page:int=0}/{pageSize=12}")]
         public async Task<IActionResult> GetArticles(int page, int pageSize)
         {
@@ -37,7 +39,7 @@ namespace BlogPlatform.Controllers
             try
             {
                 IEnumerable<Article> articles = await articlesFilteringService.GetAllArticles();
-                
+
                 IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
 
                 return new ObjectResult(articlesViewModel);
@@ -49,7 +51,7 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(pagedSet);
         }
-        
+
         [HttpGet("article/{articleId:int}")]
         public async Task<IActionResult> GetArticle(int articleId)
         {

@@ -48,6 +48,8 @@ namespace BlogPlatform
         {
             AutoMapperConfiguration.Configure();
 
+            services.AddMemoryCache();
+
             services.AddDbContext<BlogPlatformContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogPlatformConnection")));
 
             //  services.AddScoped<AngularAntiForgeryTokenAttribute>();

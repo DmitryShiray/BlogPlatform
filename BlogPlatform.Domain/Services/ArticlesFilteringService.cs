@@ -20,6 +20,7 @@ namespace BlogPlatform.Domain.Services
         {
             return await context.Articles
                 .Include(a => a.Account)
+                .Include(a => a.Comments)
                 .Include(a => a.Ratings)
                 .OrderBy(a => a.Id)
                 .ToListAsync();
@@ -29,6 +30,8 @@ namespace BlogPlatform.Domain.Services
         {
             return await context.Articles
                 .Include(a => a.Account)
+                .Include(a => a.Comments)
+                .Include(a => a.Ratings)
                 .Where(article => article.Title.Contains(searchText))
                 .OrderBy(a => a.Id)
                 .ToListAsync();
@@ -38,6 +41,8 @@ namespace BlogPlatform.Domain.Services
         {
             return await context.Articles
                 .Include(a => a.Account)
+                .Include(a => a.Comments)
+                .Include(a => a.Ratings)
                 .Where(article => article.Id == articleId)
                 .FirstOrDefaultAsync();
         }
