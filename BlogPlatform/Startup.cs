@@ -18,7 +18,6 @@ using BlogPlatform.Mappings;
 using AspNetCoreAngular2Seed.Infrastructure.Middleware;
 using BlogPlatform.Infrastructure.Cryptography;
 using BlogPlatform.Infrastructure.Constants;
-using BlogPlatform.Domain.Entities;
 
 namespace BlogPlatform
 {

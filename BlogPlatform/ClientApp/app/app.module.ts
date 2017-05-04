@@ -17,6 +17,7 @@ import { ArticlesComponent } from './components/articles/articles.component';
 import { ArticleComponent } from './components/articles/article.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { AddCommentsComponent } from './components/comments/addComments.component';
+import { RatingComponent } from './components/rating/rating.component';
 import { EditProfileComponent } from './components/profile/editProfile.component';
 import { ViewProfileComponent } from './components/profile/viewProfile.component';
 import { routing } from './routes';
@@ -55,6 +56,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         ArticleComponent,
         CommentsComponent,
         AddCommentsComponent,
+        RatingComponent,
         EditProfileComponent,
         ViewProfileComponent,
         EqualValidator 

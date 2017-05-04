@@ -19,6 +19,7 @@ export class CommentsComponent implements OnInit {
     private commentsReadUrl: string = 'api/comments/';
     private comments: Array<Comment>;
     private author: BaseProfile;
+    private isGettingCommentsInProgress: boolean;
 
     constructor(public commentsService: DataService,
         public notificationService: NotificationService,
@@ -26,6 +27,7 @@ export class CommentsComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private router: Router) {
         this.comments = [];
+        this.isGettingCommentsInProgress = false;
     }
 
     ngOnInit() {
@@ -36,6 +38,8 @@ export class CommentsComponent implements OnInit {
     }
 
     getArticleComments(): void {
+        this.isGettingCommentsInProgress = true;
+
         this.commentsService.get(1)
             .subscribe(res => {
                 var data: any = res.json();
@@ -52,12 +56,17 @@ export class CommentsComponent implements OnInit {
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
+            },
+            () => {
+                this.isGettingCommentsInProgress = false;
             });
     }
 
     refreshComments(): void {
         this.comments = [];
-        this.getArticleComments();
+        if (!this.isGettingCommentsInProgress) {
+            this.getArticleComments();
+        }
     }
 
     onCommentAdded(Comment: Comment) {

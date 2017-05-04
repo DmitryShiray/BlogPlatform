@@ -1,15 +1,17 @@
-﻿export class Rating {
-    Id: number;
-    Value: number;
-    DateAdded: Date;
-    ArticleId: number;
-    AccountId: number;
+﻿import { BaseProfile } from './baseProfile';
 
-    constructor(id: number, value: number, dateAdded: Date, articleId: number, accountId: number) {
-        this.Id = id;
-        this.Value = value;
-        this.DateAdded = dateAdded;
-        this.ArticleId = articleId;
-        this.AccountId = accountId;
+export class Rating {
+    id: number;
+    value: number;
+    dateAdded: Date;
+    articleId: number;
+    author: BaseProfile;
+
+    constructor(id: number, value: number, dateAdded: Date, articleId: number, author: BaseProfile) {
+        this.id = id;
+        this.value = value;
+        this.dateAdded = dateAdded;
+        this.articleId = articleId;
+        this.author = author;
     }
 }

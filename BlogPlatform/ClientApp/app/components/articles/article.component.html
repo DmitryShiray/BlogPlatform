@@ -28,9 +28,21 @@
                 {{article.content}}
             </p>
 
-            <p (click)="refreshComments()">
-                <span class="glyphicon glyphicon-comment"></span> {{article.totalComments}}
-            </p>
+            <div class="col-md-6 text-left">
+                <p (click)="refreshComments()">
+                    <span class="glyphicon glyphicon-comment"></span> {{article.totalComments}}
+                </p>
+            </div>
+
+            <div class="col-md-6 text-right">
+                <rating [(ngModel)]="articleRatingValue"
+                        [readonly]="!isUserLoggedIn()"
+                        [max]="5"
+                        [float]="true"
+                        [titles]="['Awful', 'Bad', 'Poor', 'Good', 'Excellent']"
+                        (ngModelChange)="setRating($event)">
+                </rating>
+            </div>
         </div>
     </div>
 

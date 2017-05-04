@@ -1,0 +1,19 @@
+<span class="article-rating" 
+      tabindex="0"
+      role="slider"
+      aria-valuemin="0"
+      (mouseleave)="resetHovered()"
+      [class.disabled]="disabled"
+      [class.readonly]="readonly"
+      [attr.aria-valuemax]="ratingRange.length"
+      [attr.aria-valuenow]="model">
+
+    <span *ngFor="let item of ratingRange; let index = index">
+        <i class="{{ iconClass }} half{{ calculateWidth(item) }}"
+           [attr.data-icon]="fullIcon"
+           (mouseenter)="setHovered(item)"
+           (mousemove)="changeHovered($event)"
+           (click)="rate(item)"
+           [title]="titles[index] || item">{{ emptyIcon }}</i>
+    </span>
+</span>

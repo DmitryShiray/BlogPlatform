@@ -14,25 +14,10 @@ namespace BlogPlatform.Domain.Services
             this.context = context;
         }
 
-        public double GetRatingFromDatabase(int articleId)
+        public async void SetRating(Rating rating)
         {
-            var ratings = context.Ratings.Where(r => r.Article.Id == articleId);
-            return ComputeRating(ratings);
-        }
-
-        public double ComputeRating(IEnumerable<Rating> ratings)
-        {
-            if (ratings.Count() == 0)
-            {
-                return 0;
-            }
-
-            return ratings.Sum(r => r.Value) / ratings.Count();
-        }
-
-        public void SetRating(int articleId, int accountId, byte value)
-        {
-            context.Ratings.Add(new Rating() { Value = value, AccountId = accountId, ArticleId = articleId });
+            await context.Ratings.AddAsync(rating);
+            context.SaveChanges();
         }
     }
 }

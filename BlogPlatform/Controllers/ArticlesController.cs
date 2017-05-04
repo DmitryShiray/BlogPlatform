@@ -9,6 +9,7 @@ using BlogPlatform.Domain.Entities;
 using BlogPlatform.ViewModels;
 using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
+using BlogPlatform.Infrastructure.Result;
 
 namespace BlogPlatform.Controllers
 {
@@ -78,6 +79,37 @@ namespace BlogPlatform.Controllers
             }
 
             return new ObjectResult(pagedSet);
+        }
+
+        [HttpPost("setRating")]
+        public async Task<IActionResult> SetArticleRating([FromBody] RatingViewModel ratingViewModel)
+        {
+            BaseResult setRatingResult = null;
+
+            try
+            {
+                Rating rating = Mapper.Map<RatingViewModel, Rating>(ratingViewModel);
+                rating.Account = await GetCurrentUserAccount();
+
+                articleRatingService.SetRating(rating);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = true
+                };
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Failed to set rating " + exception.Message
+                };
+            }
+
+            return new ObjectResult(setRatingResult);
         }
     }
 }

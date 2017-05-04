@@ -8,9 +8,10 @@ using BlogPlatform.Domain;
 namespace BlogPlatform.Domain.Migrations
 {
     [DbContext(typeof(BlogPlatformContext))]
-    partial class BlogPlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20170504154832_RatingValueDataTypeUpdate")]
+    partial class RatingValueDataTypeUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
