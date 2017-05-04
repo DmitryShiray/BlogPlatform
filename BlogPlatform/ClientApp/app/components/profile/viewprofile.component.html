@@ -1,8 +1,12 @@
 ﻿<div class="container-fluid">
+
     <div class="row col-md-offset-4">
+        <div class="col-md-6">
+            <p class="profile-info-header">Profile Info</p>
+        </div>
+    </div>
 
-        <p class="profile-info-header">Profile Info</p>
-
+    <div class="row col-md-offset-4">
         <div class="col-xs-3 col-md-3">
             <div class="form-group">
                 <span>First Name</span>
@@ -55,6 +59,10 @@
                 <button class="btn btn-success" *ngIf="profile.isCurrentUserProfile" (click)="navigateToEditProfile()">Edit Profile</button>
             </div>
         </div>
+    </div>
+
+    <div class="row col-md-offset-1">
+        <articles [showCurrentUserArticlesOnly]="true"></articles>
     </div>
 
 </div>

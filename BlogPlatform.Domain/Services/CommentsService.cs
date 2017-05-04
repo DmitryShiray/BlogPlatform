@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogPlatform.Domain.Entities;
 using BlogPlatform.Domain.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
+using BlogPlatform.Infrastructure.Exceptions;
 
 namespace BlogPlatform.Domain.Services
 {

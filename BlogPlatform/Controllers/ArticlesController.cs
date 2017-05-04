@@ -10,14 +10,18 @@ using BlogPlatform.ViewModels;
 using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
 using BlogPlatform.Infrastructure.Result;
+using BlogPlatform.Infrastructure.Constants;
+using BlogPlatform.Infrastructure.Exceptions;
 
 namespace BlogPlatform.Controllers
 {
     [Route("api/[controller]")]
     public class ArticlesController : BaseController
     {
-        private IArticlesFilteringService articlesFilteringService;
-        private IArticleRatingService articleRatingService;
+        private readonly IArticlesFilteringService articlesFilteringService;
+        private readonly IArticleRatingService articleRatingService;
+        private readonly IArticleManagingService articleManagingService;
+        private readonly ICommentsService commentsService;
 
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -25,21 +29,34 @@ namespace BlogPlatform.Controllers
                                   IAccountService accountService,
                                   IMemoryCache memoryCache,
                                   IArticlesFilteringService articlesFilteringService,
-                                  IArticleRatingService articleRatingService)
+                                  IArticleRatingService articleRatingService,
+                                  IArticleManagingService articleManagingService,
+                                  ICommentsService commentsService)
             : base(accountService, authorizationService, memoryCache)
         {
             this.articlesFilteringService = articlesFilteringService;
             this.articleRatingService = articleRatingService;
+            this.articleManagingService = articleManagingService;
+            this.commentsService = commentsService;
         }
 
-        [HttpGet("{page:int=0}/{pageSize=12}")]
-        public async Task<IActionResult> GetArticles(int page, int pageSize)
+        [HttpGet("{showCurrentUserArticlesOnly:bool=true}/{page:int=0}/{pageSize=12}")]
+        public async Task<IActionResult> GetArticles(bool showCurrentUserArticlesOnly, int page, int pageSize)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
 
             try
             {
-                IEnumerable<Article> articles = await articlesFilteringService.GetAllArticles();
+                IEnumerable<Article> articles = null;
+                if (!showCurrentUserArticlesOnly)
+                {
+                    articles = await articlesFilteringService.GetAllArticles();
+                }
+                else
+                {
+                    Account account = await GetCurrentUserAccount();
+                    articles = await articlesFilteringService.GetAllArticlesForAccount(account.Id);
+                }
 
                 IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
 
@@ -60,18 +77,10 @@ namespace BlogPlatform.Controllers
 
             try
             {
-                //    if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsPolicyValue))
-                //    {
                 Article article = await articlesFilteringService.GetArticle(articleId);
                 ArticleViewModel articlesViewModel = Mapper.Map<Article, ArticleViewModel>(article);
 
                 return new ObjectResult(articlesViewModel);
-                //}
-                //else
-                //{
-                //    CodeResultStatus _codeResult = new CodeResultStatus(401);
-                //    return new ObjectResult(_codeResult);
-                //}
             }
             catch (Exception exception)
             {
@@ -106,6 +115,54 @@ namespace BlogPlatform.Controllers
                 {
                     Succeeded = false,
                     Message = "Failed to set rating " + exception.Message
+                };
+            }
+
+            return new ObjectResult(setRatingResult);
+        }
+
+        [HttpDelete("{articleId:int}")]
+        public async Task<IActionResult> DeleteArticle(int articleId)
+        {
+            BaseResult setRatingResult = null;
+
+            try
+            {
+                if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsAutorizedRole))
+                {
+                    Account account = await GetCurrentUserAccount();
+                    
+                    articleManagingService.DeleteArticle(account.Id, articleId);
+
+                    setRatingResult = new BaseResult()
+                    {
+                        Succeeded = true
+                    };
+                }
+                else
+                {
+                    CodeResultStatus _codeResult = new CodeResultStatus(401);
+                    return new ObjectResult(_codeResult);
+                }
+            }
+            catch (ServiceException exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "You are not allowed to delete this article"
+                };
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Failed to delete article " + exception.Message
                 };
             }
 

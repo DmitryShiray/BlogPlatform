@@ -72,7 +72,7 @@ namespace BlogPlatform
                 // inline policies
                 options.AddPolicy(Claims.ClaimsPolicyName, policy =>
                 {
-                    policy.RequireClaim(ClaimTypes.Role, Claims.ClaimsPolicyValue);
+                    policy.RequireClaim(ClaimTypes.Role, Claims.ClaimsAutorizedRole);
                 });
 
             });

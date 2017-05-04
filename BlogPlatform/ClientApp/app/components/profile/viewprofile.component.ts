@@ -36,7 +36,7 @@ export class ViewProfileComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.profileService.set(this.profileReadUrl, 3);
+        this.profileService.set(this.profileReadUrl);
         this.getProfile();
     }
 
@@ -54,9 +54,6 @@ export class ViewProfileComponent implements OnInit {
         this.notificationService.printSuccessMessage('Getting profile');
 
         let emailAddress = this.activatedRoute.snapshot.params['emailAddress'];
-        //if (isBrowser) {
-        //    var currentUserEmailAddress = localStorage.getItem(Constants.EmailAddress);
-        //}
 
         this.profileService.getItem(emailAddress)
             .subscribe(res => {

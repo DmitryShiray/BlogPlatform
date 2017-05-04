@@ -1,9 +1,14 @@
-﻿namespace BlogPlatform.Domain.Services.Abstract
+﻿using BlogPlatform.Domain.Entities;
+using System.Threading.Tasks;
+
+namespace BlogPlatform.Domain.Services.Abstract
 {
     public interface IArticleManagingService
     {
-        void CreateArticle(int accountId, string title, string content);
-        void DeleteArticle(int articleId);
-        void UpdateArticle(int articleId, string title, string content);
+        Task CreateArticle(Article article);
+
+        void DeleteArticle(int accountId, int articleId);
+
+        void UpdateArticle(Article article);
     }
 }

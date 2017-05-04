@@ -27,7 +27,7 @@ namespace BlogPlatform.Controllers
 
         protected async Task<Account> GetCurrentUserAccount()
         {
-            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            var claim = HttpContext.User.FindFirst(ClaimTypes.Role);
             if (claim == null)
             {
                 return null;
@@ -36,7 +36,7 @@ namespace BlogPlatform.Controllers
             Account account = await memoryCache.GetOrCreateAsync(CacheConstants.CurrentAccountKey, entry =>
             {
                 entry.SlidingExpiration = TimeSpan.FromMinutes(CacheConstants.CacheExpirationMinutes);
-                return accountService.GetAccountProfileAsync(claim.Value);
+                return accountService.GetAccountProfileAsync(claim.Issuer);
             });
 
             return account;

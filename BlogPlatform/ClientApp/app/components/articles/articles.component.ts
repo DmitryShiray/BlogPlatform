@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseProfile } from '../../core/domain/baseProfile';
 import { Article } from '../../core/domain/article';
 import { DataService } from '../../core/services/dataService';
 import { UtilityService } from '../../core/services/utilityService';
 import { NotificationService } from '../../core/services/notificationService';
+import { OperationResult } from '../../core/domain/operationResult';
 
 @Component({
     selector: 'articles',
@@ -13,21 +14,27 @@ import { NotificationService } from '../../core/services/notificationService';
 })
 
 export class ArticlesComponent implements OnInit {
+    @Input()
+    private showCurrentUserArticlesOnly: boolean;
+
     private articlesReadUrl: string = 'api/articles/';
+    private articlesDeleteUrl: string = 'api/articles/';
     private articles: Array<Article>;
 
     constructor(public articlesService: DataService,
         public notificationService: NotificationService,
         public utilityService: UtilityService) {
         this.articles = [];
+        this.showCurrentUserArticlesOnly = false;
     }
 
     ngOnInit() {
-        this.articlesService.set(this.articlesReadUrl);
+        this.articlesReadUrl += this.showCurrentUserArticlesOnly + '/';
         this.getArticles();
     }
 
     getArticles(): void {
+        this.articlesService.set(this.articlesReadUrl);
         this.articlesService.get(1)
             .subscribe(res => {
                 var data: any = res.json();
@@ -50,7 +57,35 @@ export class ArticlesComponent implements OnInit {
             });
     }
 
-    search(articleId): void {
+    search(articleId: number): void {
+        this.getArticles();
+    };
+
+    deleteArticle(articleId: number): void {
+        this.articlesService.set(this.articlesDeleteUrl);
+        let deletArticleResult: OperationResult = new OperationResult(false, '');
+
+        this.articlesService.delete(articleId)
+            .subscribe(res => {
+                deletArticleResult.Succeeded = res["succeeded"];
+                deletArticleResult.Message = res["message"];
+            },
+            error => {
+                this.notificationService.printErrorMessage(error);
+            },
+            () => {
+                if (deletArticleResult.Succeeded) {
+                    this.notificationService.printSuccessMessage('Article has been deleted');
+                }
+                else {
+                    this.notificationService.printErrorMessage(deletArticleResult.Message);
+                }
+                this.refreshArticles();
+            });
+    };
+
+    refreshArticles(): void {
+        this.articles = [];
         this.getArticles();
     };
 }

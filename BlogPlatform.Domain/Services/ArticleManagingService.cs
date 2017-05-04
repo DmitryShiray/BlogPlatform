@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Domain.Entities;
+using System.Threading.Tasks;
+using BlogPlatform.Infrastructure.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogPlatform.Domain.Services
 {
@@ -13,26 +16,35 @@ namespace BlogPlatform.Domain.Services
             this.context = context;
         }
 
-        public void CreateArticle(int accountId, string title, string content)
+        public async Task CreateArticle(Article article)
         {
-            var article = new Entities.Article() { Title = title, Content = content, AccountId = accountId };
-
-            context.Articles.Add(article);
+            await context.Articles.AddAsync(article);
             context.SaveChanges();
         }
 
-        public void DeleteArticle(int articleId)
+        public void DeleteArticle(int accountId, int articleId)
         {
-            var article = context.Articles.FirstOrDefault(a => a.Id == articleId);
+            var article = context.Articles
+                .Include(a => a.Comments)
+                .Include(a => a.Ratings)
+                .FirstOrDefault(a => a.AccountId == accountId && a.Id == articleId);
 
-            context.Articles.Remove(article);
+            if (article != null)
+            {
+                context.Articles.Remove(article);
+            }
+            else
+            {
+                throw new ServiceException("Wrong article owner id or the specified article doesn't exist");
+            }
+            context.SaveChanges();
         }
 
-        public void UpdateArticle(int articleId, string title, string content)
+        public void UpdateArticle(Article updatedArticle)
         {
-            var article = context.Articles.FirstOrDefault(a => a.Id == articleId);
-            article.Title = title;
-            article.Content = content;
+            var article = context.Articles.FirstOrDefault(a => a.Id == updatedArticle.Id);
+            article.Title = updatedArticle.Title;
+            article.Content = updatedArticle.Content;
 
             context.SaveChanges();
         }

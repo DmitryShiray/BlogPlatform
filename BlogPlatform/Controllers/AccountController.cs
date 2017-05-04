@@ -38,9 +38,6 @@ namespace BlogPlatform.Controllers
                     var claims = new List<Claim>()
                     {
                         {
-                            new Claim(ClaimTypes.NameIdentifier, user.EmailAddress, ClaimValueTypes.String, user.EmailAddress)
-                        },
-                        {
                             new Claim(ClaimTypes.Role, Claims.ClaimsAutorizedRole, ClaimValueTypes.String, user.EmailAddress)
                         }
                     };

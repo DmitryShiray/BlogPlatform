@@ -26,6 +26,17 @@ namespace BlogPlatform.Domain.Services
                 .ToListAsync();
         }
 
+        public async Task<List<Article>> GetAllArticlesForAccount(int accountId)
+        {
+            return await context.Articles
+                .Include(a => a.Account)
+                .Include(a => a.Comments)
+                .Include(a => a.Ratings)
+                .Where(a => a.AccountId == accountId)
+                .OrderBy(a => a.Id)
+                .ToListAsync();
+        }
+
         public async Task<List<Article>> GetArticles(string searchText)
         {
             return await context.Articles
