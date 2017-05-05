@@ -18,6 +18,9 @@ export class ArticlesComponent implements OnInit {
     @Input()
     private showSelectedUserArticlesOnly: boolean;
 
+    @Input()
+    private canManageArticles: boolean;
+
     private articlesReadUrl: string = 'api/articles/';
     private articlesDeleteUrl: string = 'api/articles/';
     private articles: Array<Article>;
@@ -28,6 +31,7 @@ export class ArticlesComponent implements OnInit {
         private activatedRoute: ActivatedRoute) {
         this.articles = [];
         this.showSelectedUserArticlesOnly = false;
+        this.canManageArticles = false;
     }
 
     ngOnInit() {

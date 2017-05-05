@@ -16,12 +16,11 @@ import { NotificationService } from '../../core/services/notificationService';
 
 export class RegisterComponent implements OnInit  {
     private applicationRoutes = ApplicationRoutes;
-    private router: Router;
     private newUser: Registration;
 
     constructor(public membershipService: MembershipService,
                 public notificationService: NotificationService,
-                router: Router) {
+                private router: Router) {
         this.newUser = new Registration('', '', '', '', '', '');
         this.router = router;
     }

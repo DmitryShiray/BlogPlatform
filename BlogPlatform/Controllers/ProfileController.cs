@@ -183,8 +183,8 @@ namespace BlogPlatform.Controllers
 
         private bool IsCurrentUserProfile(string emailAddress)
         {
-            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            return claim != null && claim.Value == emailAddress;
+            var claim = HttpContext.User.FindFirst(ClaimTypes.Role);
+            return claim != null && claim.Issuer == emailAddress;
         }
     }
 }

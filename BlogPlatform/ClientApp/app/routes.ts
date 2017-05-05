@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ArticleComponent } from './components/articles/article.component';
+import { ManageArticleComponent } from './components/articles/manageArticle.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { AddCommentsComponent} from './components/comments/addComments.component';
 import { EditProfileComponent } from './components/profile/editProfile.component';
@@ -54,6 +55,16 @@ const appRoutes: Routes = [
     {
         path: 'addComments',
         component: AddCommentsComponent
+    },
+    {
+        path: 'manageArticle/create',
+        component: ManageArticleComponent,
+        data: { editMode: false }
+    },
+    {
+        path: 'manageArticle/edit/:articleId',
+        component: ManageArticleComponent,
+        data: { editMode: true }
     }
 ];
 

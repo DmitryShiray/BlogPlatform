@@ -62,7 +62,7 @@
     </div>
 
     <div class="row col-md-offset-1">
-        <articles [showSelectedUserArticlesOnly]="true"></articles>
+        <articles [showSelectedUserArticlesOnly]="true" [canManageArticles]="profile.isCurrentUserProfile"></articles>
     </div>
 
 </div>

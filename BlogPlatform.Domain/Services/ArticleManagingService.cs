@@ -32,21 +32,28 @@ namespace BlogPlatform.Domain.Services
             if (article != null)
             {
                 context.Articles.Remove(article);
+                context.SaveChanges();
             }
             else
             {
                 throw new ServiceException("Wrong article owner id or the specified article doesn't exist");
             }
-            context.SaveChanges();
         }
 
         public void UpdateArticle(Article updatedArticle)
         {
-            var article = context.Articles.FirstOrDefault(a => a.Id == updatedArticle.Id);
-            article.Title = updatedArticle.Title;
-            article.Content = updatedArticle.Content;
+            var article = context.Articles.FirstOrDefault(a => a.AccountId == updatedArticle.Account.Id && a.Id == updatedArticle.Id);
 
-            context.SaveChanges();
+            if (article != null)
+            {
+                article.Title = updatedArticle.Title;
+                article.Content = updatedArticle.Content;
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new ServiceException("Wrong article owner id or the specified article doesn't exist");
+            }
         }
     }
 }

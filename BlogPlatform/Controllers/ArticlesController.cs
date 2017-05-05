@@ -181,5 +181,68 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(setRatingResult);
         }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateArticle([FromBody] ArticleViewModel articleViewModel)
+        {
+            BaseResult setRatingResult = null;
+
+            try
+            {
+                Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
+                article.Account = await GetCurrentUserAccount();
+
+                await articleManagingService.CreateArticle(article);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = true
+                };
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Failed to save article " + exception.Message
+                };
+            }
+
+            return new ObjectResult(setRatingResult);
+        }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateArticle([FromBody] ArticleViewModel articleViewModel)
+        {
+            BaseResult setRatingResult = null;
+
+            try
+            {
+                Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
+                article.Account = await GetCurrentUserAccount();
+
+                articleManagingService.UpdateArticle(article);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = true
+                };
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Failed to update article " + exception.Message
+                };
+            }
+
+            return new ObjectResult(setRatingResult);
+        }
+
     }
 }

@@ -1,0 +1,27 @@
+<div class="container">
+        <div class="row article-management-controls">
+            <div class="col-md-10">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" name="title" [(ngModel)]="article.title" #title="ngModel" required />
+                <div [hidden]="!saveButtonClicked || (saveButtonClicked && article.title != null && article.title.length !== 0)" class="alert alert-danger">Title is required</div>
+            </div>
+        </div>
+
+        <div class="row article-management-controls">
+            <div class="col-md-10">
+                <ckeditor [(ngModel)]="article.content"
+                          debounce="500">
+                </ckeditor>
+                <div [hidden]="!saveButtonClicked || (saveButtonClicked && article.content != null && article.content.length !== 0)" class="alert alert-danger">Content is required</div>
+            </div>
+        </div>
+
+        <div class="row article-management-controls">
+            <div class="col-md-10">
+                <div class="text-right">
+                    <button class="btn btn-primary" (click)="navigateBack()">Back</button>
+                    <button class="btn btn-success" (click)="saveArticle()">Save</button>
+                </div>
+            </div>
+        </div>
+</div>

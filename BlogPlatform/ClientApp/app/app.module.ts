@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 
+import { CKEditorModule } from 'ng2-ckeditor';
+
 import { AppComponent } from './components/app/app.component';
 import { BaseComponent } from './components/base/baseComponent.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -15,6 +17,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthorComponent } from './components/author/author.component';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { ArticleComponent } from './components/articles/article.component';
+import { ManageArticleComponent } from './components/articles/manageArticle.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { AddCommentsComponent } from './components/comments/addComments.component';
 import { RatingComponent } from './components/rating/rating.component';
@@ -42,6 +45,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
     imports: [
         UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
         FormsModule,
+        CKEditorModule,
         routing
     ],
     declarations: [
@@ -54,6 +58,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         AuthorComponent,
         ArticlesComponent,
         ArticleComponent,
+        ManageArticleComponent,
         CommentsComponent,
         AddCommentsComponent,
         RatingComponent,

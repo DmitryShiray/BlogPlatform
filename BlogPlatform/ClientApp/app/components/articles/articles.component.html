@@ -15,10 +15,13 @@
 
     <div class="row article-container col-md-10" *ngFor="let article of articles">
         <div>
-
-            <button type="button" class="close" aria-label="Close" (click)="deleteArticle(article.id)" *ngIf="showSelectedUserArticlesOnly">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" (click)="deleteArticle(article.id)" class="close" *ngIf="showSelectedUserArticlesOnly && canManageArticles">
+                <span class="glyphicon glyphicon-remove"></span>
             </button>
+
+            <a [routerLink]="['/manageArticle/edit/', article.id]" class="close" *ngIf="showSelectedUserArticlesOnly && canManageArticles">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
 
             <author [author]="article.author" [dateCreated]="article.dateCreated" [rating]="article.rating"></author>
 
