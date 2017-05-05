@@ -26,13 +26,13 @@ namespace BlogPlatform.Domain.Services
                 .ToListAsync();
         }
 
-        public async Task<List<Article>> GetAllArticlesForAccount(int accountId)
+        public async Task<List<Article>> GetAllArticlesForAccount(Account account)
         {
             return await context.Articles
                 .Include(a => a.Account)
                 .Include(a => a.Comments)
                 .Include(a => a.Ratings)
-                .Where(a => a.AccountId == accountId)
+                .Where(a => a.AccountId == account.Id)
                 .OrderBy(a => a.Id)
                 .ToListAsync();
         }

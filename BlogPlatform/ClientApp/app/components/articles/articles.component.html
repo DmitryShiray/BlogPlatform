@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row" *ngIf="!showCurrentUserArticlesOnly">
+    <div class="row" *ngIf="!showSelectedUserArticlesOnly">
         <div class="col-md-10">
             <h1 class="page-header">
                 Articles
@@ -14,9 +14,9 @@
     </div>
 
     <div class="row article-container col-md-10" *ngFor="let article of articles">
-        <div class="">
+        <div>
 
-            <button type="button" class="close" aria-label="Close" (click)="deleteArticle(article.id)" *ngIf="showCurrentUserArticlesOnly">
+            <button type="button" class="close" aria-label="Close" (click)="deleteArticle(article.id)" *ngIf="showSelectedUserArticlesOnly">
                 <span aria-hidden="true">&times;</span>
             </button>
 

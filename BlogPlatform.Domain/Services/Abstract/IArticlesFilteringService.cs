@@ -8,7 +8,7 @@ namespace BlogPlatform.Domain.Services.Abstract
     {
         Task<List<Article>> GetAllArticles();
 
-        Task<List<Article>> GetAllArticlesForAccount(int accountId);
+        Task<List<Article>> GetAllArticlesForAccount(Account account);
 
         Task<List<Article>> GetArticles(string searchText);
 

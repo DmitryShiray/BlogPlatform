@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BaseProfile } from '../../core/domain/baseProfile';
 import { Article } from '../../core/domain/article';
 import { DataService } from '../../core/services/dataService';
@@ -15,7 +16,7 @@ import { OperationResult } from '../../core/domain/operationResult';
 
 export class ArticlesComponent implements OnInit {
     @Input()
-    private showCurrentUserArticlesOnly: boolean;
+    private showSelectedUserArticlesOnly: boolean;
 
     private articlesReadUrl: string = 'api/articles/';
     private articlesDeleteUrl: string = 'api/articles/';
@@ -23,13 +24,18 @@ export class ArticlesComponent implements OnInit {
 
     constructor(public articlesService: DataService,
         public notificationService: NotificationService,
-        public utilityService: UtilityService) {
+        public utilityService: UtilityService,
+        private activatedRoute: ActivatedRoute) {
         this.articles = [];
-        this.showCurrentUserArticlesOnly = false;
+        this.showSelectedUserArticlesOnly = false;
     }
 
     ngOnInit() {
-        this.articlesReadUrl += this.showCurrentUserArticlesOnly + '/';
+        if (this.showSelectedUserArticlesOnly) {
+            let emailAddress = this.activatedRoute.snapshot.params['emailAddress'];
+            this.articlesReadUrl += emailAddress + '/';
+        }
+
         this.getArticles();
     }
 

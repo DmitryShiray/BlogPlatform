@@ -40,23 +40,36 @@ namespace BlogPlatform.Controllers
             this.commentsService = commentsService;
         }
 
-        [HttpGet("{showCurrentUserArticlesOnly:bool=true}/{page:int=0}/{pageSize=12}")]
-        public async Task<IActionResult> GetArticles(bool showCurrentUserArticlesOnly, int page, int pageSize)
+        [HttpGet("{page:int=0}/{pageSize=12}")]
+        public async Task<IActionResult> GetArticles(string userEmailAddress, int page, int pageSize)
         {
             List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
 
             try
             {
-                IEnumerable<Article> articles = null;
-                if (!showCurrentUserArticlesOnly)
-                {
-                    articles = await articlesFilteringService.GetAllArticles();
-                }
-                else
-                {
-                    Account account = await GetCurrentUserAccount();
-                    articles = await articlesFilteringService.GetAllArticlesForAccount(account.Id);
-                }
+                IEnumerable<Article> articles = articles = await articlesFilteringService.GetAllArticles();
+
+                IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
+
+                return new ObjectResult(articlesViewModel);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+
+            return new ObjectResult(pagedSet);
+        }
+
+        [HttpGet("{userEmailAddress}/{page:int=0}/{pageSize=12}")]
+        public async Task<IActionResult> GetFilteredByAuthorArticles(string userEmailAddress, int page, int pageSize)
+        {
+            List<ArticleViewModel> pagedSet = new List<ArticleViewModel>();
+
+            try
+            {
+                Account account = await accountService.GetAccountProfileAsync(userEmailAddress);
+                IEnumerable<Article> articles = articles = await articlesFilteringService.GetAllArticlesForAccount(account);
 
                 IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
 
