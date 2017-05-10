@@ -104,6 +104,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("setRating")]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public async Task<IActionResult> SetArticleRating([FromBody] RatingViewModel ratingViewModel)
         {
             BaseResult setRatingResult = null;
@@ -135,6 +136,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpDelete("{articleId:int}")]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public async Task<IActionResult> DeleteArticle(int articleId)
         {
             BaseResult setRatingResult = null;
@@ -183,6 +185,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleViewModel articleViewModel)
         {
             BaseResult setRatingResult = null;
@@ -206,7 +209,7 @@ namespace BlogPlatform.Controllers
                 setRatingResult = new BaseResult()
                 {
                     Succeeded = false,
-                    Message = "Failed to save article " + exception.Message
+                    Message = "Failed to create article " + exception.Message
                 };
             }
 
@@ -214,6 +217,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("update")]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public async Task<IActionResult> UpdateArticle([FromBody] ArticleViewModel articleViewModel)
         {
             BaseResult setRatingResult = null;

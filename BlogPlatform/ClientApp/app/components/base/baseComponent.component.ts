@@ -64,6 +64,12 @@ export class BaseComponent implements OnInit, OnDestroy {
         }
     }
 
+    navigateBack(): void {
+        if (isBrowser) {
+            window.history.back();
+        }
+    }
+
     ngOnDestroy() {
         // prevent memory leak when component is destroyed
         this.subscription.unsubscribe();

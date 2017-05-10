@@ -11,6 +11,7 @@ using BlogPlatform.Infrastructure.Exceptions;
 using AutoMapper;
 using System.Security.Claims;
 using Microsoft.Extensions.Caching.Memory;
+using BlogPlatform.Infrastructure.Constants;
 
 namespace BlogPlatform.Controllers
 {
@@ -55,6 +56,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("updateProfile")]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public IActionResult UpdateProfile([FromBody] ProfileViewModel profile)
         {
             BaseResult updateOperationResult = null;
@@ -97,7 +99,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("changePassword")]
-        [Authorize]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public IActionResult ChangePassword([FromBody] ChangePasswordViewModel changePasswordViewModel)
         {
             BaseResult updateOperationResult = null;
@@ -140,7 +142,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpDelete("deleteProfile/{emailAddress}")]
-        [Authorize]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public IActionResult DeleteUserProfile(string emailAddress)
         {
             BaseResult deleteOperationResult = null;

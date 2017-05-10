@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { isBrowser } from 'angular2-universal';
 
 import { ApplicationRoutes } from '../routes';
+import { BaseArticleComponent } from './baseArticle.component';
 import { BaseProfile } from "../../core/domain/baseProfile";
 import { Article } from "../../core/domain/article";
 import { Rating } from "../../core/domain/rating";
@@ -20,16 +21,14 @@ import { OperationResult } from "../../core/domain/operationResult";
     styles: [require("./manageArticle.component.css")]
 })
 
-export class ManageArticleComponent implements OnInit {
+export class ManageArticleComponent extends BaseArticleComponent implements OnInit {
     @Input()
     private editMode: boolean;
 
     private applicationRoutes = ApplicationRoutes;
 
-    private articleReadUrl: string = "api/articles/article/";
     private articleCreateUrl: string = "api/articles/create/";
     private articleUpdateUrl: string = "api/articles/update/";
-    private article: Article;
 
     //used for validation due to angular form binding error caused by ckeditor.
     private saveButtonClicked: boolean;
@@ -40,8 +39,9 @@ export class ManageArticleComponent implements OnInit {
                 public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 public utilityService: UtilityService,
-                private activatedRoute: ActivatedRoute,
+                activatedRoute: ActivatedRoute,
                 private router: Router) {
+        super(articlesService, membershipService, notificationService, activatedRoute);
         let author = new BaseProfile("", "", "", "");
         this.article = new Article(0, "", "", null, 0, 0, 0, author);
         this.articleId = 0;
@@ -60,29 +60,6 @@ export class ManageArticleComponent implements OnInit {
         else {
             this.articlesService.set(this.articleCreateUrl);
         }
-    }
-
-    getArticle(): void {
-        this.articlesService.set(this.articleReadUrl);
-
-        this.articlesService.getItem(this.articleId)
-            .subscribe(res => {
-                let data: any = res.json();
-                let account = data["account"];
-                let author = new BaseProfile(account["firstName"], account["lastName"], account["nickname"], account["emailAddress"]);
-                this.article = new Article(
-                    data["id"],
-                    data["title"],
-                    data["content"],
-                    data["dateCreated"],
-                    data["accountId"],
-                    data["totalComments"],
-                    data["rating"],
-                    author);
-            },
-            error => {
-                this.notificationService.printErrorMessage("Error " + error);
-            });
     }
 
     saveArticle(): void {
@@ -116,11 +93,5 @@ export class ManageArticleComponent implements OnInit {
                     this.notificationService.printErrorMessage(articleCreationResult.Message);
                 }
             });
-    }
-
-    navigateBack(): void {
-        if (isBrowser) {
-            window.history.back();
-        }
     }
 }

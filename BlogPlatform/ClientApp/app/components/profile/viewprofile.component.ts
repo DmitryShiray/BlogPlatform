@@ -3,13 +3,14 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { isBrowser } from 'angular2-universal';
 
 import { ApplicationRoutes } from '../routes';
-import { Profile } from '../../core/domain/profile';
-import { OperationResult } from '../../core/domain/operationResult';
+import { BaseComponent } from '../base/baseComponent.component';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
+import { OperationResult } from '../../core/domain/operationResult';
+import { Profile } from '../../core/domain/profile';
 import { UtilityService } from '../../core/services/utilityService';
-import { Constants } from '../../core/constants';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -20,30 +21,25 @@ import 'rxjs/add/operator/switchMap';
     providers: [MembershipService, DataService, NotificationService]
 })
 
-export class ViewProfileComponent implements OnInit {
+export class ViewProfileComponent extends BaseComponent implements OnInit {
     private profileReadUrl: string = 'api/profile/getUserProfile/';
 
     profile: Profile;
     protected applicationRoutes = ApplicationRoutes;
 
     constructor(public profileService: DataService,
-        public notificationService: NotificationService,
-        public membershipService: MembershipService,
-        public utilityService: UtilityService,
-        protected router: Router,
-        private activatedRoute: ActivatedRoute) {
-        this.profile = new Profile('','','','', null, false);
+                public notificationService: NotificationService,
+                public membershipService: MembershipService,
+                public utilityService: UtilityService,
+                protected router: Router,
+                private activatedRoute: ActivatedRoute) {
+        super(membershipService, notificationService);
+        this.profile = new Profile('', '', '', '', null, false);
     }
 
     ngOnInit() {
         this.profileService.set(this.profileReadUrl);
         this.getProfile();
-    }
-
-    navigateBack(): void {
-        if (isBrowser) {
-            window.history.back();
-        }
     }
 
     navigateToEditProfile(): void {

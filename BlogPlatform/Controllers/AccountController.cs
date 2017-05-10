@@ -84,7 +84,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("logout")]
-        [Authorize]
+        [Authorize(Policy = Claims.ClaimsPolicyName)]
         public async Task<IActionResult> Logout()
         {
             try

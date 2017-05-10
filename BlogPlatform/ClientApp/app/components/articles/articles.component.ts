@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { BaseProfile } from '../../core/domain/baseProfile';
 import { Article } from '../../core/domain/article';
 import { DataService } from '../../core/services/dataService';
