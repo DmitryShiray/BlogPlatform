@@ -23,12 +23,13 @@ export class NotificationService {
     }
 
     printConfirmationDialog(message: string, okCallback: () => any) {
-        this.notifier.confirm(message, function (e) {
-            if (e) {
-                okCallback();
-            } else {
+        this.notifier.confirm(message,
+            function (e) {
+                if (e) {
+                    okCallback();
+                } else {
 
-            }
-        });
+                }
+            });
     }
 }

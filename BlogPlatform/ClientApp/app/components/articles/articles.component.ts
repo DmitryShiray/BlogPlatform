@@ -75,22 +75,25 @@ export class ArticlesComponent implements OnInit {
         this.articlesService.set(this.articlesDeleteUrl);
         let deletArticleResult: OperationResult = new OperationResult(false, '');
 
-        this.articlesService.delete(articleId)
-            .subscribe(res => {
-                deletArticleResult.Succeeded = res["succeeded"];
-                deletArticleResult.Message = res["message"];
-            },
-            error => {
-                this.notificationService.printErrorMessage(error);
-            },
+        this.notificationService.printConfirmationDialog('Do you want to delete this article?',
             () => {
-                if (deletArticleResult.Succeeded) {
-                    this.notificationService.printSuccessMessage('Article has been deleted');
-                }
-                else {
-                    this.notificationService.printErrorMessage(deletArticleResult.Message);
-                }
-                this.refreshArticles();
+                this.articlesService.delete(articleId)
+                    .subscribe(res => {
+                        deletArticleResult.Succeeded = res['succeeded'];
+                        deletArticleResult.Message = res['message'];
+                    },
+                    error => {
+                        this.notificationService.printErrorMessage(error);
+                    },
+                    () => {
+                        if (deletArticleResult.Succeeded) {
+                            this.notificationService.printSuccessMessage('Article has been deleted');
+                        }
+                        else {
+                            this.notificationService.printErrorMessage(deletArticleResult.Message);
+                        }
+                        this.refreshArticles();
+                    });
             });
     };
 
