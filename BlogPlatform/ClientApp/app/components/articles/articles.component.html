@@ -29,8 +29,7 @@
                 <a [routerLink]="['/articles/article/', article.id]">{{article.title}}</a>
             </h3>
 
-            <p>
-                {{article.getPreviewText()}}...
+            <p [innerHTML]="article.getPreviewText()">
             </p>
 
             <p>

@@ -24,8 +24,7 @@
                 <a [routerLink]="['/articles/article/', article.id]">{{article.title}}</a>
             </h3>
 
-            <p>
-                {{article.content}}
+            <p [innerHTML]="article.content">
             </p>
 
             <div class="col-md-6 text-left">
