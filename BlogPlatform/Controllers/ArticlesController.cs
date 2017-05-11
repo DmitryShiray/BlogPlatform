@@ -47,7 +47,7 @@ namespace BlogPlatform.Controllers
 
             try
             {
-                IEnumerable<Article> articles = articles = await articlesFilteringService.GetAllArticles();
+                IEnumerable<Article> articles = await articlesFilteringService.GetAllArticles();
 
                 IEnumerable<ArticleViewModel> articlesViewModel = Mapper.Map<IEnumerable<Article>, IEnumerable<ArticleViewModel>>(articles);
 

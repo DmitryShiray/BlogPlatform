@@ -22,7 +22,7 @@ namespace BlogPlatform.Domain.Services
                 .Include(a => a.Account)
                 .Include(a => a.Comments)
                 .Include(a => a.Ratings)
-                .OrderBy(a => a.Id)
+                .OrderByDescending(a => a.DateCreated)
                 .ToListAsync();
         }
 
@@ -33,7 +33,7 @@ namespace BlogPlatform.Domain.Services
                 .Include(a => a.Comments)
                 .Include(a => a.Ratings)
                 .Where(a => a.AccountId == account.Id)
-                .OrderBy(a => a.Id)
+                .OrderByDescending(a => a.DateCreated)
                 .ToListAsync();
         }
 
@@ -44,7 +44,7 @@ namespace BlogPlatform.Domain.Services
                 .Include(a => a.Comments)
                 .Include(a => a.Ratings)
                 .Where(article => article.Title.Contains(searchText))
-                .OrderBy(a => a.Id)
+                .OrderByDescending(a => a.DateCreated)
                 .ToListAsync();
         }
 
