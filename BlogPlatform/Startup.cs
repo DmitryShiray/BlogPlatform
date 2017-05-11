@@ -107,19 +107,9 @@ namespace BlogPlatform
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.Use(async (context, next) =>
-            {
-                await next();
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
-                if (context.Response.StatusCode == 404
-                    && !Path.HasExtension(context.Request.Path.Value))
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
-
-            app.UseMiddleware<Angular2Middleware>();
+            //app.UseMiddleware<Angular2Middleware>();
 
             app.UseStaticFiles();
 
@@ -137,10 +127,6 @@ namespace BlogPlatform
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
             });
 
             DbInitializer.Initialize(app.ApplicationServices);
