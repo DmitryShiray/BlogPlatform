@@ -50,8 +50,8 @@ export class AddCommentsComponent extends BaseComponent implements OnInit {
 
         this.commentsService.post(this.comment)
             .subscribe(res => {
-                addCommentResult.Succeeded = res["succeeded"];
-                addCommentResult.Message = res["message"];
+                addCommentResult.Succeeded = res['succeeded'];
+                addCommentResult.Message = res['message'];
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);

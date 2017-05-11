@@ -44,8 +44,8 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
 
         this.profileService.post(this.profile)
             .subscribe(res => {
-                updateProfileResult.Succeeded = res["succeeded"];
-                updateProfileResult.Message = res["message"];
+                updateProfileResult.Succeeded = res['succeeded'];
+                updateProfileResult.Message = res['message'];
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
@@ -69,8 +69,8 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
 
         this.profileService.post(this.passwordChange)
             .subscribe(res => {
-                changePasswordResult.Succeeded = res["succeeded"];
-                changePasswordResult.Message = res["message"];
+                changePasswordResult.Succeeded = res['succeeded'];
+                changePasswordResult.Message = res['message'];
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
@@ -91,8 +91,8 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
 
         this.profileService.delete(this.profile.emailAddress)
             .subscribe(res => {
-                deletionResult.Succeeded = res["succeeded"];
-                deletionResult.Message = res["message"];
+                deletionResult.Succeeded = res['succeeded'];
+                deletionResult.Message = res['message'];
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);

@@ -1,24 +1,24 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Component, Input, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { isBrowser } from 'angular2-universal';
 
 import { ApplicationRoutes } from '../routes';
 import { BaseArticleComponent } from './baseArticle.component';
-import { BaseProfile } from "../../core/domain/baseProfile";
-import { Article } from "../../core/domain/article";
-import { Rating } from "../../core/domain/rating";
-import { DataService } from "../../core/services/dataService";
-import { UtilityService } from "../../core/services/utilityService";
-import { MembershipService } from "../../core/services/membershipService";
-import { NotificationService } from "../../core/services/notificationService";
-import { CommentsComponent } from "../comments/comments.component";
-import { BaseComponent } from "../base/baseComponent.component";
-import { OperationResult } from "../../core/domain/operationResult";
+import { BaseProfile } from '../../core/domain/baseProfile';
+import { Article } from '../../core/domain/article';
+import { Rating } from '../../core/domain/rating';
+import { DataService } from '../../core/services/dataService';
+import { UtilityService } from '../../core/services/utilityService';
+import { MembershipService } from '../../core/services/membershipService';
+import { NotificationService } from '../../core/services/notificationService';
+import { CommentsComponent } from '../comments/comments.component';
+import { BaseComponent } from '../base/baseComponent.component';
+import { OperationResult } from '../../core/domain/operationResult';
 
 @Component({
-    selector: "manageArticle",
-    template: require("./manageArticle.component.html"),
-    styles: [require("./manageArticle.component.css")]
+    selector: 'manageArticle',
+    template: require('./manageArticle.component.html'),
+    styles: [require('./manageArticle.component.css')]
 })
 
 export class ManageArticleComponent extends BaseArticleComponent implements OnInit {
@@ -27,8 +27,8 @@ export class ManageArticleComponent extends BaseArticleComponent implements OnIn
 
     private applicationRoutes = ApplicationRoutes;
 
-    private articleCreateUrl: string = "api/articles/create/";
-    private articleUpdateUrl: string = "api/articles/update/";
+    private articleCreateUrl: string = 'api/articles/create/';
+    private articleUpdateUrl: string = 'api/articles/update/';
 
     //used for validation due to angular form binding error caused by ckeditor.
     private saveButtonClicked: boolean;
@@ -42,18 +42,18 @@ export class ManageArticleComponent extends BaseArticleComponent implements OnIn
                 activatedRoute: ActivatedRoute,
                 private router: Router) {
         super(articlesService, membershipService, notificationService, activatedRoute);
-        let author = new BaseProfile("", "", "", "");
-        this.article = new Article(0, "", "", null, 0, 0, 0, author);
+        let author = new BaseProfile('', '', '', '');
+        this.article = new Article(0, '', '', null, 0, 0, 0, author);
         this.articleId = 0;
 
         this.saveButtonClicked = false;
     }
 
     ngOnInit() {
-        this.editMode = this.activatedRoute.snapshot.data["editMode"];
+        this.editMode = this.activatedRoute.snapshot.data['editMode'];
 
         if (this.editMode) {
-            this.articleId = +this.activatedRoute.snapshot.params["articleId"];
+            this.articleId = +this.activatedRoute.snapshot.params['articleId'];
             this.getArticle();
             this.articlesService.set(this.articleUpdateUrl);
         }
@@ -71,22 +71,22 @@ export class ManageArticleComponent extends BaseArticleComponent implements OnIn
             return;
         }
 
-        let articleCreationResult: OperationResult = new OperationResult(false, "");
+        let articleCreationResult: OperationResult = new OperationResult(false, '');
 
         this.article.id = this.articleId;
         this.article.dateCreated = new Date();
 
         this.articlesService.post(this.article)
             .subscribe(res => {
-                articleCreationResult.Succeeded = res["succeeded"];
-                articleCreationResult.Message = res["message"];
+                articleCreationResult.Succeeded = res['succeeded'];
+                articleCreationResult.Message = res['message'];
             },
             error => {
-                this.notificationService.printErrorMessage("Error " + error);
+                this.notificationService.printErrorMessage('Error ' + error);
             },
             () => {
                 if (articleCreationResult.Succeeded) {
-                    this.notificationService.printSuccessMessage("Your article has been saved");
+                    this.notificationService.printSuccessMessage('Your article has been saved');
                     this.router.navigate([this.applicationRoutes.articles.path]);
                 }
                 else {

@@ -35,8 +35,8 @@ export class RegisterComponent implements OnInit  {
         var registrationResult: OperationResult = new OperationResult(false, '');
         this.membershipService.register(this.newUser)
             .subscribe(res => {
-                registrationResult.Succeeded = res["succeeded"];
-                registrationResult.Message = res["message"];
+                registrationResult.Succeeded = res['succeeded'];
+                registrationResult.Message = res['message'];
             },
             error => console.error('Error: ' + error),
             () => {

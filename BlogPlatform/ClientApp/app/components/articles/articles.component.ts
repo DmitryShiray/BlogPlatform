@@ -50,15 +50,15 @@ export class ArticlesComponent implements OnInit {
                 var data: any = res.json();
                 for (let i = 0; i < data.length; i++) {
                     var account = data[i].account;
-                    let author = new BaseProfile(account["firstName"], account["lastName"], account["nickname"], account["emailAddress"]);
+                    let author = new BaseProfile(account['firstName'], account['lastName'], account['nickname'], account['emailAddress']);
                     this.articles.push(new Article(
-                        data[i]["id"],
-                        data[i]["title"],
-                        data[i]["content"],
-                        data[i]["dateCreated"],
-                        data[i]["accountId"],
-                        data[i]["totalComments"],
-                        data[i]["rating"],
+                        data[i]['id'],
+                        data[i]['title'],
+                        data[i]['content'],
+                        data[i]['dateCreated'],
+                        data[i]['accountId'],
+                        data[i]['totalComments'],
+                        data[i]['rating'],
                         author));
                 }
             },

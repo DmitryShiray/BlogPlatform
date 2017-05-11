@@ -45,11 +45,11 @@ export class CommentsComponent implements OnInit {
                 var data: any = res.json();
                 for (let i = 0; i < data.length; i++) {
                     let author = data[i].author;
-                    this.author = new BaseProfile(author["firstName"], author["lastName"], author["nickname"], author["emailAddress"]);
+                    this.author = new BaseProfile(author['firstName'], author['lastName'], author['nickname'], author['emailAddress']);
                     this.comments.push(new Comment(
-                        data[i]["id"],
-                        data[i]["text"],
-                        data[i]["dateAdded"],
+                        data[i]['id'],
+                        data[i]['text'],
+                        data[i]['dateAdded'],
                         this.articleId,
                         this.author));
                 }

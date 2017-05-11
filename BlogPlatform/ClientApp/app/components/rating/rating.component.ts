@@ -1,6 +1,6 @@
-﻿import { Component, OnInit, Input, Output, EventEmitter, HostListener, forwardRef, NgModule } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { CommonModule } from "@angular/common";
+﻿import { Component, OnInit, Input, Output, EventEmitter, HostListener, forwardRef, NgModule } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { Constants } from '../../core/constants';
 
@@ -15,13 +15,13 @@ import { Constants } from '../../core/constants';
 
 export class RatingComponent implements OnInit, ControlValueAccessor {
     @Input()
-    iconClass = "star-icon";
+    iconClass = 'star-icon';
 
     @Input()
-    fullIcon = "★";
+    fullIcon = '★';
 
     @Input()
-    emptyIcon = "☆";
+    emptyIcon = '☆';
 
     @Input()
     float: boolean;

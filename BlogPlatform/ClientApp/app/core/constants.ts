@@ -5,7 +5,7 @@
 }
 
 export const Constants: IConstants = {
-    EmailAddress: "EmailAddress",
+    EmailAddress: 'EmailAddress',
 
     RatingMaxValue: 5
 };

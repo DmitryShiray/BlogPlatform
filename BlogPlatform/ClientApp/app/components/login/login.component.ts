@@ -35,8 +35,8 @@ export class LoginComponent implements OnInit {
 
         this.membershipService.login(this.account)
             .subscribe(res => {
-                authenticationResult.Succeeded = res["succeeded"];
-                authenticationResult.Message = res["message"];
+                authenticationResult.Succeeded = res['succeeded'];
+                authenticationResult.Message = res['message'];
             },
             error => this.notificationService.printErrorMessage('Error: ' + error),
             () => {

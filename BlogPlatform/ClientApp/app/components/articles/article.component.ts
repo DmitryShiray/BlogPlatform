@@ -57,8 +57,8 @@ export class ArticleComponent extends BaseArticleComponent implements OnInit {
 
         this.articlesService.post(this.articleRating)
             .subscribe(res => {
-                addCommentResult.Succeeded = res["succeeded"];
-                addCommentResult.Message = res["message"];
+                addCommentResult.Succeeded = res['succeeded'];
+                addCommentResult.Message = res['message'];
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);

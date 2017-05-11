@@ -38,17 +38,17 @@ export class BaseArticleComponent extends BaseComponent {
         this.articlesService.getItem(articleId)
             .subscribe(res => {
                 let data: any = res.json();
-                let account = data["account"];
-                this.author = new BaseProfile(account["firstName"], account["lastName"], account["nickname"], account["emailAddress"]);
-                this.articleRatingValue = data["rating"];
+                let account = data['account'];
+                this.author = new BaseProfile(account['firstName'], account['lastName'], account['nickname'], account['emailAddress']);
+                this.articleRatingValue = data['rating'];
                 this.article = new Article(
-                    data["id"],
-                    data["title"],
-                    data["content"],
-                    data["dateCreated"],
-                    data["accountId"],
-                    data["totalComments"],
-                    data["rating"],
+                    data['id'],
+                    data['title'],
+                    data['content'],
+                    data['dateCreated'],
+                    data['accountId'],
+                    data['totalComments'],
+                    data['rating'],
                     this.author);
             },
             error => {
