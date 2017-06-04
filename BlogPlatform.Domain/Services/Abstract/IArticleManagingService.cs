@@ -10,5 +10,7 @@ namespace BlogPlatform.Domain.Services.Abstract
         void DeleteArticle(int accountId, int articleId);
 
         void UpdateArticle(Article article);
+
+        bool IsArticleOwner(string emailAddress, int articleId);
     }
 }

@@ -79,12 +79,12 @@ namespace BlogPlatform.Controllers
         [AllowAnonymous]
         public IActionResult IsUserAuthenticated()
         {
-            var authenticationResult = HttpContext.User.HasClaim(c => c.Value == Claims.ClaimsPolicyValue);
+            var authenticationResult = HttpContext.User.HasClaim(c => c.Value == Claims.ClaimsAuthorizedUserPolicyValue);
             return new ObjectResult(new { IsAuthenticated = authenticationResult });
         }
 
         [HttpPost("logout")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public async Task<IActionResult> Logout()
         {
             try

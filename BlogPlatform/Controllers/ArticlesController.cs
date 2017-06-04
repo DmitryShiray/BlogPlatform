@@ -104,7 +104,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("setRating")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public async Task<IActionResult> SetArticleRating([FromBody] RatingViewModel ratingViewModel)
         {
             BaseResult setRatingResult = null;
@@ -134,9 +134,80 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(setRatingResult);
         }
+        
+        [HttpPost("create")]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
+        public async Task<IActionResult> CreateArticle([FromBody] ArticleViewModel articleViewModel)
+        {
+            BaseResult setRatingResult = null;
+
+            try
+            {
+                Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
+                article.Account = await GetCurrentUserAccount();
+
+                await articleManagingService.CreateArticle(article);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = true
+                };
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Failed to create article " + exception.Message
+                };
+            }
+
+            return new ObjectResult(setRatingResult);
+        }
+
+        [HttpPost("update")]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
+        public async Task<IActionResult> UpdateArticle([FromBody] ArticleViewModel articleViewModel)
+        {
+            BaseResult setRatingResult = null;
+
+            try
+            {
+                Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
+                article.Account = await GetCurrentUserAccount();
+
+                if (await authorizationService.AuthorizeAsync(User, article, Claims.ClaimsArticleOwnerPolicyName))
+                {
+                    articleManagingService.UpdateArticle(article);
+
+                    setRatingResult = new BaseResult()
+                    {
+                        Succeeded = true
+                    };
+                }
+                else
+                {
+                    return Forbid();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+
+                setRatingResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Failed to update article " + exception.Message
+                };
+            }
+
+            return new ObjectResult(setRatingResult);
+        }
 
         [HttpDelete("{articleId:int}")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public async Task<IActionResult> DeleteArticle(int articleId)
         {
             BaseResult setRatingResult = null;
@@ -146,7 +217,7 @@ namespace BlogPlatform.Controllers
                 if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsAutorizedRole))
                 {
                     Account account = await GetCurrentUserAccount();
-                    
+
                     articleManagingService.DeleteArticle(account.Id, articleId);
 
                     setRatingResult = new BaseResult()
@@ -183,70 +254,5 @@ namespace BlogPlatform.Controllers
 
             return new ObjectResult(setRatingResult);
         }
-
-        [HttpPost("create")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
-        public async Task<IActionResult> CreateArticle([FromBody] ArticleViewModel articleViewModel)
-        {
-            BaseResult setRatingResult = null;
-
-            try
-            {
-                Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
-                article.Account = await GetCurrentUserAccount();
-
-                await articleManagingService.CreateArticle(article);
-
-                setRatingResult = new BaseResult()
-                {
-                    Succeeded = true
-                };
-            }
-            catch (Exception exception)
-            {
-                Logger.Error(exception);
-
-                setRatingResult = new BaseResult()
-                {
-                    Succeeded = false,
-                    Message = "Failed to create article " + exception.Message
-                };
-            }
-
-            return new ObjectResult(setRatingResult);
-        }
-
-        [HttpPost("update")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
-        public async Task<IActionResult> UpdateArticle([FromBody] ArticleViewModel articleViewModel)
-        {
-            BaseResult setRatingResult = null;
-
-            try
-            {
-                Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
-                article.Account = await GetCurrentUserAccount();
-
-                articleManagingService.UpdateArticle(article);
-
-                setRatingResult = new BaseResult()
-                {
-                    Succeeded = true
-                };
-            }
-            catch (Exception exception)
-            {
-                Logger.Error(exception);
-
-                setRatingResult = new BaseResult()
-                {
-                    Succeeded = false,
-                    Message = "Failed to update article " + exception.Message
-                };
-            }
-
-            return new ObjectResult(setRatingResult);
-        }
-
     }
 }

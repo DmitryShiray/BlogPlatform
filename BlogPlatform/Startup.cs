@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using System.IO;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BlogPlatform.Domain.Services;
 using BlogPlatform.Domain.Services.Abstract;
 using BlogPlatform.Mappings;
-using AspNetCoreAngular2Seed.Infrastructure.Middleware;
 using BlogPlatform.Infrastructure.Cryptography;
 using BlogPlatform.Infrastructure.Constants;
+using Microsoft.AspNetCore.Authorization;
+using BlogPlatform.Domain.Authentication.Requirements;
 
 namespace BlogPlatform
 {
@@ -64,17 +64,21 @@ namespace BlogPlatform
             services.AddScoped<IArticleRatingService, ArticleRatingService>();
             services.AddScoped<PasswordHasher, PasswordHasher>();
 
+            services.AddSingleton<IAuthorizationHandler, ArticleOwnerHandler>();
+
             services.AddAuthentication();
 
-            // Polices
             services.AddAuthorization(options =>
             {
-                // inline policies
-                options.AddPolicy(Claims.ClaimsPolicyName, policy =>
+                options.AddPolicy(Claims.ClaimsAuthorizedUserPolicyName, policy =>
                 {
                     policy.RequireClaim(ClaimTypes.Role, Claims.ClaimsAutorizedRole);
                 });
 
+                options.AddPolicy(Claims.ClaimsArticleOwnerPolicyName, policy =>
+                {
+                    policy.Requirements.Add(new ArticleOwnerRequirement());
+                });
             });
 
             // Add framework services.

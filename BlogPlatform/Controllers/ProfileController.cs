@@ -56,7 +56,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("updateProfile")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public IActionResult UpdateProfile([FromBody] ProfileViewModel profile)
         {
             BaseResult updateOperationResult = null;
@@ -99,7 +99,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpPost("changePassword")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public IActionResult ChangePassword([FromBody] ChangePasswordViewModel changePasswordViewModel)
         {
             BaseResult updateOperationResult = null;
@@ -142,7 +142,7 @@ namespace BlogPlatform.Controllers
         }
 
         [HttpDelete("deleteProfile/{emailAddress}")]
-        [Authorize(Policy = Claims.ClaimsPolicyName)]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public IActionResult DeleteUserProfile(string emailAddress)
         {
             BaseResult deleteOperationResult = null;

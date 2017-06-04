@@ -2,8 +2,12 @@
 {
     public class Claims
     {
-        public const string ClaimsPolicyValue = "AuthorizedUser";
-        public const string ClaimsPolicyName = "AuthorizedUser";
+        public const string ClaimsAuthorizedUserPolicyValue = "AuthorizedUser";
+        public const string ClaimsAuthorizedUserPolicyName = "AuthorizedUser";
         public const string ClaimsAutorizedRole = "AuthorizedUser";
+
+        public const string ClaimsArticleOwnerPolicyValue = "ArticleOwner";
+        public const string ClaimsArticleOwnerPolicyName = "ArticleOwner";
+        public const string ClaimsArticleOwnerRole = "ArticleOwner";
     }
 }

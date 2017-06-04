@@ -4,6 +4,7 @@ using BlogPlatform.Domain.Entities;
 using System.Threading.Tasks;
 using BlogPlatform.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace BlogPlatform.Domain.Services
 {
@@ -54,6 +55,15 @@ namespace BlogPlatform.Domain.Services
             {
                 throw new ServiceException("Wrong article owner id or the specified article doesn't exist");
             }
+        }
+
+        public bool IsArticleOwner(string emailAddress, int articleId)
+        {
+            var account = context.Accounts.FirstOrDefault(a => a.EmailAddress == emailAddress);
+
+            var article = context.Articles.FirstOrDefault(a => a.AccountId == account.Id && a.Id == articleId);
+
+            return article != null;
         }
     }
 }
