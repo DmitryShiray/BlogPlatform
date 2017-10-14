@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BlogPlatform", "BlogPlatform\BlogPlatform.xproj", "{4E064C6A-CA34-4F3A-A7BA-24F415F4C619}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogPlatform", "BlogPlatform\BlogPlatform.csproj", "{4E064C6A-CA34-4F3A-A7BA-24F415F4C619}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BlogPlatform.Infrastructure", "BlogPlatform.Infrastructure\BlogPlatform.Infrastructure.xproj", "{4A95A051-F92E-40A8-BC0F-A8E96AEC6A89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogPlatform.Infrastructure", "BlogPlatform.Infrastructure\BlogPlatform.Infrastructure.csproj", "{4A95A051-F92E-40A8-BC0F-A8E96AEC6A89}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BlogPlatform.Domain", "BlogPlatform.Domain\BlogPlatform.Domain.xproj", "{4157E731-2966-4A0E-8C8D-1E5C6B60B623}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogPlatform.Domain", "BlogPlatform.Domain\BlogPlatform.Domain.csproj", "{4157E731-2966-4A0E-8C8D-1E5C6B60B623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
