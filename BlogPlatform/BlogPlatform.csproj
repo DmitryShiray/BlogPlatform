@@ -4,10 +4,9 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>BlogPlatform</AssemblyName>
-    <OutputType>Exe</OutputType>
     <PackageId>BlogPlatform</PackageId>
     <UserSecretsId>BlogPlatform</UserSecretsId>
-    <RuntimeIdentifiers>win-x64;win8-x64;win81-x64;win10-x64</RuntimeIdentifiers>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);netcore50;dotnet5.6;dnxcore50;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>

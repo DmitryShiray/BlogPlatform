@@ -11,7 +11,7 @@ namespace BlogPlatform.Domain
         public BlogPlatformContext Create(DbContextFactoryOptions options)
         {
             var builder = new DbContextOptionsBuilder<BlogPlatformContext>();
-            builder.UseSqlServer("Server=DESKTOP-2O1M9JS;Database=BlogPlatform;Trusted_Connection=True;MultipleActiveResultSets=true");
+            builder.UseSqlServer("Server=DESKTOP-AR7DG7D;Database=BlogPlatform;Trusted_Connection=True;MultipleActiveResultSets=true");
             return new BlogPlatformContext(builder.Options);
         }
     }
