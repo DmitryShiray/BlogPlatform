@@ -178,7 +178,8 @@ namespace BlogPlatform.Controllers
                 Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
                 article.Account = await GetCurrentUserAccount();
 
-                if (await authorizationService.AuthorizeAsync(User, article, Claims.ClaimsArticleOwnerPolicyName))
+                var authorizationResult = await authorizationService.AuthorizeAsync(User, article, Claims.ClaimsArticleOwnerPolicyName);
+                if (authorizationResult.Succeeded)
                 {
                     articleManagingService.UpdateArticle(article);
 
@@ -214,7 +215,8 @@ namespace BlogPlatform.Controllers
 
             try
             {
-                if (await authorizationService.AuthorizeAsync(User, Claims.ClaimsAutorizedRole))
+                var authorizationResult = await authorizationService.AuthorizeAsync(User, Claims.ClaimsAutorizedRole);
+                if (authorizationResult.Succeeded)
                 {
                     Account account = await GetCurrentUserAccount();
 

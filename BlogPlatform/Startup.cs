@@ -32,9 +32,7 @@ namespace BlogPlatform
 
             if (env.IsDevelopment())
             {
-                // This reads the configuration keys from the secret store.
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
             }
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -51,7 +49,7 @@ namespace BlogPlatform
 
             services.AddDbContext<BlogPlatformContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogPlatformConnection")));
 
-            //  services.AddScoped<AngularAntiForgeryTokenAttribute>();
+            //services.AddScoped<AngularAntiForgeryTokenAttribute>();
             //services.AddAntiforgery(options =>
             //{
             //    options.HeaderName = "X-XSRF-TOKEN";
@@ -66,7 +64,19 @@ namespace BlogPlatform
 
             services.AddSingleton<IAuthorizationHandler, ArticleOwnerHandler>();
 
-            services.AddAuthentication();
+            services.AddAuthentication(o =>
+            {
+                o.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.LoginPath = new PathString("/login");
+                options.LogoutPath = new PathString("/logout");
+                options.SlidingExpiration = true;
+
+            });
 
             services.AddAuthorization(options =>
             {
@@ -102,7 +112,8 @@ namespace BlogPlatform
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
                     HotModuleReplacement = true
                 });
             }
@@ -117,14 +128,8 @@ namespace BlogPlatform
 
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-                LoginPath = new PathString("/login"),
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = false,
-                SlidingExpiration = true,
-            });
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

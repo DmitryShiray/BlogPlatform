@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using Microsoft.AspNetCore.Authorization;
@@ -42,9 +43,9 @@ namespace BlogPlatform.Controllers
                         }
                     };
 
-                    await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                        new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
-                       new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties { IsPersistent = user.RememberMe });
+                       new AuthenticationProperties { IsPersistent = user.RememberMe });
 
                     authenticationResult = new BaseResult()
                     {
@@ -89,7 +90,7 @@ namespace BlogPlatform.Controllers
         {
             try
             {
-                await HttpContext.Authentication.SignOutAsync("Cookies");
+                await HttpContext.SignOutAsync("Cookies");
 
                 return Ok();
             }
