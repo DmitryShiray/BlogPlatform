@@ -30,8 +30,6 @@ export class RegisterComponent implements OnInit  {
     }
 
     register(): void {
-        this.notificationService.printSuccessMessage('Register');
-
         var registrationResult: OperationResult = new OperationResult(false, '');
         this.membershipService.register(this.newUser)
             .subscribe(res => {

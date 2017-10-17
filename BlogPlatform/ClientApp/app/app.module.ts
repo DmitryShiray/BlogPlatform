@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UniversalModule } from 'angular2-universal';
-import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 
@@ -43,9 +43,10 @@ class AppBaseRequestOptions extends BaseRequestOptions {
 
 @NgModule({
     imports: [
-        UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
+        BrowserModule,
         FormsModule,
         CKEditorModule,
+        HttpModule,
         routing
     ],
     declarations: [
@@ -68,7 +69,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
     ],
     providers: [DataService, MembershipService, UtilityService, NotificationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: RequestOptions, useClass: AppBaseRequestOptions }],
+        { provide: RequestOptions, useClass: AppBaseRequestOptions },
+        { provide: 'isBrowser', useValue: true }],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

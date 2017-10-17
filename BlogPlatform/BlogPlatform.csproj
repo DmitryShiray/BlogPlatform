@@ -7,8 +7,16 @@
     <PackageId>BlogPlatform</PackageId>
     <UserSecretsId>BlogPlatform</UserSecretsId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>    
-    <PackageTargetFallback>$(PackageTargetFallback);netcore50;dotnet5.6;dnxcore50;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\boot-client.js" />
+    <None Remove="ClientApp\boot-client.js.map" />
+    <None Remove="ClientApp\boot-server.js" />
+    <None Remove="ClientApp\boot-server.js.map" />
+    <None Remove="ClientApp\boot-server.ts" />
+    <None Remove="ClientApp\dist\vendor.ts" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="ClientApp\dist\**\*;node_modules\**\*;Views\**\*;wwwroot\**\*">
@@ -25,6 +33,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.AngularServices" Version="1.0.0-*" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
     <PackageReference Include="NETStandard.Library" Version="2.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.0" />
@@ -43,6 +52,24 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration.Tools" Version="1.1.0-preview4-final" />
     <PackageReference Include="AutoMapper" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\dist\polyfills.ts" />
+    <TypeScriptCompile Include="ClientApp\dist\vendor.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\dist\polyfills.js">
+      <DependentUpon>polyfills.ts</DependentUpon>
+    </None>
+    <None Update="ClientApp\dist\polyfills.js.map">
+      <DependentUpon>polyfills.js</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\" />
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">

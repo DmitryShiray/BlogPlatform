@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { enableProdMode } from '@angular/core';
-import { isBrowser } from 'angular2-universal';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
 
-enableProdMode();
 import { Account } from '../../core/domain/account';
 import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
@@ -18,12 +16,15 @@ import { NotificationService } from '../../core/services/notificationService';
 })
 
 export class BaseComponent implements OnInit, OnDestroy {
+    protected isBrowser: boolean = isPlatformBrowser(this.platform_id);
+
     protected isUserAuthenticated: boolean;
     protected subscription: Subscription;
     protected emaiAddress: string;
 
-    constructor(public membershipService: MembershipService,
-        public notificationService: NotificationService) {
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public membershipService: MembershipService,
+                public notificationService: NotificationService) {
         this.isUserAuthenticated = false;
 
         this.subscription = this.membershipService.isAuthenticated$
@@ -43,7 +44,7 @@ export class BaseComponent implements OnInit, OnDestroy {
             .subscribe(res => {
                 userAuthenticationResult = res['isAuthenticated'];
             },
-            error => {
+            error => { 
                 this.notificationService.printErrorMessage('Error: ' + error);
             },
             () => {
@@ -65,7 +66,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
 
     navigateBack(): void {
-        if (isBrowser) {
+        if (this.isBrowser) {
             window.history.back();
         }
     }

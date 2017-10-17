@@ -2,10 +2,11 @@ li .glyphicon {
     margin-right: 10px;
 }
 
+
 /* Highlighting rules for nav menu items */
-li.link-active a,
-li.link-active a:hover,
-li.link-active a:focus {
+.navbar-nav > li.link-active > a,
+.navbar-nav > li.link-active > a:hover,
+.navbar-nav > li.link-active > a:focus {
     background-color: #4189C7;
     color: white;
 }

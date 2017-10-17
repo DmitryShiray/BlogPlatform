@@ -1,6 +1,5 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { isBrowser } from 'angular2-universal';
 
 import { ApplicationRoutes } from '../routes';
 import { BaseComponent } from '../base/baseComponent.component';
@@ -27,17 +26,19 @@ export class ViewProfileComponent extends BaseComponent implements OnInit {
     profile: Profile;
     protected applicationRoutes = ApplicationRoutes;
 
-    constructor(public profileService: DataService,
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public profileService: DataService,
                 public notificationService: NotificationService,
                 public membershipService: MembershipService,
                 public utilityService: UtilityService,
                 protected router: Router,
                 private activatedRoute: ActivatedRoute) {
-        super(membershipService, notificationService);
+        super(platform_id, membershipService, notificationService);
         this.profile = new Profile('', '', '', '', null, false);
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.profileService.set(this.profileReadUrl);
         this.getProfile();
     }
@@ -47,8 +48,6 @@ export class ViewProfileComponent extends BaseComponent implements OnInit {
     }
     
     getProfile(): void {
-        this.notificationService.printSuccessMessage('Getting profile');
-
         let emailAddress = this.activatedRoute.snapshot.params['emailAddress'];
 
         this.profileService.getItem(emailAddress)

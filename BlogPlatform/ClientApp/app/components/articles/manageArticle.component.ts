@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { isBrowser } from 'angular2-universal';
 
 import { ApplicationRoutes } from '../routes';
 import { BaseArticleComponent } from './baseArticle.component';
@@ -35,13 +34,14 @@ export class ManageArticleComponent extends BaseArticleComponent implements OnIn
 
     private articleId: number;
 
-    constructor(public articlesService: DataService,
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public articlesService: DataService,
                 public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 public utilityService: UtilityService,
                 activatedRoute: ActivatedRoute,
                 private router: Router) {
-        super(articlesService, membershipService, notificationService, activatedRoute);
+        super(platform_id, articlesService, membershipService, notificationService, activatedRoute);
         let author = new BaseProfile('', '', '', '');
         this.article = new Article(0, '', '', null, 0, 0, 0, author);
         this.articleId = 0;
@@ -50,6 +50,7 @@ export class ManageArticleComponent extends BaseArticleComponent implements OnIn
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.editMode = this.activatedRoute.snapshot.data['editMode'];
 
         if (this.editMode) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { Article } from '../../core/domain/article';
@@ -21,11 +21,12 @@ export class BaseArticleComponent extends BaseComponent {
     protected author: BaseProfile;
     protected articleRatingValue: number;
 
-    constructor(public articlesService: DataService,
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public articlesService: DataService,
                 public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 protected activatedRoute: ActivatedRoute) {
-        super(membershipService, notificationService);
+        super(platform_id, membershipService, notificationService);
         this.author = new BaseProfile('', '', '', '');
         this.article = new Article(0, '', '', null, 0, 0, 0, this.author);
     }

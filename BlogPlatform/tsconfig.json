@@ -1,4 +1,4 @@
-{
+﻿{
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es5",
@@ -6,6 +6,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipDefaultLibCheck": true,
+    "noImplicitAny": false,
     "lib": [ "es6", "dom" ],
     "types": [ "node" ]
   },

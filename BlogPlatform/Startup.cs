@@ -18,6 +18,7 @@ using BlogPlatform.Infrastructure.Cryptography;
 using BlogPlatform.Infrastructure.Constants;
 using Microsoft.AspNetCore.Authorization;
 using BlogPlatform.Domain.Authentication.Requirements;
+using System.Collections.Generic;
 
 namespace BlogPlatform
 {
@@ -75,7 +76,6 @@ namespace BlogPlatform
                 options.LoginPath = new PathString("/login");
                 options.LogoutPath = new PathString("/logout");
                 options.SlidingExpiration = true;
-
             });
 
             services.AddAuthorization(options =>
@@ -92,6 +92,7 @@ namespace BlogPlatform
             });
 
             // Add framework services.
+            services.AddNodeServices();
             services.AddMvc();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -114,7 +115,11 @@ namespace BlogPlatform
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacement = true
+                    HotModuleReplacement = true,
+                    EnvironmentVariables = new Dictionary<string, string>()
+                    {
+                        {"NODE_ENV", "production"}
+                    }
                 });
             }
             else
@@ -123,8 +128,6 @@ namespace BlogPlatform
             }
 
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
-            //app.UseMiddleware<Angular2Middleware>();
 
             app.UseStaticFiles();
 

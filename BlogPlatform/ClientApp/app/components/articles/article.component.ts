@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { BaseProfile } from '../../core/domain/baseProfile';
@@ -26,18 +26,20 @@ export class ArticleComponent extends BaseArticleComponent implements OnInit {
     @ViewChild(CommentsComponent)
     private commentsComponent: CommentsComponent;
 
-    constructor(public articlesService: DataService,
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public articlesService: DataService,
                 public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 public utilityService: UtilityService,
                 activatedRoute: ActivatedRoute) {
-        super(articlesService, membershipService, notificationService, activatedRoute);
+        super(platform_id, articlesService, membershipService, notificationService, activatedRoute);
         this.author = new BaseProfile('', '', '', '');
         this.article = new Article(0, '', '', null, 0, 0, 0, this.author);
         this.articleRating = new Rating(0, 0, null, 0, this.author);
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.getArticle();
     }
 

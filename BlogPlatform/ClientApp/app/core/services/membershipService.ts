@@ -1,6 +1,5 @@
 ﻿import { Http, Response, Request } from '@angular/http';
-import { Injectable } from '@angular/core';
-import { isBrowser } from 'angular2-universal';
+import { Injectable, Inject } from '@angular/core';
 import { DataService } from './dataService';
 import { Registration } from '../domain/registration';
 import { Account } from '../domain/account';
@@ -23,7 +22,8 @@ export class MembershipService {
         this.isAuthenticated.next(value);
     }
 
-    constructor(public accountService: DataService) {
+    constructor(@Inject('isBrowser') private isBrowser: boolean,
+                public accountService: DataService) {
     }
 
     register(newUser: Registration) {
@@ -47,7 +47,7 @@ export class MembershipService {
     }
 
     getLoggedInAccount() {
-        if (isBrowser) {
+        if (this.isBrowser) {
             return localStorage.getItem(Constants.EmailAddress);
         }
 

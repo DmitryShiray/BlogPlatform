@@ -1,6 +1,5 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { isBrowser } from 'angular2-universal';
 
 import { ViewProfileComponent } from './viewProfile.component';
 
@@ -27,13 +26,14 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
 
     private passwordChange: PasswordChange;
 
-    constructor(public profileService: DataService,
-        public notificationService: NotificationService,
-        public membershipService: MembershipService,
-        public utilityService: UtilityService,
-        protected router: Router,
-        activatedRoute: ActivatedRoute) {
-        super(profileService, notificationService, membershipService, utilityService, router, activatedRoute);
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public profileService: DataService,
+                public notificationService: NotificationService,
+                public membershipService: MembershipService,
+                public utilityService: UtilityService,
+                protected router: Router,
+                activatedRoute: ActivatedRoute) {
+        super(platform_id, profileService, notificationService, membershipService, utilityService, router, activatedRoute);
         this.passwordChange = new PasswordChange();
     }
 
@@ -101,7 +101,7 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
             () => {
                 if (deletionResult.Succeeded) {
                     this.membershipService.setIsAuthenticated(false);
-                    if (isBrowser) {
+                    if (this.isBrowser) {
                         localStorage.removeItem(Constants.EmailAddress);
                     }
 

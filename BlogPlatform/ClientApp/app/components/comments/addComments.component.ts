@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseProfile } from '../../core/domain/baseProfile';
@@ -26,17 +26,19 @@ export class AddCommentsComponent extends BaseComponent implements OnInit {
     @Output()
     public onCommentAdded = new EventEmitter<Comment>();
 
-    constructor(public commentsService: DataService,
+    constructor(@Inject(PLATFORM_ID) protected platform_id,
+                public commentsService: DataService,
                 public notificationService: NotificationService,
                 public membershipService: MembershipService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
-        super(membershipService, notificationService);
+        super(platform_id, membershipService, notificationService);
         let author = new BaseProfile('', '', '', '');
         this.comment = new Comment(0, '', null, 0, author);
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.comment.articleId = +this.activatedRoute.snapshot.params['articleId'];
         this.commentsService.set(this.commentsAddUrl);
     }

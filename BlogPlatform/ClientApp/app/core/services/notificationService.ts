@@ -1,11 +1,10 @@
-﻿import { Injectable } from '@angular/core';
-import { isBrowser } from 'angular2-universal';
+﻿import { Injectable, Inject } from '@angular/core';
 
 @Injectable()
 export class NotificationService {
     private notifier: any;
 
-    constructor() {
+    constructor(@Inject('isBrowser') private isBrowser: boolean) {
         if (isBrowser) {
             this.notifier = require('alertify.js');
 

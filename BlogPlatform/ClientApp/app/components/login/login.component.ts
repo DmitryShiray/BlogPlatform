@@ -1,6 +1,5 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isBrowser } from 'angular2-universal';
 import { ApplicationRoutes } from '../routes';
 import { Account } from '../../core/domain/account';
 import { OperationResult } from '../../core/domain/operationResult';
@@ -20,7 +19,8 @@ export class LoginComponent implements OnInit {
     private account: Account;
     private applicationRoutes = ApplicationRoutes;
 
-    constructor(public membershipService: MembershipService,
+    constructor(@Inject('isBrowser') private isBrowser: boolean,
+                public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 router: Router) {
         this.account = new Account('', '');
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
                 this.membershipService.setIsAuthenticated(authenticationResult.Succeeded);
 
                 if (authenticationResult.Succeeded) {
-                    if (isBrowser) {
+                    if (this.isBrowser) {
                         localStorage.setItem(Constants.EmailAddress, this.account.emailAddress);
                     }
 
