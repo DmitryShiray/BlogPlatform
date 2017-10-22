@@ -90,7 +90,7 @@ namespace BlogPlatform.Controllers
         {
             try
             {
-                await HttpContext.SignOutAsync("Cookies");
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
                 return Ok();
             }
@@ -138,7 +138,7 @@ namespace BlogPlatform.Controllers
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "Failed to authenticate");
+                Logger.Error(exception, "Failed to register");
 
                 registrationResult = new BaseResult()
                 {

@@ -2,21 +2,23 @@
 {
     public class CodeResultStatus
     {
-        private int _status;
-        private string _message;
+        private int status;
+        private string message;
+
         public int Status
         {
             get
             {
-                return _status;
+                return status;
             }
+
             private set { }
         }
         public string Message
         {
             get
             {
-                return _message;
+                return message;
             }
             private set { }
         }
@@ -24,15 +26,17 @@
         public CodeResultStatus(int status)
         {
             if (status == 401)
-                _message = "Unauthorized access. Login required";
+            {
+                message = "Unauthorized access. Login required";
+            }
 
-            _status = status;
+            this.status = status;
         }
 
         public CodeResultStatus(int code, string message)
         {
-            _status = code;
-            _message = message;
+            status = code;
+            this.message = message;
         }
     }
 }
