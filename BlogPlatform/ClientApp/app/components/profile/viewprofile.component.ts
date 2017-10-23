@@ -21,7 +21,7 @@ import 'rxjs/add/operator/switchMap';
 })
 
 export class ViewProfileComponent extends BaseComponent implements OnInit {
-    private profileReadUrl: string = 'api/profile/getUserProfile/';
+    private profileReadUrl = Constants.BaseUrl + 'api/profile/getUserProfile/';
 
     profile: Profile;
     protected applicationRoutes = ApplicationRoutes;

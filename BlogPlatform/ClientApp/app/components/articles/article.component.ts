@@ -12,6 +12,7 @@ import { NotificationService } from '../../core/services/notificationService';
 import { CommentsComponent } from '../comments/comments.component';
 import { BaseComponent } from '../base/baseComponent.component';
 import { OperationResult } from '../../core/domain/operationResult';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'article',
@@ -20,7 +21,7 @@ import { OperationResult } from '../../core/domain/operationResult';
 })
 
 export class ArticleComponent extends BaseArticleComponent implements OnInit {
-    private articleSetRatingUrl: string = 'api/articles/setRating/';
+    private articleSetRatingUrl = Constants.BaseUrl + 'api/articles/setRating/';
     private articleRating: Rating;
 
     @ViewChild(CommentsComponent)

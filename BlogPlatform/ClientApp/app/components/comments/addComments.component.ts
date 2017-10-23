@@ -8,6 +8,7 @@ import { BaseComponent } from '../base/baseComponent.component';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
 import { OperationResult } from '../../core/domain/operationResult';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'addComments',

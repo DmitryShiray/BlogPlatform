@@ -31,8 +31,25 @@ module.exports = {
                 ]
             },
             {
+                test: /\.scss$/,
+                include: path.join(__dirname, 'ClientApp/styles'),
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.scss$/,
+                exclude: path.join(__dirname, 'ClientApp/styles'),
+                use: [
+                    'raw-loader',
+                    'sass-loader'
+                ]
+            },
+            {
                 test: /\.html$/,
-                use: 'html-loader'
+                use: 'raw-loader'
             }
         ],
         exprContextCritical: false

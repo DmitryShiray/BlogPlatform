@@ -10,24 +10,25 @@ const helpers = require('./webpack.helpers');
 
 const ROOT = path.resolve(__dirname, '..');
 
-module.exports = {
-    devtool: 'source-map',
+console.log('@@@@@@@@@ USING DEVELOPMENT @@@@@@@@@@@@@@@');
 
+module.exports = {
+
+    devtool: 'source-map',
     performance: {
         hints: false
     },
-
     entry: {
-        'polyfills': './ClientApp/dist/polyfills.ts',
-        'vendor': './ClientApp/dist/vendor.ts',
-        'app': './ClientApp/app/main.ts'
+        'polyfills': './ClientApp/polyfills.ts',
+        'vendor': './ClientApp/vendor.ts',
+        'app': './ClientApp/main.ts'
     },
 
     output: {
-        path: ROOT + '/wwwroot/dist/',
-        filename: '[name].bundle.js',
-        chunkFilename: '[id].chunk.js',
-        publicPath: '/dist/'
+        path: ROOT + '/wwwroot/',
+        filename: 'dist/[name].bundle.js',
+        chunkFilename: 'dist/[id].chunk.js',
+        publicPath: '/'
     },
 
     resolve: {
@@ -36,7 +37,6 @@ module.exports = {
 
     devServer: {
         historyApiFallback: true,
-        hot: true,
         contentBase: path.join(ROOT, '/wwwroot/'),
         watchOptions: {
             aggregateTimeout: 300,
@@ -52,7 +52,8 @@ module.exports = {
                     'awesome-typescript-loader',
                     'angular-router-loader',
                     'angular2-template-loader',
-                    'source-map-loader'
+                    'source-map-loader',
+                    'tslint-loader'
                 ]
             },
             {
@@ -73,23 +74,13 @@ module.exports = {
             },
             {
                 test: /\.html$/,
-                use: 'raw-loader',
+                use: 'raw-loader'
             }
         ],
         exprContextCritical: false
     },
-
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin(
-            {
-                name: ['vendor', 'polyfills']
-            }),
-
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('development')
-            }
-        }),
+        new webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'polyfills'] }),
 
         new CleanWebpackPlugin(
             [
@@ -103,7 +94,12 @@ module.exports = {
             filename: '../Views/Home/Index.cshtml',
             inject: 'body',
             template: 'ClientApp/Index.cshtml'
-        })
+        }),
+
+        new CopyWebpackPlugin([
+            { from: './ClientApp/images/*.*', to: 'assets/', flatten: true }
+        ])
     ]
+
 };
 

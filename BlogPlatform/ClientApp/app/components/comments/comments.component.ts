@@ -6,6 +6,7 @@ import { DataService } from '../../core/services/dataService';
 import { UtilityService } from '../../core/services/utilityService';
 import { NotificationService } from '../../core/services/notificationService';
 import { Subscription } from 'rxjs/Subscription';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'comments',
@@ -16,7 +17,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 export class CommentsComponent implements OnInit {
     private articleId: number;
-    private commentsReadUrl: string = 'api/comments/';
+    private commentsReadUrl = Constants.BaseUrl + 'api/comments/';
     private comments: Array<Comment>;
     private author: BaseProfile;
     private isGettingCommentsInProgress: boolean;

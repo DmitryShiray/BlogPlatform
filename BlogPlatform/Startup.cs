@@ -45,7 +45,8 @@ namespace BlogPlatform
         public void ConfigureServices(IServiceCollection services)
         {
             AutoMapperConfiguration.Configure();
-
+            
+            services.AddOptions();
             services.AddMemoryCache();
 
             services.AddDbContext<BlogPlatformContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogPlatformConnection")));
@@ -113,14 +114,6 @@ namespace BlogPlatform
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true,
-                    EnvironmentVariables = new Dictionary<string, string>()
-                    {
-                        {"NODE_ENV", "production"}
-                    }
-                });
             }
             else
             {

@@ -13,6 +13,7 @@ import { NotificationService } from '../../core/services/notificationService';
 import { CommentsComponent } from '../comments/comments.component';
 import { BaseComponent } from '../base/baseComponent.component';
 import { OperationResult } from '../../core/domain/operationResult';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'manageArticle',
@@ -26,8 +27,8 @@ export class ManageArticleComponent extends BaseArticleComponent implements OnIn
 
     private applicationRoutes = ApplicationRoutes;
 
-    private articleCreateUrl: string = 'api/articles/create/';
-    private articleUpdateUrl: string = 'api/articles/update/';
+    private articleCreateUrl = Constants.BaseUrl + 'api/articles/create/';
+    private articleUpdateUrl = Constants.BaseUrl + 'api/articles/update/';
 
     //used for validation due to angular form binding error caused by ckeditor.
     private saveButtonClicked: boolean;

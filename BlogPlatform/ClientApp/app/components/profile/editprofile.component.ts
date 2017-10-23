@@ -20,9 +20,9 @@ import { Constants } from '../../core/constants';
 })
 
 export class EditProfileComponent extends ViewProfileComponent implements OnInit {
-    private profileDeleteUrl: string = 'api/profile/deleteProfile/';
-    private profileUpdateUrl: string = 'api/profile/updateProfile/';
-    private changePasswordUrl: string = 'api/profile/changePassword/';
+    private profileDeleteUrl = Constants.BaseUrl + 'api/profile/deleteProfile/';
+    private profileUpdateUrl = Constants.BaseUrl + 'api/profile/updateProfile/';
+    private changePasswordUrl = Constants.BaseUrl + 'api/profile/changePassword/';
 
     private passwordChange: PasswordChange;
 

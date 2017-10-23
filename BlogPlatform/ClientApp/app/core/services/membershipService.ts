@@ -6,15 +6,15 @@ import { Account } from '../domain/account';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { Constants } from '../../core/constants';
+import { Constants } from '../constants';
 
 @Injectable()
 export class MembershipService {
-    private accountRegisterAPI: string = '/api/account/register/';
-    private accountLoginAPI: string = '/api/account/login/';
-    private accountAuthenticationAPI: string = '/api/account/isUserAuthenticated/';
-    private accountGetLoggedInUserAPI: string = '/api/account/getLoggedInAccount/';
-    private accountLogoutAPI: string = '/api/account/logout/';
+    private accountRegisterAPI = Constants.BaseUrl + 'api/account/register/';
+    private accountLoginAPI = Constants.BaseUrl + 'api/account/login/';
+    private accountAuthenticationAPI = Constants.BaseUrl + 'api/account/isUserAuthenticated/';
+    private accountGetLoggedInUserAPI = Constants.BaseUrl + 'api/account/getLoggedInAccount/';
+    private accountLogoutAPI = Constants.BaseUrl + 'api/account/logout/';
 
     private isAuthenticated = new BehaviorSubject<boolean>(false);
     isAuthenticated$ = this.isAuthenticated.asObservable();

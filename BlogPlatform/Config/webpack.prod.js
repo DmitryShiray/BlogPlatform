@@ -5,24 +5,28 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ngToolsWebpack = require('@ngtools/webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const helpers = require('./webpack.helpers');
 
 const ROOT = path.resolve(__dirname, '..');
 
+console.log('@@@@@@@@@ USING PRODUCTION @@@@@@@@@@@@@@@');
+
 module.exports = {
 
     entry: {
-        'polyfills': './ClientApp/dist/polyfills.ts',
-        'vendor': './ClientApp/dist/vendor.ts',
-        'app': './ClientApp/app/main.ts'
+        'vendor': './ClientApp/vendor.ts',
+        'polyfills': './ClientApp/polyfills.ts',
+        'app': './ClientApp/main-aot.ts' // AoT compilation
     },
 
     output: {
-        path: ROOT + '/wwwroot/dist/',
-        filename: '[name].bundle.js',
-        chunkFilename: '[id].chunk.js',
-        publicPath: '/dist/'
+        path: ROOT + '/wwwroot/',
+        filename: '[name].[hash].bundle.js',
+        chunkFilename: '[id].[hash].chunk.js',
+        publicPath: ''
     },
 
     resolve: {
@@ -32,19 +36,14 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         stats: 'minimal',
-        outputPath: path.join(ROOT, '/wwwroot/')
+        outputPath: path.join(ROOT, 'wwwroot/')
     },
 
     module: {
         rules: [
             {
                 test: /\.ts$/,
-                use: [
-                    'awesome-typescript-loader',
-                    'angular-router-loader',
-                    'angular2-template-loader',
-                    'source-map-loader'
-                ]
+                use: '@ngtools/webpack'
             },
             {
                 test: /\.(png|jpg|gif|woff|woff2|ttf|svg|eot)$/,
@@ -57,50 +56,40 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'css-to-string-loader',
                     'style-loader',
                     'css-loader'
                 ]
             },
             {
                 test: /\.html$/,
-                use: 'raw-loader',
+                use: 'raw-loader'
             }
         ],
         exprContextCritical: false
     },
 
     plugins: [
+        // AoT plugin.
+        new ngToolsWebpack.AotPlugin({
+            tsConfigPath: './tsconfig-aot.json'
+        }),
+        new CleanWebpackPlugin(
+            [
+                './wwwroot/'
+            ],
+            { root: ROOT }
+        ),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new UglifyJSPlugin({
+            parallel: {
+                cache: true,
+                workers: 2
+            }
+        }),
         new webpack.optimize.CommonsChunkPlugin(
             {
                 name: ['vendor', 'polyfills']
             }),
-
-        new CleanWebpackPlugin(
-            [
-                './wwwroot/dist',
-                './wwwroot/assets'
-            ],
-            { root: ROOT }
-        ),
-
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production')
-            }
-        }),
-
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            output: {
-                comments: false
-            },
-            sourceMap: false
-        }),
-
-        new webpack.NoEmitOnErrorsPlugin(),
 
         new HtmlWebpackPlugin({
             filename: '../Views/Home/Index.cshtml',

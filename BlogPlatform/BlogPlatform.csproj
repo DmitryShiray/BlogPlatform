@@ -10,16 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApp\dist\**" />
+    <Content Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\dist\**" />
+    <None Remove="ClientApp\dist\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\boot-client.js" />
     <None Remove="ClientApp\boot-client.js.map" />
     <None Remove="ClientApp\boot-server.js" />
     <None Remove="ClientApp\boot-server.js.map" />
     <None Remove="ClientApp\boot-server.ts" />
-    <None Remove="ClientApp\dist\vendor.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ClientApp\dist\**\*;node_modules\**\*;Views\**\*;wwwroot\**\*">
+    <None Update="node_modules\**\*;Views\**\*;wwwroot\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
@@ -55,21 +61,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\dist\polyfills.ts" />
-    <TypeScriptCompile Include="ClientApp\dist\vendor.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ClientApp\dist\polyfills.js">
-      <DependentUpon>polyfills.ts</DependentUpon>
-    </None>
-    <None Update="ClientApp\dist\polyfills.js.map">
-      <DependentUpon>polyfills.js</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Config\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ClientApp\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="ClientApp\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">

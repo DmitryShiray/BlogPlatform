@@ -8,6 +8,7 @@ import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
 import { OperationResult } from '../../core/domain/operationResult';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'baseArticle',
@@ -16,7 +17,7 @@ import { OperationResult } from '../../core/domain/operationResult';
 })
 
 export class BaseArticleComponent extends BaseComponent {
-    protected articleReadUrl: string = 'api/articles/article/';
+    protected articleReadUrl: string = Constants.BaseUrl + 'api/articles/article/';
     protected article: Article;
     protected author: BaseProfile;
     protected articleRatingValue: number;

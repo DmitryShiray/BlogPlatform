@@ -6,6 +6,7 @@ import { DataService } from '../../core/services/dataService';
 import { UtilityService } from '../../core/services/utilityService';
 import { NotificationService } from '../../core/services/notificationService';
 import { OperationResult } from '../../core/domain/operationResult';
+import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'articles',
@@ -21,8 +22,8 @@ export class ArticlesComponent implements OnInit {
     @Input()
     private canManageArticles: boolean;
 
-    private articlesReadUrl: string = 'api/articles/';
-    private articlesDeleteUrl: string = 'api/articles/';
+    private articlesReadUrl = Constants.BaseUrl + 'api/articles/';
+    private articlesDeleteUrl = Constants.BaseUrl + 'api/articles/';
     private articles: Array<Article>;
 
     constructor(public articlesService: DataService,
