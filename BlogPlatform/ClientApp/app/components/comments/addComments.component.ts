@@ -50,7 +50,6 @@ export class AddCommentsComponent extends BaseComponent implements OnInit {
         this.comment.dateAdded = new Date();
         this.comment.text = this.commentText;
 
-
         this.commentsService.post(this.comment)
             .subscribe(res => {
                 addCommentResult.Succeeded = res['succeeded'];
@@ -63,7 +62,7 @@ export class AddCommentsComponent extends BaseComponent implements OnInit {
                 if (addCommentResult.Succeeded) {
                     this.notificationService.printSuccessMessage('Your comment has been added');
                     this.onCommentAdded.emit(this.comment);
-                    this.comment.text = '';
+                    this.commentText = ' ';
                 }
                 else {
                     this.notificationService.printErrorMessage(addCommentResult.Message);

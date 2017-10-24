@@ -13,6 +13,7 @@ import { CommentsComponent } from '../comments/comments.component';
 import { BaseComponent } from '../base/baseComponent.component';
 import { OperationResult } from '../../core/domain/operationResult';
 import { Constants } from '../../core/constants';
+import { SignalRService } from '../../core/services/signalRService';
 
 @Component({
     selector: 'article',
@@ -32,6 +33,7 @@ export class ArticleComponent extends BaseArticleComponent implements OnInit {
                 public membershipService: MembershipService,
                 public notificationService: NotificationService,
                 public utilityService: UtilityService,
+                private signalRService: SignalRService,
                 activatedRoute: ActivatedRoute) {
         super(platform_id, articlesService, membershipService, notificationService, activatedRoute);
         this.author = new BaseProfile('', '', '', '');
@@ -42,6 +44,7 @@ export class ArticleComponent extends BaseArticleComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
         this.getArticle();
+        this.subscribeToCommentAddedEvent();
     }
 
     refreshComments(): void {
@@ -52,7 +55,7 @@ export class ArticleComponent extends BaseArticleComponent implements OnInit {
         this.articlesService.set(this.articleSetRatingUrl);
 
         let articleId: number = this.activatedRoute.snapshot.params['articleId'];
-        let addCommentResult: OperationResult = new OperationResult(false, '');
+        let setRatingResult: OperationResult = new OperationResult(false, '');
         
         this.articleRating.dateAdded = new Date();
         this.articleRating.value = this.articleRatingValue;
@@ -60,19 +63,25 @@ export class ArticleComponent extends BaseArticleComponent implements OnInit {
 
         this.articlesService.post(this.articleRating)
             .subscribe(res => {
-                addCommentResult.Succeeded = res['succeeded'];
-                addCommentResult.Message = res['message'];
+                setRatingResult.Succeeded = res['succeeded'];
+                setRatingResult.Message = res['message'];
             },
             error => {
                 this.notificationService.printErrorMessage('Error ' + error);
             },
             () => {
-                if (addCommentResult.Succeeded) {
+                if (setRatingResult.Succeeded) {
                     this.notificationService.printSuccessMessage('Your rating has been set');
                 }
                 else {
-                    this.notificationService.printErrorMessage(addCommentResult.Message);
+                    this.notificationService.printErrorMessage(setRatingResult.Message);
                 }
             });
+    }
+
+    private subscribeToCommentAddedEvent(): void {
+        this.signalRService.commentAdded.subscribe(() => {
+            this.article.totalComments += 1;
+        });
     }
 }

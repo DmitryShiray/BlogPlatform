@@ -18,6 +18,7 @@ using BlogPlatform.Infrastructure.Cryptography;
 using BlogPlatform.Infrastructure.Constants;
 using Microsoft.AspNetCore.Authorization;
 using BlogPlatform.Domain.Authentication.Requirements;
+using BlogPlatform.Hubs;
 using System.Collections.Generic;
 
 namespace BlogPlatform
@@ -45,7 +46,9 @@ namespace BlogPlatform
         public void ConfigureServices(IServiceCollection services)
         {
             AutoMapperConfiguration.Configure();
-            
+
+            services.AddCors();
+
             services.AddOptions();
             services.AddMemoryCache();
 
@@ -92,8 +95,9 @@ namespace BlogPlatform
                 });
             });
 
-            // Add framework services.
-            services.AddNodeServices();
+            services.AddSignalR();
+
+            //Add framework services.
             services.AddMvc();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -104,6 +108,9 @@ namespace BlogPlatform
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseCors(config =>
+                 config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             //add NLog to .NET Core
             loggerFactory.AddNLog();
@@ -121,9 +128,13 @@ namespace BlogPlatform
             }
 
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
+            
             app.UseStaticFiles();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<CommentsHub>("commentsHub");
+            });
 
             app.UseAuthentication();
 

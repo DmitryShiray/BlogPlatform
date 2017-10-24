@@ -10,6 +10,8 @@ using BlogPlatform.ViewModels;
 using AutoMapper;
 using BlogPlatform.Infrastructure.Result;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.SignalR;
+using BlogPlatform.Hubs;
 
 namespace BlogPlatform.Controllers
 {
@@ -17,7 +19,8 @@ namespace BlogPlatform.Controllers
     public class CommentsController : BaseController
     {
         private readonly IArticlesFilteringService articlesFilteringService;
-        private ICommentsService commentsService;
+        private readonly ICommentsService commentsService;
+        private readonly IHubContext<CommentsHub> commentsHubContext;
 
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -25,11 +28,13 @@ namespace BlogPlatform.Controllers
                                   IAccountService accountService,
                                   IMemoryCache memoryCache,
                                   IArticlesFilteringService articlesFilteringService,
-                                  ICommentsService commentsService)
+                                  ICommentsService commentsService,
+                                  IHubContext<CommentsHub> commentsHubContext)
             : base(accountService, authorizationService, memoryCache)
         {
             this.articlesFilteringService = articlesFilteringService;
             this.commentsService = commentsService;
+            this.commentsHubContext = commentsHubContext;
         }
         
         [HttpGet("{articleId:int}/{page:int=0}/{pageSize=12}")]
@@ -57,16 +62,17 @@ namespace BlogPlatform.Controllers
         [Authorize]
         public async Task<IActionResult> AddComment([FromBody] CommentViewModel commentViewModel)
         {
-            BaseResult addCommentResult = null;
+            BaseResult commentAddedResult = null;
 
             try
             {
                 Comment comment = Mapper.Map<CommentViewModel, Comment>(commentViewModel);
-                comment.Account = await GetCurrentUserAccount();
+                comment.AccountId = (await GetCurrentUserAccount()).Id;
 
                 await commentsService.AddComment(comment);
+                await commentsHubContext.Clients.All.InvokeAsync("CommentAdded");
 
-                addCommentResult = new BaseResult()
+                commentAddedResult = new BaseResult()
                 {
                     Succeeded = true
                 };
@@ -75,14 +81,14 @@ namespace BlogPlatform.Controllers
             {
                 Logger.Error(exception);
 
-                addCommentResult = new BaseResult()
+                commentAddedResult = new BaseResult()
                 {
                     Succeeded = false,
                     Message = "Failed to add a comment " + exception.Message
                 };
             }
 
-            return new ObjectResult(addCommentResult);
+            return new ObjectResult(commentAddedResult);
         }
     }
 }

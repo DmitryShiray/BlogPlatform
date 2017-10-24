@@ -112,7 +112,7 @@ namespace BlogPlatform.Controllers
             try
             {
                 Rating rating = Mapper.Map<RatingViewModel, Rating>(ratingViewModel);
-                rating.Account = await GetCurrentUserAccount();
+                rating.Account.Id = (await GetCurrentUserAccount()).Id;
 
                 articleRatingService.SetRating(rating);
 
@@ -139,16 +139,16 @@ namespace BlogPlatform.Controllers
         [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public async Task<IActionResult> CreateArticle([FromBody] ArticleViewModel articleViewModel)
         {
-            BaseResult setRatingResult = null;
+            BaseResult createArticleResult = null;
 
             try
             {
                 Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
-                article.Account = await GetCurrentUserAccount();
+                article.AccountId = (await GetCurrentUserAccount()).Id;
 
                 await articleManagingService.CreateArticle(article);
 
-                setRatingResult = new BaseResult()
+                createArticleResult = new BaseResult()
                 {
                     Succeeded = true
                 };
@@ -157,33 +157,33 @@ namespace BlogPlatform.Controllers
             {
                 Logger.Error(exception);
 
-                setRatingResult = new BaseResult()
+                createArticleResult = new BaseResult()
                 {
                     Succeeded = false,
                     Message = "Failed to create article " + exception.Message
                 };
             }
 
-            return new ObjectResult(setRatingResult);
+            return new ObjectResult(createArticleResult);
         }
 
         [HttpPost("update")]
         [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public async Task<IActionResult> UpdateArticle([FromBody] ArticleViewModel articleViewModel)
         {
-            BaseResult setRatingResult = null;
+            BaseResult updateArticleResult = null;
 
             try
             {
                 Article article = Mapper.Map<ArticleViewModel, Article>(articleViewModel);
-                article.Account = await GetCurrentUserAccount();
+                article.AccountId = (await GetCurrentUserAccount()).Id;
 
                 var authorizationResult = await authorizationService.AuthorizeAsync(User, article, Claims.ClaimsArticleOwnerPolicyName);
                 if (authorizationResult.Succeeded)
                 {
                     articleManagingService.UpdateArticle(article);
 
-                    setRatingResult = new BaseResult()
+                    updateArticleResult = new BaseResult()
                     {
                         Succeeded = true
                     };
@@ -197,21 +197,21 @@ namespace BlogPlatform.Controllers
             {
                 Logger.Error(exception);
 
-                setRatingResult = new BaseResult()
+                updateArticleResult = new BaseResult()
                 {
                     Succeeded = false,
                     Message = "Failed to update article " + exception.Message
                 };
             }
 
-            return new ObjectResult(setRatingResult);
+            return new ObjectResult(updateArticleResult);
         }
 
         [HttpDelete("{articleId:int}")]
         [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
         public async Task<IActionResult> DeleteArticle(int articleId)
         {
-            BaseResult setRatingResult = null;
+            BaseResult deleteArticleResult = null;
 
             try
             {
@@ -222,7 +222,7 @@ namespace BlogPlatform.Controllers
 
                     articleManagingService.DeleteArticle(account.Id, articleId);
 
-                    setRatingResult = new BaseResult()
+                    deleteArticleResult = new BaseResult()
                     {
                         Succeeded = true
                     };
@@ -237,7 +237,7 @@ namespace BlogPlatform.Controllers
             {
                 Logger.Error(exception);
 
-                setRatingResult = new BaseResult()
+                deleteArticleResult = new BaseResult()
                 {
                     Succeeded = false,
                     Message = "You are not allowed to delete this article"
@@ -247,14 +247,14 @@ namespace BlogPlatform.Controllers
             {
                 Logger.Error(exception);
 
-                setRatingResult = new BaseResult()
+                deleteArticleResult = new BaseResult()
                 {
                     Succeeded = false,
                     Message = "Failed to delete article " + exception.Message
                 };
             }
 
-            return new ObjectResult(setRatingResult);
+            return new ObjectResult(deleteArticleResult);
         }
     }
 }

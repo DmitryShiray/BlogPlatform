@@ -37,6 +37,7 @@ module.exports = {
 
     devServer: {
         historyApiFallback: true,
+        hot: true,
         contentBase: path.join(ROOT, '/wwwroot/'),
         watchOptions: {
             aggregateTimeout: 300,

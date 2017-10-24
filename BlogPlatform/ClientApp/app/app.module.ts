@@ -29,6 +29,7 @@ import { DataService } from './core/services/dataService';
 import { MembershipService } from './core/services/membershipService';
 import { UtilityService } from './core/services/utilityService';
 import { NotificationService } from './core/services/notificationService';
+import { SignalRService } from './core/services/signalRService';
 import { EqualValidator } from './directives/equalValidator.directive';
 
 class AppBaseRequestOptions extends BaseRequestOptions {
@@ -68,10 +69,16 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         ViewProfileComponent,
         EqualValidator 
     ],
-    providers: [DataService, MembershipService, UtilityService, NotificationService,
+    providers: [
+        DataService,
+        MembershipService,
+        UtilityService,
+        NotificationService,
+        SignalRService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions },
-        { provide: 'isBrowser', useValue: true }],
+        { provide: 'isBrowser', useValue: true }
+    ],
     bootstrap: [AppComponent]
 })
     
