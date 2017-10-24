@@ -1,17 +1,17 @@
-﻿import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-
-import { ViewProfileComponent } from './viewProfile.component';
+﻿import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ApplicationRoutes } from '../routes';
-import { Profile } from '../../core/domain/profile';
-import { OperationResult } from '../../core/domain/operationResult';
-import { PasswordChange } from '../../core/domain/passwordChange';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
+import { OperationResult } from '../../core/domain/operationResult';
+import { Profile } from '../../core/domain/profile';
+import { PasswordChange } from '../../core/domain/passwordChange';
 import { UtilityService } from '../../core/services/utilityService';
-import { Constants } from '../../core/constants';
+
+import { ViewProfileComponent } from './viewProfile.component';
 
 @Component({
     selector: 'editProfile',

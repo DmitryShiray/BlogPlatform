@@ -1,12 +1,13 @@
-import { Input, Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
 import { BaseProfile } from '../../core/domain/baseProfile';
 import { Comment } from '../../core/domain/comment';
-import { DataService } from '../../core/services/dataService';
-import { UtilityService } from '../../core/services/utilityService';
-import { NotificationService } from '../../core/services/notificationService';
-import { Subscription } from 'rxjs/Subscription';
 import { Constants } from '../../core/constants';
+import { DataService } from '../../core/services/dataService';
+import { NotificationService } from '../../core/services/notificationService';
+import { UtilityService } from '../../core/services/utilityService';
 
 @Component({
     selector: 'comments',

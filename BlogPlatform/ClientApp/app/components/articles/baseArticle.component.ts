@@ -4,11 +4,11 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Article } from '../../core/domain/article';
 import { BaseComponent } from '../base/baseComponent.component';
 import { BaseProfile } from '../../core/domain/baseProfile';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
 import { OperationResult } from '../../core/domain/operationResult';
-import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'baseArticle',

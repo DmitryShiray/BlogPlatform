@@ -1,19 +1,19 @@
-import { Component, OnInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { BaseProfile } from '../../core/domain/baseProfile';
 import { Article } from '../../core/domain/article';
 import { BaseArticleComponent } from './baseArticle.component';
-import { Rating } from '../../core/domain/rating';
+import { BaseComponent } from '../base/baseComponent.component';
+import { BaseProfile } from '../../core/domain/baseProfile';
+import { CommentsComponent } from '../comments/comments.component';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
-import { UtilityService } from '../../core/services/utilityService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
-import { CommentsComponent } from '../comments/comments.component';
-import { BaseComponent } from '../base/baseComponent.component';
 import { OperationResult } from '../../core/domain/operationResult';
-import { Constants } from '../../core/constants';
+import { Rating } from '../../core/domain/rating';
 import { SignalRService } from '../../core/services/signalRService';
+import { UtilityService } from '../../core/services/utilityService';
 
 @Component({
     selector: 'article',

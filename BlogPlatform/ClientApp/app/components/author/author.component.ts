@@ -1,8 +1,8 @@
-import { Input, Component } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, Input, } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { BaseProfile } from '../../core/domain/baseProfile';
 import { Article } from '../../core/domain/article';
+import { BaseProfile } from '../../core/domain/baseProfile';
 import { UtilityService } from '../../core/services/utilityService';
 
 @Component({

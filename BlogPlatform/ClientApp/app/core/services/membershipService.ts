@@ -1,12 +1,12 @@
 ﻿import { Http, Response, Request } from '@angular/http';
 import { Injectable, Inject } from '@angular/core';
-import { DataService } from './dataService';
-import { Registration } from '../domain/registration';
-import { Account } from '../domain/account';
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
+
+import { Account } from '../domain/account';
 import { Constants } from '../constants';
+import { DataService } from './dataService';
+import { Registration } from '../domain/registration';
 
 @Injectable()
 export class MembershipService {

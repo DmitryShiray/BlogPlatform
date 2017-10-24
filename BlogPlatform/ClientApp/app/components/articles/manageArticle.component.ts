@@ -1,19 +1,19 @@
-import { Component, Input, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
+import { Article } from '../../core/domain/article';
 import { ApplicationRoutes } from '../routes';
 import { BaseArticleComponent } from './baseArticle.component';
+import { BaseComponent } from '../base/baseComponent.component';
 import { BaseProfile } from '../../core/domain/baseProfile';
-import { Article } from '../../core/domain/article';
-import { Rating } from '../../core/domain/rating';
+import { CommentsComponent } from '../comments/comments.component';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
-import { UtilityService } from '../../core/services/utilityService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
-import { CommentsComponent } from '../comments/comments.component';
-import { BaseComponent } from '../base/baseComponent.component';
 import { OperationResult } from '../../core/domain/operationResult';
-import { Constants } from '../../core/constants';
+import { Rating } from '../../core/domain/rating';
+import { UtilityService } from '../../core/services/utilityService';
 
 @Component({
     selector: 'manageArticle',

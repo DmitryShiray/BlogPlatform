@@ -1,15 +1,15 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AddCommentsComponent} from './components/comments/addComments.component';
+import { ArticleComponent } from './components/articles/article.component';
+import { ArticlesComponent } from './components/articles/articles.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { EditProfileComponent } from './components/profile/editProfile.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { ArticlesComponent } from './components/articles/articles.component';
-import { ArticleComponent } from './components/articles/article.component';
 import { ManageArticleComponent } from './components/articles/manageArticle.component';
-import { CommentsComponent } from './components/comments/comments.component';
-import { AddCommentsComponent} from './components/comments/addComments.component';
-import { EditProfileComponent } from './components/profile/editProfile.component';
+import { RegisterComponent } from './components/register/register.component';
 import { ViewProfileComponent } from './components/profile/viewProfile.component';
 
 import { ApplicationRoutes, APPLICATION_ROUTES } from './components/routes';

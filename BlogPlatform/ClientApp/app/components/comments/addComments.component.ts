@@ -1,14 +1,15 @@
-import { Component, Output, EventEmitter, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, OnInit, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { BaseComponent } from '../base/baseComponent.component';
 import { BaseProfile } from '../../core/domain/baseProfile';
 import { Comment } from '../../core/domain/comment';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
-import { BaseComponent } from '../base/baseComponent.component';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
 import { OperationResult } from '../../core/domain/operationResult';
-import { Constants } from '../../core/constants';
 
 @Component({
     selector: 'addComments',

@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
 
 import { Account } from '../../core/domain/account';
-import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
+import { OperationResult } from '../../core/domain/operationResult';
 
 @Component({
     selector: 'base-component',

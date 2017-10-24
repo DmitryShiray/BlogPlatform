@@ -1,12 +1,13 @@
 ﻿import { Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ApplicationRoutes } from '../routes';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { Account } from '../../core/domain/account';
-import { OperationResult } from '../../core/domain/operationResult';
+import { ApplicationRoutes } from '../routes';
+import { Constants } from '../../core/constants';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
-import { Constants } from '../../core/constants';
+import { OperationResult } from '../../core/domain/operationResult';
 
 @Component({
     selector: 'login',

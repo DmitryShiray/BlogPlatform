@@ -1,13 +1,13 @@
-import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
 
 import { Account } from '../../core/domain/account';
 import { BaseComponent } from '../base/baseComponent.component';
-import { OperationResult } from '../../core/domain/operationResult';
 import { DataService } from '../../core/services/dataService';
 import { MembershipService } from '../../core/services/membershipService';
 import { NotificationService } from '../../core/services/notificationService';
+import { OperationResult } from '../../core/domain/operationResult';
 
 @Component({
     selector: 'nav-menu',

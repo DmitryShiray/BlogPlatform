@@ -1,5 +1,5 @@
-﻿import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+﻿import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, Params, Router  } from '@angular/router';
 
 import { ApplicationRoutes } from '../routes';
 import { BaseComponent } from '../base/baseComponent.component';
