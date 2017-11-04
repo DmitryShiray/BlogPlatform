@@ -20,6 +20,7 @@ import { ViewProfileComponent } from './viewProfile.component';
 })
 
 export class EditProfileComponent extends ViewProfileComponent implements OnInit {
+    private currentProfileGetUrl = Constants.BaseUrl + 'api/profile/getCurrentUserProfile/';
     private profileDeleteUrl = Constants.BaseUrl + 'api/profile/deleteProfile/';
     private profileUpdateUrl = Constants.BaseUrl + 'api/profile/updateProfile/';
     private changePasswordUrl = Constants.BaseUrl + 'api/profile/changePassword/';
@@ -35,6 +36,23 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
                 activatedRoute: ActivatedRoute) {
         super(platform_id, profileService, notificationService, membershipService, utilityService, router, activatedRoute);
         this.passwordChange = new PasswordChange();
+    }
+
+    ngOnInit() {
+        this.getProfile();
+    }
+
+    getProfile(): void {
+        this.profileService.set(this.currentProfileGetUrl);
+
+        this.profileService.getItem()
+            .subscribe(res => {
+                var data = res.json();
+                this.profile = new Profile(data.firstName, data.lastName, data.nickname, data.emailAddress, data.registrationDate, data.isCurrentUserProfile);
+            },
+            error => {
+                this.notificationService.printErrorMessage('Error ' + error);
+            });
     }
 
     updateProfile(): void {
@@ -58,7 +76,6 @@ export class EditProfileComponent extends ViewProfileComponent implements OnInit
                     this.notificationService.printErrorMessage(updateProfileResult.Message);
                 }
             });
-
     }
 
     changePassword(): void {

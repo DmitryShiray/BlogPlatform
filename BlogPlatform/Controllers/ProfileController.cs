@@ -25,6 +25,25 @@ namespace BlogPlatform.Controllers
         {
         }
 
+        [HttpGet("getCurrentUserProfile/")]
+        [Authorize(Policy = Claims.ClaimsAuthorizedUserPolicyName)]
+        public async Task<IActionResult> GetCurretUserProfile()
+        {
+            var currentUser = await GetCurrentUserAccount();
+            if (currentUser == null)
+            {
+                var getUserProfileResult = new BaseResult()
+                {
+                    Succeeded = false,
+                    Message = "Cannot get profile. Please, contact customer support."
+                };
+
+                return new ObjectResult(getUserProfileResult);
+            }
+
+            return await GetUserProfile(currentUser.EmailAddress);
+        }
+
         [HttpGet("getUserProfile/{emailAddress?}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetUserProfile(string emailAddress)
